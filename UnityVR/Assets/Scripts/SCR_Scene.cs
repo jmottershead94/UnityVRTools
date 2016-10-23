@@ -26,11 +26,15 @@ public class SCR_Scene : MonoBehaviour
 
             Debug.Log("Clicked the button for a cube.");
 
-            // Creating a temporary instance 
+            // Creating a temporary instance of a cube game object.
             GameObject tempCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             tempCube.transform.position = new Vector3(2.0f, 0.0f, 0.0f);
             tempCube.transform.parent = GameObject.Find(name).transform;
 
+            // Adding an object primitive type onto the cube.
+            tempCube.AddComponent<SCR_PersistentObject>().ObjectType = PrimitiveType.Cube;
+
+            // Add the cube into the list of game objects.
             sceneObjects.Add(tempCube);
 
         }
@@ -40,11 +44,16 @@ public class SCR_Scene : MonoBehaviour
 
 			Debug.Log("Clicked the button for a sphere.");
 
+			// Creating a temporary instance of a sphere game object.
 			GameObject tempSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 			tempSphere.transform.position = new Vector3(-2.0f, 0.0f, 0.0f);
 			tempSphere.transform.parent = GameObject.Find(name).transform;
 
-			sceneObjects.Add(tempSphere);
+			// Adding an object primitive type onto the cube.
+			tempSphere.AddComponent<SCR_PersistentObject>().ObjectType = PrimitiveType.Sphere;
+
+            // Add the cube into the list of game objects.
+            sceneObjects.Add(tempSphere);
 
         }
         

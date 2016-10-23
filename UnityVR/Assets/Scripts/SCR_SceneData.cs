@@ -15,7 +15,7 @@ public class SCR_SceneData : MonoBehaviour
 	private string format = "dd mm yyyy  hh:mm";				// The format to be used for the data.
 	private string loadDate;									// The current load date of the data.
 	private string saveDate;									// The current save date of the data.
-	private List<SCR_PersistentObject> savedPersistentObjects;	// A list of the persistent objects in the scene.	
+	//private List<SCR_PersistentObject> savedPersistentObjects;	// A list of the persistent objects in the scene.	
 
 	private static SCR_SceneData sceneDataInstance;				// The current instance of scene data for a singleton design and to allow access between scenes.
 
@@ -75,10 +75,10 @@ public class SCR_SceneData : MonoBehaviour
 		get { return sceneDataInstance; }
 	}
 
-	// This will return the current list of persistent objects in the scene.
-	public List<SCR_PersistentObject> SceneObjects
-	{
-		get { return savedPersistentObjects; }
-	}
+//	// This will return the current list of persistent objects in the scene.
+//	public List<SCR_PersistentObject> SceneObjects
+//	{
+//		get { return savedPersistentObjects; }
+//	}
 
 }
