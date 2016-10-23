@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
+[Serializable]
 // Persistent object IS A game object, therefore inherits from it.
 public class SCR_PersistentObject : MonoBehaviour
 {
@@ -10,6 +12,11 @@ public class SCR_PersistentObject : MonoBehaviour
 	[SerializeField]	private int id;		// Accessing the ID number of the object.
 
 	// Getters/Setters.
+	public Transform ObjectTransform
+	{
+		get { return transform; }
+	}
+
 	// This will allow us to get/set the primitive type of the game object.
 	public PrimitiveType ObjectType
 	{

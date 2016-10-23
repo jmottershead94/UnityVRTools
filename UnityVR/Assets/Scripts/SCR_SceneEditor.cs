@@ -87,6 +87,22 @@ public class SCR_SceneEditor : MonoBehaviour
 			SpawnObject(PrimitiveType.Sphere, new Vector3(-2.0f, 0.0f, 0.0f));
 
         }
+
+		// If the user presses on the save button.
+        if (GUI.Button(new Rect(500, 10, 200, 50), "SAVE SCENE"))
+        {
+
+			SCR_SceneData.Instance.Save();
+
+        }
+
+		// If the user presses on the sphere button.
+        if (GUI.Button(new Rect(500, 70, 200, 50), "LOAD SCENE"))
+        {
+
+			SCR_SceneData.Instance.Load();
+
+        }
         
     }
 
@@ -105,10 +121,11 @@ public class SCR_SceneEditor : MonoBehaviour
 	}
 
 	// Getters.
-	// This will allow us to get the current list of persistent objects in the scene.
+	// This will allow us to get/set the current list of persistent objects in the scene.
 	public List<SCR_PersistentObject> Objects
 	{
 		get { return sceneObjects; }
+		set { sceneObjects = value; }
 	}
 
 }
