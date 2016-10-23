@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-public class SCR_SceneEditor : EditorWindow 
+public class SCR_SceneCustomEditor : EditorWindow 
 {
 
 	[MenuItem("Window/Scene Editor/Enable")]

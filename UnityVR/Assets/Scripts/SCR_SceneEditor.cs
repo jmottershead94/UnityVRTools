@@ -3,12 +3,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-// Scene IS A game object, therefore inherits from it.
-public class SCR_Scene : MonoBehaviour 
+// Scene editor IS A game object, therefore inherits from it.
+public class SCR_SceneEditor : MonoBehaviour 
 {
 
 	// Attributes.
-	[SerializeField]	private List<GameObject> sceneObjects;		// The current list of scene objects.
+	[SerializeField]	private List<SCR_PersistentObject> sceneObjects;		// The current list of scene objects.
 
 	// Methods.
 	/*
@@ -22,7 +22,7 @@ public class SCR_Scene : MonoBehaviour
 	{
 
 		// Initialising our attributes.
-		sceneObjects = new List<GameObject>();
+		sceneObjects = new List<SCR_PersistentObject>();
 
 	}
 
@@ -46,17 +46,17 @@ public class SCR_Scene : MonoBehaviour
 	{
 
 		// Creating a temporary instance of a cube game object.
-        GameObject tempCube = GameObject.CreatePrimitive(primitiveType);
-        tempCube.transform.position = spawnPosition;
-        tempCube.transform.parent = GameObject.Find(name).transform;
+        GameObject tempGameObject = GameObject.CreatePrimitive(primitiveType);
 
         // Creating a temporary instance of a persistent object and adding it onto the temporary game object.
-		SCR_PersistentObject tempPersistentObject = tempCube.AddComponent<SCR_PersistentObject>();
+		SCR_PersistentObject tempPersistentObject = tempGameObject.AddComponent<SCR_PersistentObject>();
+		tempPersistentObject.transform.position = spawnPosition;
+		tempPersistentObject.transform.parent = GameObject.Find(name).transform;
 		tempPersistentObject.ObjectType = primitiveType;
 		tempPersistentObject.ID = sceneObjects.Count;
 
         // Add the cube into the list of game objects.
-        sceneObjects.Add(tempCube);
+        sceneObjects.Add(tempPersistentObject);
 
 	}
 
@@ -102,6 +102,13 @@ public class SCR_Scene : MonoBehaviour
 
 		
 
+	}
+
+	// Getters.
+	// This will allow us to get the current list of persistent objects in the scene.
+	public List<SCR_PersistentObject> Objects
+	{
+		get { return sceneObjects; }
 	}
 
 }

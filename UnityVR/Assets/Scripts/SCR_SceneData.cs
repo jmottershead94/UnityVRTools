@@ -15,9 +15,7 @@ public class SCR_SceneData : MonoBehaviour
 	private string format = "dd mm yyyy  hh:mm";				// The format to be used for the data.
 	private string loadDate;									// The current load date of the data.
 	private string saveDate;									// The current save date of the data.
-	//private List<SCR_PersistentObject> savedPersistentObjects;	// A list of the persistent objects in the scene.
-	private SCR_Scene scene;									// Accessing the current scene.	
-
+	private SCR_SceneEditor scene;								// Accessing the current scene.	
 	private static SCR_SceneData sceneDataInstance;				// The current instance of scene data for a singleton design and to allow access between scenes.
 
 	// Methods.
@@ -48,6 +46,8 @@ public class SCR_SceneData : MonoBehaviour
 
 	public void Save()
 	{
+
+		scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
 
 		// Record the save date.
 		saveDate = (now.ToString(format));
