@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 
-[Serializable]
 // Persistent object IS A game object, therefore inherits from it.
 public class SCR_PersistentObject : MonoBehaviour
 {

@@ -11,17 +11,24 @@ public class SCR_SceneData : MonoBehaviour
 {
 
 	// Attributes.
-	private const string sceneDataFilename = "/SceneData.dat";
+	private const string sceneDataFilename = "/SceneData.dat";	// The file name of the scene that we are saving.
 
-	private DateTime now = DateTime.Now;						// What date/time it is now.
 	private string format = "dd mm yyyy  hh:mm";				// The format to be used for the data.
 	private string loadDate;									// The current load date of the data.
 	private string saveDate;									// The current save date of the data.
+	private DateTime now = DateTime.Now;						// What date/time it is now.
 	private SCR_SceneEditor scene;								// Accessing the current scene.	
 
 	private static SCR_SceneData sceneDataInstance;				// The current instance of scene data for a singleton design and to allow access between scenes.
 
 	// Methods.
+	/*
+	*
+	*	Overview
+	*	--------
+	*	This will be called before initialisation.
+	*
+	*/
 	void Awake()
 	{
 
@@ -47,6 +54,59 @@ public class SCR_SceneData : MonoBehaviour
 
 	}
 
+	/*
+	*
+	*	Overview
+	*	--------
+	*	Here we will save the current persistent data values into our
+	*	persistent object data class.
+	*
+	*	Having this as a separate function allows me to directly decide
+	*	what data I want to save easier, and makes the code more readible
+	*	in my opinion.
+	*
+	*	Params
+	*	------
+	*	ref savingPersistentObject -	This will allow us to pass a reference
+	*								 	through to the function and directly
+	*								 	set the saving values.	
+	*
+	*	referencePersistentObject -		With this parameter we are using a reference
+	*									persistent object to base our saving values
+	*									off.
+	*
+	*/
+	private void SavePersistentObjectData(ref PersistentObjectData savingPersistentObject, SCR_PersistentObject referencePersistentObject)
+	{
+
+		// Saving the current position of the persistent object.
+		savingPersistentObject.PositionX = referencePersistentObject.transform.position.x;
+		savingPersistentObject.PositionY = referencePersistentObject.transform.position.y;
+		savingPersistentObject.PositionZ = referencePersistentObject.transform.position.z;
+
+		// Saving the current rotation of the persistent object.
+		savingPersistentObject.RotationX = referencePersistentObject.transform.eulerAngles.x;
+		savingPersistentObject.RotationY = referencePersistentObject.transform.eulerAngles.y;
+		savingPersistentObject.RotationZ = referencePersistentObject.transform.eulerAngles.z;
+
+		// Saving the current scale of the persistent object.
+		savingPersistentObject.ScaleX = referencePersistentObject.transform.localScale.x;
+		savingPersistentObject.ScaleY = referencePersistentObject.transform.localScale.y;
+		savingPersistentObject.ScaleZ = referencePersistentObject.transform.localScale.z;
+
+		// Saving the current persistent object data (Primitive Type and Object ID).
+		savingPersistentObject.ObjectType 	= referencePersistentObject.ObjectType;
+		savingPersistentObject.ID 			= referencePersistentObject.ID;
+		  
+	}
+
+	/*
+	*
+	*	Overview
+	*	--------
+	*	Here we will save the current scene to a text file.
+	*
+	*/
 	public void Save()
 	{
 
@@ -58,61 +118,113 @@ public class SCR_SceneData : MonoBehaviour
 
 		// Initialising our local attributes.
 		BinaryFormatter binary = new BinaryFormatter();
-		FileStream file = File.Create(Application.persistentDataPath + sceneDataFilename);
 		List<PersistentObjectData> sceneObjectData = new List<PersistentObjectData>();
 
+		// Creating a file to save the local scene data.
+		FileStream file = File.Create(Application.persistentDataPath + sceneDataFilename);
+	
 		// Looping through the amount of objects there are in the current scene.
 		for(int i = 0; i < scene.Objects.Count; i++)
 		{
-			PersistentObjectData objectData = new PersistentObjectData();
 
-			objectData.PositionX = scene.Objects[i].transform.position.x;
-			objectData.PositionY = scene.Objects[i].transform.position.y;
-			objectData.PositionZ = scene.Objects[i].transform.position.z;
+			// Initialising a temporary instance of the persistent object data.
+			PersistentObjectData tempObjectData = new PersistentObjectData();
 
-			objectData.RotationX = scene.Objects[i].transform.eulerAngles.x;
-			objectData.RotationY = scene.Objects[i].transform.eulerAngles.y;
-			objectData.RotationZ = scene.Objects[i].transform.eulerAngles.z;
+			// Saving the current persistent object data from the scene.
+			SavePersistentObjectData(ref tempObjectData, scene.Objects[i]);
 
-			objectData.ScaleX = scene.Objects[i].transform.localScale.x;
-			objectData.ScaleY = scene.Objects[i].transform.localScale.y;
-			objectData.ScaleZ = scene.Objects[i].transform.localScale.z;
-
-			objectData.ObjectType = scene.Objects[i].ObjectType;
-			objectData.ID = scene.Objects[i].ID;
-
-			sceneObjectData.Add(objectData);
+			// Adding the object data into our persistent object data list.
+			sceneObjectData.Add(tempObjectData);
 
 		}
 
+		// Serializing the list of scene objects to a text file.
 		binary.Serialize(file, sceneObjectData);
 
-		Debug.Log("Saved!");
+		// Close the text file.
+		file.Close();
 
 	}
 
+	/*
+	*
+	*	Overview
+	*	--------
+	*	Here we will load the current persistent data values into our
+	*	persistent object class.
+	*
+	*	Having this as a separate function allows me to directly decide
+	*	what data I want to load easier, and makes the code more readible
+	*	in my opinion.
+	*
+	*	Params
+	*	------
+	*	ref loadingPersistentObject -	This is the persistent object that we are using
+	*									to load the text file values into.	
+	*
+	*	referencePersistentObject -		With this parameter we are using a reference
+	*									persistent data object to base our loading values
+	*									off.
+	*
+	*/
+	private void LoadPersistentObjectData(ref SCR_PersistentObject loadingPersistentObject, PersistentObjectData referencePersistentObject)
+	{
+
+		// Loading the transform of the persistent object using the float values stored in the text file.
+		// Because Vector3's are only Serializable by Unity, currently, we have to store each float value into it's own function.
+		loadingPersistentObject.transform.position 		= new Vector3(referencePersistentObject.PositionX, referencePersistentObject.PositionY, referencePersistentObject.PositionZ);
+		loadingPersistentObject.transform.eulerAngles 	= new Vector3(referencePersistentObject.RotationX, referencePersistentObject.RotationY, referencePersistentObject.RotationZ);
+		loadingPersistentObject.transform.localScale 	= new Vector3(referencePersistentObject.ScaleX, referencePersistentObject.ScaleY, referencePersistentObject.ScaleZ);
+		loadingPersistentObject.transform.parent 		= GameObject.Find("Scene Editor").transform;
+
+		// Loading the current persistent object data (Primitive Type and Object ID).
+		loadingPersistentObject.ObjectType 	= referencePersistentObject.ObjectType;
+		loadingPersistentObject.ID 			= referencePersistentObject.ID;
+
+	}
+
+	/*
+	*
+	*	Overview
+	*	--------
+	*	Here we will load the current scene from a text file.
+	*
+	*/
 	public void Load()
 	{
 
 		// Find the scene editor script in the current scene.
 		scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
 
+		// Record the load date.
+		loadDate = (now.ToString(format));
+
 		// If the scene data file exists.
 		if(File.Exists(Application.persistentDataPath + sceneDataFilename))
 		{
-			
+
+			// Initialising our local attributes.
 			BinaryFormatter binary = new BinaryFormatter();
+
+			// Opening the file to the current scene being edited.
 			FileStream file = File.Open(Application.persistentDataPath + sceneDataFilename, FileMode.Open);
+
+			// Deserializing the data from the text file, and casting it to a list data structure of persistent object data.
+			// Basically gaining access to any scene object data we saved previously.
 			List<PersistentObjectData> sceneObjectData = (List<PersistentObjectData>)binary.Deserialize(file);
+
+			// Close the text file.
 			file.Close();
 
 			// If we currently have objects in our scene.
 			if(scene.Objects.Count > 0)
 			{
 
+				// Loop through each object in the current scene.
 				for(int i = 0; i < scene.Objects.Count; i++)
 				{
 
+					// Destroy the current game object.
 					Destroy(scene.Objects[i].gameObject);
 
 				}
@@ -122,32 +234,23 @@ public class SCR_SceneData : MonoBehaviour
 				
 			}
 
-			//scene.Objects = sceneObjectData;
-
-			Debug.Log(sceneObjectData.Count);
-
+			// Loop through each of the objects from the text file.
 			for(int i = 0; i < sceneObjectData.Count; i++)
 			{
 
+				// Initialising a temporary instance of game object with it's primitive type.
 				GameObject tempGameObject = GameObject.CreatePrimitive(sceneObjectData[i].ObjectType);
 
-				SCR_PersistentObject tempNewPersistentObject = tempGameObject.AddComponent<SCR_PersistentObject>();
-				//tempNewPersistentObject.transform = sceneObjectData[i].ObjectTransform;
-				//tempNewPersistentObject.transform.position = sceneObjectData[i].Position;
-				//tempNewPersistentObject.transform.eulerAngles = sceneObjectData[i].Rotation;
-				//tempNewPersistentObject.transform.localScale = sceneObjectData[i].Scale;
-				tempNewPersistentObject.transform.position = new Vector3(sceneObjectData[i].PositionX, sceneObjectData[i].PositionY, sceneObjectData[i].PositionZ);
-				tempNewPersistentObject.transform.eulerAngles = new Vector3(sceneObjectData[i].RotationX, sceneObjectData[i].RotationY, sceneObjectData[i].RotationZ);
-				tempNewPersistentObject.transform.localScale = new Vector3(sceneObjectData[i].ScaleX, sceneObjectData[i].ScaleY, sceneObjectData[i].ScaleZ);
-				tempNewPersistentObject.transform.parent = GameObject.Find("Scene Editor").transform;
-				tempNewPersistentObject.ObjectType = sceneObjectData[i].ObjectType;
-				tempNewPersistentObject.ID = sceneObjectData[i].ID;
+				// Initialising a temporary instance of a persistent object and adding it to the temporary instance of the above game object.
+				SCR_PersistentObject tempPersistentObject = tempGameObject.AddComponent<SCR_PersistentObject>();
 
-				scene.Objects.Add(tempNewPersistentObject);
+				// Load the current persistent object ID from the list based off of the text file data.
+				LoadPersistentObjectData(ref tempPersistentObject, sceneObjectData[i]);
+
+				// Adding in the persistent object into our current scene.
+				scene.Objects.Add(tempPersistentObject);
 
 			}
-
-			Debug.Log("Loaded!");
 
 		}
 
@@ -162,17 +265,20 @@ public class SCR_SceneData : MonoBehaviour
 
 }
 
+// This is serializable so that we can store this class information into a text file.
+// Monobehaviour doesn't allow for some fields to be serialized.
 [Serializable]
+
 // Persistent object data is just a standard class.
 class PersistentObjectData
 {
 
 	// Attributes.
-	private float positionX, positionY, positionZ;
-	private float rotationX, rotationY, rotationZ;
-	private float scaleX, scaleY, scaleZ;
-	private PrimitiveType primitiveType;	// This is used to store the current primitive type of the object.
-	private int id;							// This is used to store the current ID of the object.
+	private float positionX, positionY, positionZ;	// Used for storing the current position.
+	private float rotationX, rotationY, rotationZ;	// Used for storing the current rotation.
+	private float scaleX, scaleY, scaleZ;			// Used for storing the current scale.
+	private PrimitiveType primitiveType;			// Used to store the current primitive type of the object.
+	private int id;									// Used to store the current ID of the object.
 
 	// Methods.
 	// Getters/Setters.
@@ -195,7 +301,7 @@ class PersistentObjectData
 		set { positionZ = value; }
 	}
 
-	// This will allow us to get/set the current position.
+	// This will allow us to get/set the current rotation.
 	public float RotationX
 	{
 		get { return rotationX; }
@@ -214,7 +320,7 @@ class PersistentObjectData
 		set { rotationZ = value; }
 	}
 
-	// This will allow us to get/set the current position.
+	// This will allow us to get/set the current scale.
 	public float ScaleX
 	{
 		get { return scaleX; }
