@@ -103,9 +103,24 @@ public class SCR_SceneData : MonoBehaviour
 			
 			BinaryFormatter binary = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + sceneDataFilename, FileMode.Open);
-			//List<SCR_PersistentObject> sceneObjectData = (List<SCR_PersistentObject>)binary.Deserialize(file);
 			List<PersistentObjectData> sceneObjectData = (List<PersistentObjectData>)binary.Deserialize(file);
 			file.Close();
+
+			// If we currently have objects in our scene.
+			if(scene.Objects.Count > 0)
+			{
+
+				for(int i = 0; i < scene.Objects.Count; i++)
+				{
+
+					Destroy(scene.Objects[i].gameObject);
+
+				}
+
+				// Clear the current scene, because we are about to load and don't want duplicates.
+				scene.Objects.Clear();
+				
+			}
 
 			//scene.Objects = sceneObjectData;
 
