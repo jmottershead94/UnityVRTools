@@ -17,6 +17,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private Vector3 destination = Vector3.zero;
 	private Vector3 originalScale = Vector3.zero;
 	private Vector3 destinationScale = Vector3.zero;
+	private Vector3 originalDistanceDifference = Vector3.zero;
 	private bool isInteractable = true;
 	protected SCR_Panel parentPanel = null;
 
@@ -36,6 +37,8 @@ public class SCR_3DButton : SCR_BaseUIElement
 		destination = new Vector3(originalPosition.x, originalPosition.y, originalPosition.z - 0.2f);
 		destinationScale = new Vector3(originalScale.x * scaleUpFactor, originalScale.y * scaleUpFactor, originalScale.z * scaleUpFactor);
 		parentPanel = transform.parent.GetComponent<SCR_Panel>();
+
+		originalDistanceDifference = Camera.main.transform.position - transform.position;
 
 	}
 
@@ -112,6 +115,8 @@ public class SCR_3DButton : SCR_BaseUIElement
 	override protected void CheckFocus()
 	{
 
+		
+
 		if(!isInFocus)
 		{
 			
@@ -129,26 +134,30 @@ public class SCR_3DButton : SCR_BaseUIElement
 
 	}
 
+	void UpdateUIPositions()
+	{
+
+		originalPosition = Camera.main.transform.position - originalDistanceDifference;
+		destination = new Vector3(originalPosition.x, originalPosition.y, originalPosition.z - 0.2f);
+
+	}
+
 	protected void Update()
 	{
 
 		/* VR Control Logic Here? */
 		/* VRControls(); */
 
-		/* If the panel this button belongs to is in focus. */
-		//if(parentPanel.InFocus)
-		//{
+		UpdateUIPositions();
 
-			/* If this button is interactable. */
-			if(isInteractable)
-			{
+		/* If this button is interactable. */
+		if(isInteractable)
+		{
 
-				/* Keep checking the focus of this object. */
-				CheckFocus();
+			/* Keep checking the focus of this object. */
+			CheckFocus();
 
-			}
-
-		//}
+		}
 
 	}
 

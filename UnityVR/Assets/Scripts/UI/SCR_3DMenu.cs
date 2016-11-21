@@ -33,14 +33,6 @@ public class SCR_3DMenu : MonoBehaviour
 
 	}
 
-	// Use this for initialization
-	void Start () 
-	{
-
-		
-
-	}
-
 	/*
 	*
 	*	Overview
