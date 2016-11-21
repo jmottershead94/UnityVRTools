@@ -3,7 +3,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.Collections;
 
-public class SCR_VREditorWindow : EditorWindow {
+public class SCR_VREditorWindow : EditorWindow 
+{
 
 	/* Attributes. */
 
@@ -105,4 +106,5 @@ public class SCR_VREditorWindow : EditorWindow {
 		WindowButtons();
 
 	}
+
 }

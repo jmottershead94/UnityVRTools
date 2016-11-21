@@ -42,7 +42,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	*					that the user wishes to spawn.
 	*
 	*/
-	void SpawnObject(PrimitiveType primitiveType, Vector3 spawnPosition)
+	public void SpawnObject(PrimitiveType primitiveType, Vector3 spawnPosition)
 	{
 
 		// Creating a temporary instance of a cube game object.
@@ -57,66 +57,6 @@ public class SCR_SceneEditor : MonoBehaviour
 
         // Add the cube into the list of game objects.
         sceneObjects.Add(tempPersistentObject);
-
-	}
-
-	/*
-	*
-	*	Overview
-	*	--------
-	*	This will be called for drawing UI elements.
-	*
-	*/
-	void OnGUI() 
-	{
-
-		// If the user presses on the cube button.
-        if (GUI.Button(new Rect(10, 10, 80, 50), "CUBE"))
-        {
-
-            // Spawn a cube.
-        	SpawnObject(PrimitiveType.Cube, new Vector3(2.0f, 0.0f, 0.0f));
-
-        }
-
-        // If the user presses on the sphere button.
-        if (GUI.Button(new Rect(10, 70, 80, 50), "SPHERE"))
-        {
-
-			// Spawn a sphere.
-			SpawnObject(PrimitiveType.Sphere, new Vector3(-2.0f, 0.0f, 0.0f));
-
-        }
-
-		// If the user presses on the save button.
-        if (GUI.Button(new Rect(500, 10, 200, 50), "SAVE SCENE"))
-        {
-
-			SCR_SceneData.Instance.Save();
-
-        }
-
-		// If the user presses on the sphere button.
-        if (GUI.Button(new Rect(500, 70, 200, 50), "LOAD SCENE"))
-        {
-
-			SCR_SceneData.Instance.Load();
-
-        }
-        
-    }
-
-	/*
-	*
-	*	Overview
-	*	--------
-	*	This will be used to update every frame.
-	*
-	*/
-	void Update () 
-	{
-
-		
 
 	}
 
