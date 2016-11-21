@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SCR_3DMenu : MonoBehaviour 
 {
@@ -7,6 +8,9 @@ public class SCR_3DMenu : MonoBehaviour
 	/* Attributes. */
 	//[SerializeField] [Range (0.0f, 5.0f)]	private float rotationSpeed = 1.0f;
 	private SCR_SceneEditor sceneEditor = null;
+	private List<SCR_Panel> panels = null;
+	private SCR_Panel currentFocusPanel = null;
+	private int panelIndex = 0;
 
 	/* Methods. */
 	void Awake()
@@ -15,6 +19,17 @@ public class SCR_3DMenu : MonoBehaviour
 		/* Initialising our attributes. */
 		//transform.position = new Vector3(SCR_UIConstants.LeftOfScreen.x, SCR_UIConstants.LeftOfScreen.y, transform.position.z);
 		sceneEditor = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
+		panels = new List<SCR_Panel>();
+
+		SCR_Panel[] tempChildrenPanels = transform.FindChild("Panels").GetComponentsInChildren<SCR_Panel>();
+
+		foreach(SCR_Panel tempPanel in tempChildrenPanels)
+		{
+			panels.Add(tempPanel);
+		}
+
+		panels[panelIndex].InFocus = true;
+		currentFocusPanel = panels[panelIndex];
 
 	}
 
@@ -72,11 +87,39 @@ public class SCR_3DMenu : MonoBehaviour
         
     }
 
+    void CheckPanelFocus()
+    {
+
+    	if(!panels[panelIndex].InFocus)
+    	{
+			panels[panelIndex].InFocus = true;
+    	}
+
+    }
 
 	// Update is called once per frame
 	void Update () 
 	{
-	
+
+		CheckPanelFocus();
+
+	}
+
+	public List<SCR_Panel> Panels
+	{
+		get { return panels; }
+	}
+
+	public SCR_Panel CurrentPanel
+	{
+		get { return currentFocusPanel; }
+		set { currentFocusPanel = value; }
+	}
+
+	public int CurrentPanelIndex
+	{
+		get { return panelIndex; }
+		set { panelIndex = value; }
 	}
 
 }
