@@ -19,7 +19,7 @@ public class SCR_RotatePanelButton : SCR_3DButton
 
 		base.Awake();
 
-		menu = GameObject.Find("PRE_3DMenu").GetComponent<SCR_3DMenu>();
+		menu = GameObject.Find("Menu").GetComponent<SCR_3DMenu>();
 
 	}
 
@@ -64,9 +64,13 @@ public class SCR_RotatePanelButton : SCR_3DButton
 		/* Rotate all of the panels. */
 		menu.transform.FindChild("Panels").Rotate(rotationValue);
 
-		ArrowResponse();
+		//if(!shouldRotate)
+		//{
+			ArrowResponse();
 
-		/*shouldRotate = true;*/
+		//	shouldRotate = true;
+		//}
+
 
 	}
 
@@ -78,7 +82,7 @@ public class SCR_RotatePanelButton : SCR_3DButton
 
 			currentRotation++;
 
-			/* menu.transform.FindChild("Panels").Rotate(rotationSpeed); */
+			menu.transform./*FindChild("Panels").*/Rotate(rotationSpeed);
 		}
 		else
 		{
@@ -91,19 +95,19 @@ public class SCR_RotatePanelButton : SCR_3DButton
 
 	}
 
-//	new void Update()
-//	{
-//
-//		base.Update();
-//
-//		if(shouldRotate)
-//		{
-//
-//			LerpRotation();
-//
-//		}
-//
-//	}
+	new void Update()
+	{
+
+		base.Update();
+
+		if(shouldRotate)
+		{
+
+			LerpRotation();
+
+		}
+
+	}
 
 	private bool LastPanel
 	{

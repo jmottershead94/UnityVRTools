@@ -109,7 +109,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 
 	}
 
-	void CheckFocus()
+	override protected void CheckFocus()
 	{
 
 		if(!isInFocus)

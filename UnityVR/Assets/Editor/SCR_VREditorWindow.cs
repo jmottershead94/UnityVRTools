@@ -35,7 +35,6 @@ public class SCR_VREditorWindow : EditorWindow
 
 	}
 
-
 	void PlayVREditor()
 	{
 
@@ -46,7 +45,7 @@ public class SCR_VREditorWindow : EditorWindow
 
 			/* This would add a new scene to the hierarchy. */
 			/* May want to use this at some other point. */
-			/*EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);*/
+			/* EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive); */
 
 
 		}

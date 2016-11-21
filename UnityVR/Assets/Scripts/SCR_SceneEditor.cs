@@ -8,9 +8,17 @@ public class SCR_SceneEditor : MonoBehaviour
 {
 
 	// Attributes.
-	[SerializeField]	private List<SCR_PersistentObject> sceneObjects;		// The current list of scene objects.
+	[SerializeField]	private List<SCR_PersistentObject> sceneObjects = null;		// The current list of scene objects.
 
 	// Methods.
+	void Awake()
+	{
+
+		// Initialising our attributes.
+		sceneObjects = new List<SCR_PersistentObject>();
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -21,8 +29,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	void Start () 
 	{
 
-		// Initialising our attributes.
-		sceneObjects = new List<SCR_PersistentObject>();
+		
 
 	}
 
