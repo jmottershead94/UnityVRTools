@@ -224,8 +224,20 @@ public class SCR_SceneData : MonoBehaviour
 				for(int i = 0; i < scene.Objects.Count; i++)
 				{
 
-					// Destroy the current game object.
-					Destroy(scene.Objects[i].gameObject);
+					if(Application.isPlaying)
+					{
+
+						// Destroy the current game object.
+						Destroy(scene.Objects[i].gameObject);
+
+					}
+					else
+					{
+
+						// Destroy the current game object.
+						DestroyImmediate(scene.Objects[i].gameObject);
+
+					}
 
 				}
 

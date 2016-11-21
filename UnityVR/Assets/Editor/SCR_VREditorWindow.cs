@@ -29,16 +29,68 @@ public class SCR_VREditorWindow : EditorWindow {
 
 	void OnEnable()
 	{
+
 		titleContent.text = "VR Editor";
+
 	}
+
 
 	void PlayVREditor()
 	{
 
 		if(!EditorApplication.isPlaying)
 		{
+
 			EditorApplication.isPlaying = true;
-			EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
+
+			/* This would add a new scene to the hierarchy. */
+			/* May want to use this at some other point. */
+			/*EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);*/
+
+
+		}
+
+
+	}
+
+	void LoadLatestVRScene()
+	{
+
+		if(!EditorApplication.isPlaying)
+		{
+
+			if(GameObject.Find("Scene Data") != null)
+			{
+
+				
+				SCR_SceneData sceneData = GameObject.Find("Scene Data").GetComponent<SCR_SceneData>();
+
+
+				sceneData.Load();
+
+			}
+
+		}
+
+	}
+
+	void WindowButtons()
+	{
+
+		if(GUILayout.Button("Use VR"))
+		{
+
+			PlayVREditor();
+
+		}
+
+		GUILayout.Space(10.0f);
+
+		if(GUILayout.Button("Load Latest Scene"))
+		{
+
+			LoadLatestVRScene();
+
 		}
 
 	}
@@ -48,10 +100,9 @@ public class SCR_VREditorWindow : EditorWindow {
 
 		GUILayout.Label("VR Editor", EditorStyles.boldLabel);
 
-		if(GUILayout.Button("Use VR"))
-		{
-			PlayVREditor();
-		}
+		GUILayout.Space(10.0f);
+
+		WindowButtons();
 
 	}
 }
