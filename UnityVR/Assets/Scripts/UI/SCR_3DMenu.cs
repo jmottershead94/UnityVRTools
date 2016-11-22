@@ -44,33 +44,15 @@ public class SCR_3DMenu : MonoBehaviour
 	{
 
 		// If the user presses on the cube button.
-        if (GUI.Button(new Rect(10, 10, 80, 50), "CUBE"))
-        {
-
-            // Spawn a cube.
-        	sceneEditor.SpawnObject(PrimitiveType.Cube, new Vector3(2.0f, 0.0f, 0.0f));
-
-        }
-
-        // If the user presses on the sphere button.
-        if (GUI.Button(new Rect(10, 70, 80, 50), "SPHERE"))
-        {
-
-			// Spawn a sphere.
-			sceneEditor.SpawnObject(PrimitiveType.Sphere, new Vector3(-2.0f, 0.0f, 0.0f));
-
-        }
-
-		// If the user presses on the save button.
-        if (GUI.Button(new Rect(500, 10, 200, 50), "SAVE SCENE"))
+        if (GUI.Button(new Rect(10, 10, 80, 50), "SAVE"))
         {
 
 			SCR_SceneData.Instance.Save();
 
         }
 
-		// If the user presses on the sphere button.
-        if (GUI.Button(new Rect(500, 70, 200, 50), "LOAD SCENE"))
+        // If the user presses on the sphere button.
+        if (GUI.Button(new Rect(10, 70, 80, 50), "LOAD"))
         {
 
 			SCR_SceneData.Instance.Load();
@@ -89,11 +71,28 @@ public class SCR_3DMenu : MonoBehaviour
 
     }
 
+    void RotateWithMouse()
+    {
+
+    	Vector3 tempCurrentMousePosition = Input.mousePosition;
+    	tempCurrentMousePosition.z = 10.0f;
+
+    	Vector3 tempObjectPosition = Camera.main.WorldToScreenPoint(transform.position);
+    	tempCurrentMousePosition.x = tempCurrentMousePosition.x - tempObjectPosition.x;
+    	tempCurrentMousePosition.y = tempCurrentMousePosition.y - tempObjectPosition.y;
+
+    	float tempAngle = Mathf.Atan2(tempCurrentMousePosition.y, tempCurrentMousePosition.x) * Mathf.Rad2Deg;
+    	Camera.main.transform.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, tempAngle));
+
+    }
+
 	// Update is called once per frame
 	void Update () 
 	{
 
 		CheckPanelFocus();
+
+		//RotateWithMouse();
 
 	}
 

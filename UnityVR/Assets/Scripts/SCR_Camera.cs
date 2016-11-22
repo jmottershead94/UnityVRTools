@@ -62,6 +62,8 @@ public class SCR_Camera : MonoBehaviour
 
 		}
 
+		
+
 	}
 	
 	// Update is called once per frame

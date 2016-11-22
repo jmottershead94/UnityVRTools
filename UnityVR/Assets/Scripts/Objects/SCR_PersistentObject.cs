@@ -7,8 +7,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 {
 
 	// Attributes.
-	private PrimitiveType primitiveType;	// Accessing what primitive type we are using.
-	private int id;							// Accessing the ID number of the object.
+	private PrimitiveType primitiveType;							// Accessing what primitive type we are using.
+	private int id;													// Accessing the ID number of the object.
 	[SerializeField]	private Material currentMaterial = null;
 	private Material glowingMaterial = null;
 	private Material defaultMaterial = null;
@@ -51,19 +51,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	}
 
-	void OnMouseOver()
-	{
-
-		if(!isInFocus)
-		{
-
-			isInFocus = true;
-
-		}
-
-	}
-
-	void OnMouseExit()
+	void OnMouseDown()
 	{
 
 		if(isInFocus)
@@ -72,8 +60,38 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			isInFocus = false;
 
 		}
+		else
+		{
+
+			isInFocus = true;
+
+		}
 
 	}
+
+//	void OnMouseOver()
+//	{
+//
+//		if(!isInFocus)
+//		{
+//
+//			isInFocus = true;
+//
+//		}
+//
+//	}
+//
+//	void OnMouseExit()
+//	{
+//
+//		if(isInFocus)
+//		{
+//
+//			isInFocus = false;
+//
+//		}
+//
+//	}
 
 	override protected void CheckFocus()
 	{
