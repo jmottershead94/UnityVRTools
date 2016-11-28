@@ -4,6 +4,7 @@
 *	================
 *
 *	Created: 	2016/11/21
+*	Filter:		Scripts
 *	Class Name: SCR_SceneData
 *	Base Class: Monobehaviour
 *	Author: 	1300455 Jason Mottershead
