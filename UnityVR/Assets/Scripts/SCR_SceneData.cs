@@ -89,13 +89,13 @@ public class SCR_SceneData : MonoBehaviour
 	*
 	*	Params
 	*	------
-	*	ref savingPersistentObject -	This will allow us to pass a reference
-	*								 	through to the function and directly
-	*								 	set the saving values.	
+	*	ref PersistentObjectData savingPersistentObject -	This will allow us to pass a reference
+	*								 						through to the function and directly set
+	*								 						the saving values.	
 	*
-	*	referencePersistentObject -		With this parameter we are using a reference
-	*									persistent object to base our saving values
-	*									off.
+	*	SCR_PersistentObject referencePersistentObject 	-	With this parameter we are using a reference
+	*														persistent object to base our saving values
+	*														off.
 	*
 	*/
 	private void SavePersistentObjectData(ref PersistentObjectData savingPersistentObject, SCR_PersistentObject referencePersistentObject)
@@ -135,12 +135,12 @@ public class SCR_SceneData : MonoBehaviour
 		/* Record the save date. */
 		saveDate = (now.ToString(format));
 
-		/* Initialising our local attributes. */
-		BinaryFormatter binary = new BinaryFormatter();
-		List<PersistentObjectData> sceneObjectData = new List<PersistentObjectData>();
+		/* Initialising local attributes. */
+		BinaryFormatter tempBinary = new BinaryFormatter();
+		List<PersistentObjectData> tempSceneObjectData = new List<PersistentObjectData>();
 
 		/* Creating a file to save the local scene data. */
-		FileStream file = File.Create(Application.persistentDataPath + sceneDataFilename);
+		FileStream tempFile = File.Create(Application.persistentDataPath + sceneDataFilename);
 	
 		/* Looping through the amount of objects there are in the current scene. */
 		for(int i = 0; i < scene.Objects.Count; i++)
@@ -153,15 +153,15 @@ public class SCR_SceneData : MonoBehaviour
 			SavePersistentObjectData(ref tempObjectData, scene.Objects[i]);
 
 			/* Adding the object data into our persistent object data list. */
-			sceneObjectData.Add(tempObjectData);
+			tempSceneObjectData.Add(tempObjectData);
 
 		}
 
 		/* Serializing the list of scene objects to a text file. */
-		binary.Serialize(file, sceneObjectData);
+		tempBinary.Serialize(tempFile, tempSceneObjectData);
 
 		/* Close the text file. */
-		file.Close();
+		tempFile.Close();
 
 	}
 
@@ -178,12 +178,12 @@ public class SCR_SceneData : MonoBehaviour
 	*
 	*	Params
 	*	------
-	*	ref loadingPersistentObject -	This is the persistent object that we are using
-	*									to load the text file values into.	
+	*	ref SCR_PersistentObject loadingPersistentObject 	-	This is the persistent object that we are using
+	*															to load the text file values into.	
 	*
-	*	referencePersistentObject -		With this parameter we are using a reference
-	*									persistent data object to base our loading values
-	*									off.
+	*	PersistentObjectData referencePersistentObject		-	With this parameter we are using a reference
+	*															persistent data object to base our loading values
+	*															off.
 	*
 	*/
 	private void LoadPersistentObjectData(ref SCR_PersistentObject loadingPersistentObject, PersistentObjectData referencePersistentObject)
@@ -194,7 +194,7 @@ public class SCR_SceneData : MonoBehaviour
 		loadingPersistentObject.transform.position 		= new Vector3(referencePersistentObject.PositionX, referencePersistentObject.PositionY, referencePersistentObject.PositionZ);
 		loadingPersistentObject.transform.eulerAngles 	= new Vector3(referencePersistentObject.RotationX, referencePersistentObject.RotationY, referencePersistentObject.RotationZ);
 		loadingPersistentObject.transform.localScale 	= new Vector3(referencePersistentObject.ScaleX, referencePersistentObject.ScaleY, referencePersistentObject.ScaleZ);
-		loadingPersistentObject.transform.parent 		= GameObject.Find("Scene Editor").transform;
+		loadingPersistentObject.transform.parent 		= scene.transform;
 
 		/* Loading the current persistent object data (Primitive Type and Object ID). */
 		loadingPersistentObject.ObjectType 	= referencePersistentObject.ObjectType;
@@ -213,7 +213,8 @@ public class SCR_SceneData : MonoBehaviour
 	{
 
 		/* Find the scene editor script in the current scene. */
-		scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
+		/* Place this in to show that the scene saves correctly, and to allow the application to load using the editor. */
+		/* scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>(); */
 
 		/* Record the load date. */
 		loadDate = (now.ToString(format));
@@ -222,18 +223,18 @@ public class SCR_SceneData : MonoBehaviour
 		if(File.Exists(Application.persistentDataPath + sceneDataFilename))
 		{
 
-			/* Initialising our local attributes. */
-			BinaryFormatter binary = new BinaryFormatter();
+			/* Initialising local attributes. */
+			BinaryFormatter tempBinary = new BinaryFormatter();
 
 			/* Opening the file to the current scene being edited. */
-			FileStream file = File.Open(Application.persistentDataPath + sceneDataFilename, FileMode.Open);
+			FileStream tempFile = File.Open(Application.persistentDataPath + sceneDataFilename, FileMode.Open);
 
 			/* Deserializing the data from the text file, and casting it to a list data structure of persistent object data. */
 			/* Basically gaining access to any scene object data we saved previously. */
-			List<PersistentObjectData> sceneObjectData = (List<PersistentObjectData>)binary.Deserialize(file);
+			List<PersistentObjectData> tempSceneObjectData = (List<PersistentObjectData>)tempBinary.Deserialize(tempFile);
 
 			/* Close the text file. */
-			file.Close();
+			tempFile.Close();
 
 			/* If we currently have objects in our scene. */
 			if(scene.Objects.Count > 0)
@@ -268,17 +269,17 @@ public class SCR_SceneData : MonoBehaviour
 			}
 
 			/* Loop through each of the objects from the text file. */
-			for(int i = 0; i < sceneObjectData.Count; i++)
+			for(int i = 0; i < tempSceneObjectData.Count; i++)
 			{
 
 				/* Initialising a temporary instance of game object with it's primitive type. */
-				GameObject tempGameObject = GameObject.CreatePrimitive(sceneObjectData[i].ObjectType);
+				GameObject tempGameObject = GameObject.CreatePrimitive(tempSceneObjectData[i].ObjectType);
 
 				/* Initialising a temporary instance of a persistent object and adding it to the temporary instance of the above game object. */
 				SCR_PersistentObject tempPersistentObject = tempGameObject.AddComponent<SCR_PersistentObject>();
 
 				/* Load the current persistent object ID from the list based off of the text file data. */
-				LoadPersistentObjectData(ref tempPersistentObject, sceneObjectData[i]);
+				LoadPersistentObjectData(ref tempPersistentObject, tempSceneObjectData[i]);
 
 				/* Adding in the persistent object into our current scene. */
 				scene.Objects.Add(tempPersistentObject);
