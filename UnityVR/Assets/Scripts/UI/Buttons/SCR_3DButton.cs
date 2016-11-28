@@ -19,7 +19,7 @@
 using UnityEngine;
 using System.Collections;
 
-/* 3D Button is just a standard game object. */
+/* 3D button IS A UI element, therefore inherits from it. */
 public class SCR_3DButton : SCR_BaseUIElement 
 {
 
@@ -234,6 +234,13 @@ public class SCR_3DButton : SCR_BaseUIElement
 
 	}
 
+	/*
+	*
+	*	Overview
+	*	--------
+	*	This will be called every frame.
+	*
+	*/
 	protected void Update()
 	{
 
