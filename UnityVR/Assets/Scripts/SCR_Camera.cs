@@ -18,8 +18,6 @@ public class SCR_Camera : MonoBehaviour
 
 			transform.Translate(0.0f, 0.0f, speed.z);
 
-			//transform.position.z+=speed.z;
-
 		}
 
 		/* Maybe pushing left on the touch pad? */
