@@ -1,7 +1,7 @@
 ﻿/*
 *
-*	3D Button Class
-*	===============
+*	Rotate Panel Button Class
+*	=========================
 *
 *	Created: 	2016/11/21
 *	Filter:		Scripts/UI/Buttons
