@@ -358,6 +358,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	{
 
 		/* If the Num1 key has been pressed. */
+		/* VR Equivalent: If the user is selects the translation button along the top of the screen with the right hand controller. */
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{
 
@@ -373,6 +374,7 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		}
 		/* Otherwise, the Num2 key has been pressed. */
+		/* VR Equivalent: If the user is selects the rotation button along the top of the screen with the right hand controller. */
 		else if(Input.GetKeyDown(KeyCode.Alpha2))
 		{
 
@@ -388,6 +390,7 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		}
 		/* Otherwise, the Num3 key has been pressed. */
+		/* VR Equivalent: If the user is selects the scale button along the top of the screen with the right hand controller. */
 		else if(Input.GetKeyDown(KeyCode.Alpha3))
 		{
 
