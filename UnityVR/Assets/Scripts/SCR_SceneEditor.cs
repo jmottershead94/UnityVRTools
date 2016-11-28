@@ -70,7 +70,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	*									that the user wishes to spawn.
 	*
 	*/
-	public void SpawnObject(PrimitiveType primitiveType, Vector3 spawnPosition)
+	public void SpawnPrimitive(PrimitiveType primitiveType, Vector3 spawnPosition)
 	{
 
 		/* Creating a temporary instance of a cube game object. */
