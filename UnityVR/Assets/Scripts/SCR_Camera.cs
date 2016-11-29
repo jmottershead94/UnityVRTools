@@ -168,7 +168,8 @@ public class SCR_Camera : MonoBehaviour
 			Debug.Log ("Up pressed!");
 
 			/* Move the camera. */
-			transform.Translate(0.0f, 0.0f, speed.z);
+			//transform.Translate(0.0f, 0.0f, speed.z);
+			transform.position += new Vector3 (0.0f, 0.0f, speed.z);
 
 		}
 
@@ -179,7 +180,8 @@ public class SCR_Camera : MonoBehaviour
 			Debug.Log ("left pressed!");
 
 			/* Move the camera. */
-			transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
+			//transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
+			transform.position += new Vector3 (speed.x * -1.0f, 0.0f, 0.0f);
 
 		}
 
@@ -190,7 +192,8 @@ public class SCR_Camera : MonoBehaviour
 			Debug.Log ("Down pressed!");
 
 			/* Move the camera. */
-			transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
+			//transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
+			transform.position += new Vector3 (0.0f, 0.0f, speed.z * -1.0f);
 
 		}
 
@@ -201,9 +204,12 @@ public class SCR_Camera : MonoBehaviour
 			Debug.Log ("Right pressed!");
 
 			/* Move the camera. */
-			transform.Translate(speed.x, 0.0f, 0.0f);
+			//transform.Translate(speed.x, 0.0f, 0.0f);
+			transform.position += new Vector3 (speed.x, 0.0f, 0.0f);
 
 		}
+
+
 
 		/* Hopefully shouldn't need these for VR. */
 		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking up and pressing up. */

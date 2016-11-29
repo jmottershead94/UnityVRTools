@@ -36,6 +36,8 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private Vector3 destinationScale = Vector3.zero;				/* The destination scale of the 3D button, used to lerp to when in focus. */
 	private Vector3 originalDistanceDifference = Vector3.zero;		/* Used to update the 3D buttons with the camera. */
 	private bool isInteractable = true;								/* Used to indicate if this button is interactable or not. */
+	[SerializeField] private GameObject leftController = null;		/* Used to assign a left controller to follow. */
+	protected SCR_3DMenu menu = null;
 	protected SCR_Panel parentPanel = null;							/* Accessing the panel that this button belongs to. */
 
 	/* Methods. */
@@ -54,13 +56,24 @@ public class SCR_3DButton : SCR_BaseUIElement
 	{
 
 		/* Initialising our attributes. */
+		if (GameObject.Find ("Controller (left)") != null) {
+			leftController = GameObject.Find ("Controller (left)");
+		}
+
+		menu = GameObject.Find ("PRE_3DMenu").transform.FindChild("Menu").GetComponent<SCR_3DMenu>();
 		sceneEditor = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
 		originalPosition = transform.position;
 		originalScale = transform.localScale;
 		destination = new Vector3(originalPosition.x, originalPosition.y, originalPosition.z - 0.2f);
 		destinationScale = new Vector3(originalScale.x * scaleUpFactor, originalScale.y * scaleUpFactor, originalScale.z * scaleUpFactor);
 		parentPanel = transform.parent.GetComponent<SCR_Panel>();
-		originalDistanceDifference = Camera.main.transform.position - transform.position;
+
+		if (leftController != null) {
+			originalDistanceDifference = leftController.transform.position - transform.position;
+		}
+		else{
+			originalDistanceDifference = Camera.main.transform.position - transform.position;
+		}
 
 	}
 
@@ -207,6 +220,9 @@ public class SCR_3DButton : SCR_BaseUIElement
 		else
 		{
 
+			Debug.Log ("Left controller position = " + leftController.transform.position);
+			Debug.Log ("Original Position = " + originalPosition);
+
 			/* Move and scale to the original values, this button is not being highlighted. */
 			transform.position = Vector3.Lerp(transform.position, originalPosition, speed);
 			transform.localScale = Vector3.Lerp(transform.localScale, originalScale, speed);
@@ -226,8 +242,15 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private void UpdateUIPositions()
 	{
 
-		/* Update the original position based on where the camera is located. */
-		originalPosition = Camera.main.transform.position - originalDistanceDifference;
+		if (leftController != null) {
+			//Debug.Log ("LEFT CONTROLLER STUFF");
+
+			/* Update the original position based on where the camera is located. */
+			originalPosition = menu.transform.parent.transform.position + (leftController.transform.position - originalDistanceDifference);
+		} else {
+			/* Update the original position based on where the camera is located. */
+			originalPosition = Camera.main.transform.position - originalDistanceDifference;
+		}
 
 		/* Update the destination based on the new original position. */
 		destination = new Vector3(originalPosition.x, originalPosition.y, originalPosition.z - 0.2f);
@@ -244,8 +267,9 @@ public class SCR_3DButton : SCR_BaseUIElement
 	protected void Update()
 	{
 
+		/* Comment this out for VR. */
 		/* Update the button with the camera location. */
-		UpdateUIPositions();
+		//UpdateUIPositions();
 
 		/* If this button is interactable. */
 		if(isInteractable)
@@ -254,8 +278,9 @@ public class SCR_3DButton : SCR_BaseUIElement
 			/* Handles VR control logic. */
 			VRControls();
 
+			/* Comment this out for VR. */
 			/* Keep checking the focus of this object. */
-			CheckFocus();
+			//CheckFocus();
 
 		}
 

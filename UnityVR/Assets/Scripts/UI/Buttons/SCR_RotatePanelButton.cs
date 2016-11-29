@@ -26,7 +26,7 @@ public class SCR_RotatePanelButton : SCR_3DButton
 	[Header ("Panel Control")]
 	[SerializeField]	private Vector3 rotationValue = Vector3.zero;	/* The angles and axis this should rotate the panel by. */
 	[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;	/* How fast the panel should lerp to the rotation value. */
-	private SCR_3DMenu menu = null;										/* Used to access the 3D menu. */
+	//private SCR_3DMenu menu = null;										/* Used to access the 3D menu. */
 	private int currentRotation = 0;									/* Stores the current rotation value. */
 	private const int targetAngle = 90;									/* Used to set the current target angle for the rotation. */
 	private bool shouldRotate = false;									/* Indicates if the button should rotate the panel or not. */
@@ -46,7 +46,7 @@ public class SCR_RotatePanelButton : SCR_3DButton
 		base.Awake();
 
 		/* Initialising our attributes. */
-		menu = GameObject.Find("Menu").GetComponent<SCR_3DMenu>();
+		//menu = GameObject.Find("Menu").GetComponent<SCR_3DMenu>();
 
 	}
 

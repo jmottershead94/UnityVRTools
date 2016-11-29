@@ -27,7 +27,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 	/* Attributes. */
 	private EVRButtonId triggerButton = EVRButtonId.k_EButton_SteamVR_Trigger;	/* Used to test if the trigger button has been pressed. */
-	private EVRButtonId dPadUp = EVRButtonId.k_EButton_DPad_Up;					/* Used to test if the DPad Up button has been pressed. */
+	private EVRButtonId dPadUp = EVRButtonId.k_EButton_Axis0;					/* Used to test if the DPad Up button has been pressed. */
 	private EVRButtonId dPadRight = EVRButtonId.k_EButton_DPad_Right;			/* Used to test if the DPad Right button has been pressed. */
 	private EVRButtonId dPadLeft = EVRButtonId.k_EButton_DPad_Left;				/* Used to test if the DPad Left button has been pressed. */
 	private EVRButtonId dPadDown = EVRButtonId.k_EButton_DPad_Down;				/* Used to test if the DPad Down button has been pressed. */
