@@ -35,6 +35,21 @@ public class SCR_BaseUIElement : MonoBehaviour
 	/* All UI elements must check focus. */
 	protected virtual void CheckFocus(){}
 
+	protected void Awake()
+	{
+
+		if(GameObject.Find("Controller (left)") != null)
+		{
+			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+		}
+
+		if(GameObject.Find("Controller (right)") != null)
+		{
+			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
+		}
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -42,7 +57,7 @@ public class SCR_BaseUIElement : MonoBehaviour
 	*	This method will provide checks for user input through VR.
 	*
 	*/
-	protected void VRControls(UIResponseDelegate method)
+	protected void VRTriggerResponse(UIResponseDelegate method)
 	{
 
 		if (GameObject.Find ("Controller (right)") != null) 

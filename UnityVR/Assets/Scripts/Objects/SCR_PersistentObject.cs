@@ -46,18 +46,15 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*	This will be called before initialisation.
 	*
 	*/
-	protected void Awake()
+	new protected void Awake()
 	{
+
+		base.Awake();
 
 		/* Initialising our attributes. */
 		currentMaterial = GetComponent<MeshRenderer>().materials[0];
 		defaultMaterial = currentMaterial;
 		glowingMaterial = Resources.Load("Materials/MAT_ObjectSelected") as Material;
-
-		if(GameObject.Find("Controller (right)") != null)
-		{
-			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
-		}
 
 	}
 
@@ -196,7 +193,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	protected void Update()
 	{
 
-		VRControls(FocusSwitch);
+		VRTriggerResponse(FocusSwitch);
 
 		/* Handles any game object focus updates. */
 		CheckFocus();

@@ -20,20 +20,4 @@ public class SCR_LoadButton : SCR_3DButton
 
 	}
 
-	/*
-	*
-	*	Overview
-	*	--------
-	*	This will be called every frame.
-	*
-	*/
-	new private void Update()
-	{
-
-		base.Update();
-
-		//transform.LookAt(Camera.main.transform.position);
-
-	}
-
 }

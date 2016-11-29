@@ -54,8 +54,10 @@ public class SCR_3DButton : SCR_BaseUIElement
 	*	This will be called before initialisation.
 	*
 	*/
-	protected void Awake()
+	new protected void Awake()
 	{
+
+		base.Awake();
 
 		/* Initialising our attributes. */
 		menu = GameObject.Find ("PRE_3DMenu").transform.FindChild("Menu").GetComponent<SCR_3DMenu>();
@@ -65,20 +67,6 @@ public class SCR_3DButton : SCR_BaseUIElement
 		destination = new Vector3(originalPosition.x, originalPosition.y, originalPosition.z - 0.2f);
 		destinationScale = new Vector3(originalScale.x * scaleUpFactor, originalScale.y * scaleUpFactor, originalScale.z * scaleUpFactor);
 		parentPanel = transform.parent.GetComponent<SCR_Panel>();
-
-		if (GameObject.Find ("Controller (left)") != null) 
-		{
-
-			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
-
-		}
-
-		if (GameObject.Find ("Controller (right)") != null) 
-		{
-
-			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
-
-		}
 
 		if (leftController != null) 
 		{
@@ -268,7 +256,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 		{
 
 			/* Handles VR control logic. */
-			VRControls(ButtonPressResponse);
+			VRTriggerResponse(ButtonPressResponse);
 
 			/* Comment this out for VR. */
 			/* Keep checking the focus of this object. */
