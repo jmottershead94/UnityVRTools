@@ -26,10 +26,12 @@ public class SCR_VRControllerInput : MonoBehaviour
 {
 
 	/* Attributes. */
+	[SerializeField]	private float rayDistance = 2.0f;
+	[SerializeField]	private bool shouldUseRays = false;
 	private EVRButtonId triggerButton = EVRButtonId.k_EButton_SteamVR_Trigger;	/* Used to test if the trigger button has been pressed. */
 	private SteamVR_TrackedObject trackedObject = null;							/* Stores the current tracked object. */
 	private SteamVR_Controller.Device device = null;							/* Stores the current hand controller. */
-	private RaycastHit target;													/* What the controller is aiming at. */
+	private RaycastHit raycastTarget;
 	private Ray ray;
 	private LineRenderer lineRenderer = null;									
 
@@ -66,6 +68,37 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 	}
 
+	private void ShootRays()
+	{
+
+		/* Initialising local attributes. */
+		Vector3 tempDirection = transform.TransformDirection(Vector3.forward);
+
+		ray = Camera.main.ScreenPointToRay(transform.position);
+		ray.origin = transform.position;
+		ray.direction = tempDirection;
+		Vector3 point = ray.origin + (tempDirection * rayDistance);
+
+		lineRenderer.SetPosition (0, transform.position);
+		lineRenderer.SetPosition (1, point);
+
+		if (Physics.Raycast (ray, out raycastTarget, rayDistance)) 
+		{
+			Debug.Log ("Ray is hitting something!");
+
+			if (raycastTarget.transform.GetComponent<SCR_BaseUIElement> () != null) 
+			{
+
+				Debug.Log ("Ray is hitting something!");
+
+				device.TriggerHapticPulse (500);
+
+			}
+
+		}
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -77,36 +110,12 @@ public class SCR_VRControllerInput : MonoBehaviour
 	private void FixedUpdate()
 	{
 
-//		/* Initialising local attributes. */
-		Vector3 tempDirection = transform.TransformDirection(Vector3.forward);
-//
-//		/* Drawing the ray. */
-//		Debug.DrawRay(transform.position, tempDirection, Color.cyan);
-//
-//		/* If the ray has collided with something. */
-//		if(Physics.Raycast(transform.position, tempDirection, out target, 10.0f))
-//		{
-//
-//			lineRenderer.SetPosition (0, transform.position);
-//			lineRenderer.SetPosition (1, target.point);
-//
-//			/* If the target is a base UI element. */
-//			if(target.transform.GetComponent<SCR_BaseUIElement>() != null)
-//			{
-//
-//				/* We have hit something we can interact with. */
-//				/* Provide some controller feedback to the user. */
-//				//device.TriggerHapticPulse(700);
-//
-//			}
-//
-//		}
+		if (shouldUseRays) 
+		{
+			
+			ShootRays ();
 
-		ray = Camera.main.ScreenPointToRay(transform.position);
-		Vector3 point = ray.origin + (tempDirection * 10.0f);
-
-		lineRenderer.SetPosition (0, transform.position);
-		lineRenderer.SetPosition (1, point);
+		}
 
 	}
 
@@ -181,40 +190,9 @@ public class SCR_VRControllerInput : MonoBehaviour
 	}
 
 	/* Getters. */
-	/* This will allow us to get the current trigger status of the hand controller. */
-//	public bool TriggerPressed
-//	{
-//		get { return (device.GetPressDown(triggerButton)); }
-//	}
-
-//	/* This will allow us to indicate if up on the hand controller DPad has been pressed. */
-//	public bool UpPressed
-//	{
-//		get { return (device.GetPressDown(dPadUp));}
-//	}
-//
-//	/* This will allow us to indicate if right on the hand controller DPad has been pressed. */
-//	public bool RightPressed
-//	{
-//		get { return (device.GetPressDown(dPadRight));}
-//	}
-//
-//	/* This will allow us to indicate if left on the hand controller DPad has been pressed. */
-//	public bool LeftPressed
-//	{
-//		get { return (device.GetPressDown(dPadLeft));}
-//	}
-//
-//	/* This will allow us to indicate if down on the hand controller DPad has been pressed. */
-//	public bool DownPressed
-//	{
-//		get { return (device.GetPressDown(dPadDown));}
-//	}
-
-	/* This will allow us to get the current object that we are aiming at with the raycasting. */
-	public RaycastHit TargetAimedAt
+	public RaycastHit Target
 	{
-		get { return target; }
+		get { return raycastTarget; }
 	}
 
 }
