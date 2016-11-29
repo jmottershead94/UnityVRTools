@@ -27,13 +27,11 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 	/* Attributes. */
 	private EVRButtonId triggerButton = EVRButtonId.k_EButton_SteamVR_Trigger;	/* Used to test if the trigger button has been pressed. */
-	private EVRButtonId dPadUp = EVRButtonId.k_EButton_Axis0;					/* Used to test if the DPad Up button has been pressed. */
-	private EVRButtonId dPadRight = EVRButtonId.k_EButton_DPad_Right;			/* Used to test if the DPad Right button has been pressed. */
-	private EVRButtonId dPadLeft = EVRButtonId.k_EButton_DPad_Left;				/* Used to test if the DPad Left button has been pressed. */
-	private EVRButtonId dPadDown = EVRButtonId.k_EButton_DPad_Down;				/* Used to test if the DPad Down button has been pressed. */
 	private SteamVR_TrackedObject trackedObject = null;							/* Stores the current tracked object. */
 	private SteamVR_Controller.Device device = null;							/* Stores the current hand controller. */
 	private RaycastHit target;													/* What the controller is aiming at. */
+	private Ray ray;
+	private LineRenderer lineRenderer = null;									
 
 	/* Methods. */
 	/*
@@ -48,6 +46,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 		/* Initialising our attributes. */
 		trackedObject = GetComponent<SteamVR_TrackedObject>();
+		lineRenderer = GetComponent<LineRenderer> ();
 
 	}
 
@@ -78,27 +77,36 @@ public class SCR_VRControllerInput : MonoBehaviour
 	private void FixedUpdate()
 	{
 
-		/* Initialising local attributes. */
+//		/* Initialising local attributes. */
 		Vector3 tempDirection = transform.TransformDirection(Vector3.forward);
+//
+//		/* Drawing the ray. */
+//		Debug.DrawRay(transform.position, tempDirection, Color.cyan);
+//
+//		/* If the ray has collided with something. */
+//		if(Physics.Raycast(transform.position, tempDirection, out target, 10.0f))
+//		{
+//
+//			lineRenderer.SetPosition (0, transform.position);
+//			lineRenderer.SetPosition (1, target.point);
+//
+//			/* If the target is a base UI element. */
+//			if(target.transform.GetComponent<SCR_BaseUIElement>() != null)
+//			{
+//
+//				/* We have hit something we can interact with. */
+//				/* Provide some controller feedback to the user. */
+//				//device.TriggerHapticPulse(700);
+//
+//			}
+//
+//		}
 
-		/* Drawing the ray. */
-		Debug.DrawRay(transform.position, tempDirection, Color.cyan);
+		ray = Camera.main.ScreenPointToRay(transform.position);
+		Vector3 point = ray.origin + (tempDirection * 10.0f);
 
-		/* If the ray has collided with something. */
-		if(Physics.Raycast(transform.position, tempDirection, out target, 10.0f))
-		{
-
-			/* If the target is a base UI element. */
-			if(target.transform.GetComponent<SCR_BaseUIElement>() != null)
-			{
-
-				/* We have hit something we can interact with. */
-				/* Provide some controller feedback to the user. */
-				device.TriggerHapticPulse(700);
-
-			}
-
-		}
+		lineRenderer.SetPosition (0, transform.position);
+		lineRenderer.SetPosition (1, point);
 
 	}
 

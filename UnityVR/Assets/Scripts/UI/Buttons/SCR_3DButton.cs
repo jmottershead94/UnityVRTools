@@ -243,13 +243,15 @@ public class SCR_3DButton : SCR_BaseUIElement
 	{
 
 		if (leftController != null) {
-			//Debug.Log ("LEFT CONTROLLER STUFF");
-
+			
 			/* Update the original position based on where the camera is located. */
 			originalPosition = menu.transform.parent.transform.position + (leftController.transform.position - originalDistanceDifference);
+
 		} else {
+			
 			/* Update the original position based on where the camera is located. */
 			originalPosition = Camera.main.transform.position - originalDistanceDifference;
+
 		}
 
 		/* Update the destination based on the new original position. */
