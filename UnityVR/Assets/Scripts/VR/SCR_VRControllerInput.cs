@@ -63,6 +63,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 		/* Track the correct device. */
 		device = SteamVR_Controller.Input((int)trackedObject.index);
+		//device.GetAxis ().x < 0.5f;
 
 	}
 
@@ -121,7 +122,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 		if (device != null) 
 		{
 
-			return device.GetPressDown(dPadUp);
+			return (device.GetAxis().y > 0.25f);
 
 		}
 
@@ -134,8 +135,8 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 		if (device != null) 
 		{
-
-			return device.GetPressDown(dPadRight);
+			
+			return (device.GetAxis().x > 0.25f);
 
 		}
 
@@ -149,7 +150,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 		if (device != null) 
 		{
 
-			return device.GetPressDown(dPadLeft);
+			return (device.GetAxis().x < -0.25f);
 
 		}
 
@@ -163,7 +164,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 		if (device != null) 
 		{
 
-			return device.GetPressDown(dPadDown);
+			return (device.GetAxis().y < -0.25f);
 
 		}
 
