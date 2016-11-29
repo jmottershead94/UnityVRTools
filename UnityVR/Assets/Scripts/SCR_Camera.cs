@@ -223,6 +223,9 @@ public class SCR_Camera : MonoBehaviour
 		/* Handles user input for camera control. */
 		PCControls();
 
+		/* Comment this in for University. */
+		/* VRControls(); */
+
 	}
 
 }

@@ -132,4 +132,10 @@ public class SCR_VRControllerInput : MonoBehaviour
 		get { return (device.GetPressDown(dPadDown));}
 	}
 
+	/* This will allow us to get the current object that we are aiming at with the raycasting. */
+	public RaycastHit TargetAimedAt
+	{
+		get { return target; }
+	}
+
 }
