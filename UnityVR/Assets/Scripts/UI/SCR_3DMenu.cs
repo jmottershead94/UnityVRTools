@@ -67,34 +67,6 @@ public class SCR_3DMenu : SCR_BaseUIElement
 	*
 	*	Overview
 	*	--------
-	*	This will be called for drawing standard UI elements.
-	*
-	*/
-	private void OnGUI() 
-	{
-
-		// If the user presses on the cube button.
-        if (GUI.Button(new Rect(10, 10, 80, 50), "SAVE"))
-        {
-
-			SCR_SceneData.Instance.Save();
-
-        }
-
-        // If the user presses on the sphere button.
-        if (GUI.Button(new Rect(10, 70, 80, 50), "LOAD"))
-        {
-
-			SCR_SceneData.Instance.Load();
-
-        }
-        
-    }
-
-	/*
-	*
-	*	Overview
-	*	--------
 	*	This method will update what panel is currently in focus, if this
 	*	panel has not already been set.
 	*

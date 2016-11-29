@@ -37,7 +37,7 @@ public class SCR_TransformButton : SCR_3DButton
 	*/
 	override public void ButtonPressResponse()
 	{
-
+		
 		/* Sets the new transform state. */
 		sceneEditor.CurrentTransformState = state;
 
@@ -50,7 +50,7 @@ public class SCR_TransformButton : SCR_3DButton
 	*	This will be called every frame.
 	*
 	*/
-	new void Update()
+	new private void Update()
 	{
 
 		base.Update();
@@ -58,26 +58,12 @@ public class SCR_TransformButton : SCR_3DButton
 		if(sceneEditor.CurrentTransformState == state)
 		{
 
-//			if(GetComponent<MeshRenderer>().material != clickedMaterial)
-//			{
-//
-//				Debug.Log("Setting the new material");
-//
-//				GetComponent<MeshRenderer>().material = clickedMaterial;
-//
-//			}
 			SCR_AppearenceChanger.ChangeMaterial(gameObject, clickedMaterial);
 
 		}
 		else
 		{
 
-//			if(GetComponent<MeshRenderer>().materials[0] != defaultMaterial)
-//			{
-//
-//				GetComponent<MeshRenderer>().materials[0] = defaultMaterial;
-//
-//			}
 			SCR_AppearenceChanger.ChangeMaterial(gameObject, defaultMaterial);
 
 		}
