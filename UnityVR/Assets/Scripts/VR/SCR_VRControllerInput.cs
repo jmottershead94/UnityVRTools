@@ -19,23 +19,22 @@
 /* Unity includes here. */
 using UnityEngine;
 using System.Collections;
+using Valve.VR;
 
 /* VR controller input IS A game object, therefore inherits from it. */
 public class SCR_VRControllerInput : MonoBehaviour 
 {
 
 	/* Attributes. */
-	private SteamVR_TrackedController handController = null;	/* Provides access to the VR hand controller. */
-	protected bool triggerPressed = false;						/* Used to indicate if the trigger for this hand controller has been pressed. */
+	private EVRButtonId triggerButton = EVRButtonId.k_EButton_SteamVR_Trigger;	/* Used to test if the trigger button has been pressed. */
+	private EVRButtonId dPadUp = EVRButtonId.k_EButton_DPad_Up;					/* Used to test if the DPad Up button has been pressed. */
+	private EVRButtonId dPadRight = EVRButtonId.k_EButton_DPad_Right;			/* Used to test if the DPad Right button has been pressed. */
+	private EVRButtonId dPadLeft = EVRButtonId.k_EButton_DPad_Left;				/* Used to test if the DPad Left button has been pressed. */
+	private EVRButtonId dPadDown = EVRButtonId.k_EButton_DPad_Down;				/* Used to test if the DPad Down button has been pressed. */
+	private SteamVR_TrackedObject trackedObject = null;							/* Stores the current tracked object. */
+	private SteamVR_Controller.Device device = null;							/* Stores the current hand controller. */
 
 	/* Methods. */
-	/* Virtual. */
-	/* Each inheriting VR controller class can implement a specific trigger press response. */
-	protected virtual void TriggerPressed(object sender, ClickedEventArgs e){}
-
-	/* Each inheriting VR controller class can implement a specific trigger release response. */
-	protected virtual void TriggerReleased(object sender, ClickedEventArgs e){}
-
 	/*
 	*
 	*	Overview
@@ -47,16 +46,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 	{
 
 		/* Initialising our attributes. */
-		handController = GetComponent<SteamVR_TrackedController>();
-
-		/* Adding on trigger events for the hand controller. */
-		/* Adding standard and specific trigger pressed responses. */
-		handController.TriggerClicked += TriggerPressedStandardResponse;
-		handController.TriggerClicked += TriggerPressed;
-
-		/* Adding standard and specific trigger released responses. */
-		handController.TriggerUnclicked += TriggerReleasedStandardResponse;
-		handController.TriggerUnclicked += TriggerReleased;
+		trackedObject = GetComponent<SteamVR_TrackedObject>();
 
 	}
 
@@ -64,53 +54,46 @@ public class SCR_VRControllerInput : MonoBehaviour
 	*
 	*	Overview
 	*	--------
-	*	This method will provide a standard trigger pressed response.
-	*
-	*	Params
-	*	------
-	*	object sender		-	This will contain the object that this event is being sent from.
-	*
-	*	ClickedEventArgs e	-	This holds the click event being used and can provide access to the
-	*							controller index.
+	*	This will be called every frame.
 	*
 	*/
-	private void TriggerPressedStandardResponse(object sender, ClickedEventArgs e)
+	private void Update()
 	{
 
-		/* This will provide a response for pressing the trigger. */
-		Debug.Log("Trigger pressed from " + name);
-		triggerPressed = true;
-
-	}
-
-	/*
-	*
-	*	Overview
-	*	--------
-	*	This method will provide a standard trigger released response.
-	*
-	*	Params
-	*	------
-	*	object sender		-	This will contain the object that this event is being sent from.
-	*
-	*	ClickedEventArgs e	-	This holds the click event being used and can provide access to the
-	*							controller index.
-	*
-	*/
-	private void TriggerReleasedStandardResponse(object sender, ClickedEventArgs e)
-	{
-
-		/* This will provide a response for pressing the trigger. */
-		Debug.Log("Trigger released from " + name);
-		triggerPressed = false;
+		/* Track the correct device. */
+		device = SteamVR_Controller.Input((int)trackedObject.index);
 
 	}
 
 	/* Getters. */
 	/* This will allow us to get the current trigger status of the hand controller. */
-	public bool HasTriggerBeenPressed
+	public bool TriggerPressed
 	{
-		get { return triggerPressed; }
+		get { return (device.GetPressDown(triggerButton)); }
+	}
+
+	/* This will allow us to indicate if up on the hand controller DPad has been pressed. */
+	public bool UpPressed
+	{
+		get { return (device.GetPressDown(dPadUp));}
+	}
+
+	/* This will allow us to indicate if right on the hand controller DPad has been pressed. */
+	public bool RightPressed
+	{
+		get { return (device.GetPressDown(dPadRight));}
+	}
+
+	/* This will allow us to indicate if left on the hand controller DPad has been pressed. */
+	public bool LeftPressed
+	{
+		get { return (device.GetPressDown(dPadLeft));}
+	}
+
+	/* This will allow us to indicate if down on the hand controller DPad has been pressed. */
+	public bool DownPressed
+	{
+		get { return (device.GetPressDown(dPadDown));}
 	}
 
 }
