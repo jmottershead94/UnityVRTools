@@ -84,14 +84,27 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 		if (Physics.Raycast (ray, out raycastTarget, rayDistance)) 
 		{
-			Debug.Log ("Ray is hitting something!");
 
 			if (raycastTarget.transform.GetComponent<SCR_BaseUIElement> () != null) 
 			{
 
-				Debug.Log ("Ray is hitting something!");
+				SCR_BaseUIElement tempBaseUIElement = raycastTarget.transform.GetComponent<SCR_BaseUIElement> ();
 
 				device.TriggerHapticPulse (500);
+
+				if (tempBaseUIElement.GetComponent<SCR_3DButton> () != null) 
+				{
+
+					SCR_3DButton button = tempBaseUIElement.GetComponent<SCR_3DButton> ();
+
+					if (TriggerPressed ()) 
+					{
+
+						button.ButtonPressResponse ();
+
+					}
+
+				}
 
 			}
 

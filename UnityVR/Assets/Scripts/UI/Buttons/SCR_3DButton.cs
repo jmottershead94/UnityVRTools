@@ -43,7 +43,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 	/* Methods. */
 	/* Virtual. */
 	/* Each inheriting button class must implement a specific button press response. */
-	protected virtual void ButtonPressResponse(){}
+	public virtual void ButtonPressResponse(){}
 
 	/*
 	*

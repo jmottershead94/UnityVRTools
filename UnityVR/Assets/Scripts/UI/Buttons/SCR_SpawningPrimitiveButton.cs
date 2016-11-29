@@ -34,7 +34,7 @@ public class SCR_SpawningPrimitiveButton : SCR_3DButton
 	*	This will allow us to define a specific button response.
 	*
 	*/
-	override protected void ButtonPressResponse()
+	override public void ButtonPressResponse()
 	{
 
 		/* Spawns in a primitive game object at the origin. */
