@@ -30,7 +30,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	[SerializeField]	private Vector3 translationSpeed = Vector3.zero; 			/* Used to determine how fast objects will move for translations in each axis. */
 	[SerializeField]	private Vector3 scaleIncrement = Vector3.zero; 				/* Used to determine how fast objects scale in each axis. */
 
-	private enum TransformState 													/* Defining transform states for the user. */
+	public enum TransformState 													/* Defining transform states for the user. */
 	{
 		translation,	/* The user is translating an object. */
 		rotation, 		/* The user is rotating an object. */
@@ -443,6 +443,12 @@ public class SCR_SceneEditor : MonoBehaviour
 	{
 		get { return sceneObjects; }
 		set { sceneObjects = value; }
+	}
+
+	public TransformState CurrentTransformState
+	{
+		get { return currentTransformState; }
+		set { currentTransformState = value; }
 	}
 
 }

@@ -92,19 +92,19 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 				device.TriggerHapticPulse (500);
 
-				if (tempBaseUIElement.GetComponent<SCR_3DButton> () != null) 
-				{
-
-					SCR_3DButton button = tempBaseUIElement.GetComponent<SCR_3DButton> ();
-
-					if (TriggerPressed ()) 
-					{
-
-						button.ButtonPressResponse ();
-
-					}
-
-				}
+//				if (tempBaseUIElement.GetComponent<SCR_3DButton> () != null) 
+//				{
+//
+//					SCR_3DButton button = tempBaseUIElement.GetComponent<SCR_3DButton> ();
+//
+//					if (TriggerPressed ()) 
+//					{
+//
+//						button.ButtonPressResponse ();
+//
+//					}
+//
+//				}
 
 			}
 
@@ -202,16 +202,12 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 	}
 
-//	public RaycastHit Target()
-//	{
-//		if (raycastTarget.transform.gameObject != null) {
-//			return raycastTarget;
-//		}
-//
-//		return;
-//	}
-
 	/* Getters. */
+	public bool ControllerIsAimingAtSomething
+	{
+		get { return (Physics.Raycast (ray, out raycastTarget, rayDistance)); }
+	}
+
 	public RaycastHit Target
 	{
 		get { return raycastTarget; }

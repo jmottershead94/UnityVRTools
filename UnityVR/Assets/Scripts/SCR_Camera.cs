@@ -51,10 +51,15 @@ public class SCR_Camera : MonoBehaviour
 		*/
 
 		//steamVRControllerManager = GameObject.Find("[CameraRig]").GetComponent<SteamVR_ControllerManager>();
-		leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
-		rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
+		if(GameObject.Find("Controller (left)") != null)
+		{
+			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+		}
 
-
+		if(GameObject.Find("Controller (right)") != null)
+		{
+			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
+		}
 
 	}
 
@@ -139,57 +144,60 @@ public class SCR_Camera : MonoBehaviour
 	{
 
 		if (GameObject.Find ("Controller (left)") != null) {
+
 			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput> ();
+
+			if (leftController.TriggerPressed ()) 
+			{
+
+			}
+
+			/* VR Equivalent: If the user pushes up on the left touch pad? */
+			if(leftController.UpPressed())
+			{
+
+				/* Move the camera. */
+				//transform.Translate(0.0f, 0.0f, speed.z);
+				transform.position += new Vector3 (0.0f, 0.0f, speed.z);
+
+			}
+
+			/* VR Equivalent: If the user pushes left on the left touch pad? */
+			if(leftController.LeftPressed())
+			{
+
+				/* Move the camera. */
+				//transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
+				transform.position += new Vector3 (speed.x * -1.0f, 0.0f, 0.0f);
+
+			}
+
+			/* VR Equivalent: If the user pushes down on the left touch pad? */
+			if(leftController.DownPressed())
+			{
+
+				/* Move the camera. */
+				//transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
+				transform.position += new Vector3 (0.0f, 0.0f, speed.z * -1.0f);
+
+			}
+
+			/* VR Equivalent: If the user pushes right on the left touch pad? */
+			if(leftController.RightPressed())
+			{
+
+				/* Move the camera. */
+				//transform.Translate(speed.x, 0.0f, 0.0f);
+				transform.position += new Vector3 (speed.x, 0.0f, 0.0f);
+
+			}
 		}
 
 		if (GameObject.Find ("Controller (right)") != null) {
 			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput> ();
 		}
 
-		if (leftController.TriggerPressed ()) 
-		{
 
-		}
-
-		/* VR Equivalent: If the user pushes up on the left touch pad? */
-		if(leftController.UpPressed())
-		{
-
-			/* Move the camera. */
-			//transform.Translate(0.0f, 0.0f, speed.z);
-			transform.position += new Vector3 (0.0f, 0.0f, speed.z);
-
-		}
-
-		/* VR Equivalent: If the user pushes left on the left touch pad? */
-		if(leftController.LeftPressed())
-		{
-
-			/* Move the camera. */
-			//transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
-			transform.position += new Vector3 (speed.x * -1.0f, 0.0f, 0.0f);
-
-		}
-
-		/* VR Equivalent: If the user pushes down on the left touch pad? */
-		if(leftController.DownPressed())
-		{
-
-			/* Move the camera. */
-			//transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
-			transform.position += new Vector3 (0.0f, 0.0f, speed.z * -1.0f);
-
-		}
-
-		/* VR Equivalent: If the user pushes right on the left touch pad? */
-		if(leftController.RightPressed())
-		{
-
-			/* Move the camera. */
-			//transform.Translate(speed.x, 0.0f, 0.0f);
-			transform.position += new Vector3 (speed.x, 0.0f, 0.0f);
-
-		}
 
 		/* Hopefully shouldn't need these for VR. */
 		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking up and pressing up. */
@@ -240,7 +248,7 @@ public class SCR_Camera : MonoBehaviour
 		*/
 
 		/* Handles user input for camera control. */
-		//PCControls();
+		PCControls();
 
 		/* Comment this in for University. */
 		VRControls();

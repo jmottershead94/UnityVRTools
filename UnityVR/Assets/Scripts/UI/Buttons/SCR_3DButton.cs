@@ -36,14 +36,18 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private Vector3 destinationScale = Vector3.zero;				/* The destination scale of the 3D button, used to lerp to when in focus. */
 	private Vector3 originalDistanceDifference = Vector3.zero;		/* Used to update the 3D buttons with the camera. */
 	private bool isInteractable = true;								/* Used to indicate if this button is interactable or not. */
-	[SerializeField] private SCR_VRControllerInput leftController = null;		/* Used to assign a left controller to follow. */
+	private SCR_VRControllerInput leftController = null;			/* Used to assign a left controller to follow. */
+	private SCR_VRControllerInput rightController = null;			/* . */
 	protected SCR_3DMenu menu = null;
 	protected SCR_Panel parentPanel = null;							/* Accessing the panel that this button belongs to. */
 
 	/* Methods. */
 	/* Virtual. */
-	/* Each inheriting button class must implement a specific button press response. */
+	/* Each inheriting button class can implement a specific button press response. */
 	public virtual void ButtonPressResponse(){}
+
+	/* Each inheriting button class can implement a specific button release response. */
+	public virtual void ButtonReleasedResponse(){}
 
 	/*
 	*
@@ -56,10 +60,6 @@ public class SCR_3DButton : SCR_BaseUIElement
 	{
 
 		/* Initialising our attributes. */
-		if (GameObject.Find ("Controller (left)") != null) {
-			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
-		}
-
 		menu = GameObject.Find ("PRE_3DMenu").transform.FindChild("Menu").GetComponent<SCR_3DMenu>();
 		sceneEditor = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
 		originalPosition = transform.position;
@@ -68,11 +68,31 @@ public class SCR_3DButton : SCR_BaseUIElement
 		destinationScale = new Vector3(originalScale.x * scaleUpFactor, originalScale.y * scaleUpFactor, originalScale.z * scaleUpFactor);
 		parentPanel = transform.parent.GetComponent<SCR_Panel>();
 
-		if (leftController != null) {
-			originalDistanceDifference = leftController.transform.position - transform.position;
+		if (GameObject.Find ("Controller (left)") != null) 
+		{
+
+			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
+
 		}
-		else{
+
+		if (GameObject.Find ("Controller (right)") != null) 
+		{
+
+			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
+
+		}
+
+		if (leftController != null) 
+		{
+
+			originalDistanceDifference = leftController.transform.position - transform.position;
+
+		}
+		else
+		{
+
 			originalDistanceDifference = Camera.main.transform.position - transform.position;
+
 		}
 
 	}
@@ -178,22 +198,28 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private void VRControls()
 	{
 
-//		if (GameObject.Find ("Controller (left)") != null) 
-//		{
-//			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
-//
-//			if (leftController.Target().transform.gameObject != null) 
-//			{
-//				if (leftController.Target().transform.gameObject == gameObject) 
-//				{
-//					if (leftController.TriggerPressed ()) 
-//					{
-//						ButtonPressResponse ();
-//					}
-//				}
-//			}
-//		}
+		/* Try this tomorrow in the VR lab. */
 
+/*		
+		if (GameObject.Find ("Controller (right)") != null) 
+		{
+			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
+
+			if(rightController.ControllerIsAimingAtSomething)
+			{
+				if (rightController.Target.transform.gameObject != null) 
+				{
+					if (rightController.Target.transform.gameObject == gameObject) 
+					{
+						if (rightController.TriggerPressed ()) 
+						{
+							ButtonPressResponse ();
+						}
+					}
+				}
+			}
+		}
+*/
 
 		/* 
 

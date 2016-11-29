@@ -36,24 +36,6 @@ public class SCR_RotatePanelButton : SCR_3DButton
 	*
 	*	Overview
 	*	--------
-	*	This will be called before initialisation.
-	*
-	*/
-	new private void Awake()
-	{
-
-		/* Handles base awake method call. */
-		base.Awake();
-
-		/* Initialising our attributes. */
-		//menu = GameObject.Find("Menu").GetComponent<SCR_3DMenu>();
-
-	}
-
-	/*
-	*
-	*	Overview
-	*	--------
 	*	This method provides a response for the rotation arrow being pressed.
 	*
 	*/
