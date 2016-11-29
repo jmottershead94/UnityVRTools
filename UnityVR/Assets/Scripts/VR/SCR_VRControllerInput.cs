@@ -202,6 +202,15 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 	}
 
+//	public RaycastHit Target()
+//	{
+//		if (raycastTarget.transform.gameObject != null) {
+//			return raycastTarget;
+//		}
+//
+//		return;
+//	}
+
 	/* Getters. */
 	public RaycastHit Target
 	{

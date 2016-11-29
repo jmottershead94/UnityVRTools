@@ -36,7 +36,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private Vector3 destinationScale = Vector3.zero;				/* The destination scale of the 3D button, used to lerp to when in focus. */
 	private Vector3 originalDistanceDifference = Vector3.zero;		/* Used to update the 3D buttons with the camera. */
 	private bool isInteractable = true;								/* Used to indicate if this button is interactable or not. */
-	[SerializeField] private GameObject leftController = null;		/* Used to assign a left controller to follow. */
+	[SerializeField] private SCR_VRControllerInput leftController = null;		/* Used to assign a left controller to follow. */
 	protected SCR_3DMenu menu = null;
 	protected SCR_Panel parentPanel = null;							/* Accessing the panel that this button belongs to. */
 
@@ -57,7 +57,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 
 		/* Initialising our attributes. */
 		if (GameObject.Find ("Controller (left)") != null) {
-			leftController = GameObject.Find ("Controller (left)");
+			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
 		}
 
 		menu = GameObject.Find ("PRE_3DMenu").transform.FindChild("Menu").GetComponent<SCR_3DMenu>();
@@ -177,7 +177,24 @@ public class SCR_3DButton : SCR_BaseUIElement
 	*/
 	private void VRControls()
 	{
-		
+
+//		if (GameObject.Find ("Controller (left)") != null) 
+//		{
+//			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
+//
+//			if (leftController.Target().transform.gameObject != null) 
+//			{
+//				if (leftController.Target().transform.gameObject == gameObject) 
+//				{
+//					if (leftController.TriggerPressed ()) 
+//					{
+//						ButtonPressResponse ();
+//					}
+//				}
+//			}
+//		}
+
+
 		/* 
 
 		If the VR right hand controller is aiming at this button. 
