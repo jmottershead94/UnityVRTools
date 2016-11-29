@@ -33,6 +33,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 	private EVRButtonId dPadDown = EVRButtonId.k_EButton_DPad_Down;				/* Used to test if the DPad Down button has been pressed. */
 	private SteamVR_TrackedObject trackedObject = null;							/* Stores the current tracked object. */
 	private SteamVR_Controller.Device device = null;							/* Stores the current hand controller. */
+	private RaycastHit target;													/* What the controller is aiming at. */
 
 	/* Methods. */
 	/*
@@ -62,6 +63,41 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 		/* Track the correct device. */
 		device = SteamVR_Controller.Input((int)trackedObject.index);
+
+	}
+
+	/*
+	*
+	*	Overview
+	*	--------
+	*	This will be called at a fixed framerate and will be used to
+	*	update any physics. 
+	*
+	*/
+	private void FixedUpdate()
+	{
+
+		/* Initialising local attributes. */
+		Vector3 tempDirection = transform.TransformDirection(Vector3.forward);
+
+		/* Drawing the ray. */
+		Debug.DrawRay(transform.position, tempDirection, Color.cyan);
+
+		/* If the ray has collided with something. */
+		if(Physics.Raycast(transform.position, tempDirection, out target, 10.0f))
+		{
+
+			/* If the target is a base UI element. */
+			if(target.transform.GetComponent<SCR_BaseUIElement>() != null)
+			{
+
+				/* We have hit something we can interact with. */
+				/* Provide some controller feedback to the user. */
+				device.TriggerHapticPulse(700);
+
+			}
+
+		}
 
 	}
 
