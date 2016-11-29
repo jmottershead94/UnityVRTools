@@ -101,36 +101,106 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 	}
 
+	public bool TriggerPressed()
+	{
+
+		if (device != null) 
+		{
+			
+			return device.GetPressDown(triggerButton);
+
+		}
+
+		return false;
+
+	}
+
+	public bool UpPressed()
+	{
+
+		if (device != null) 
+		{
+
+			return device.GetPressDown(dPadUp);
+
+		}
+
+		return false;
+
+	}
+
+	public bool RightPressed()
+	{
+
+		if (device != null) 
+		{
+
+			return device.GetPressDown(dPadRight);
+
+		}
+
+		return false;
+
+	}
+
+	public bool LeftPressed()
+	{
+
+		if (device != null) 
+		{
+
+			return device.GetPressDown(dPadLeft);
+
+		}
+
+		return false;
+
+	}
+
+	public bool DownPressed()
+	{
+
+		if (device != null) 
+		{
+
+			return device.GetPressDown(dPadDown);
+
+		}
+
+		return false;
+
+	}
+
 	/* Getters. */
 	/* This will allow us to get the current trigger status of the hand controller. */
-	public bool TriggerPressed
-	{
-		get { return (device.GetPressDown(triggerButton)); }
-	}
+//	public bool TriggerPressed
+//	{
+//		get { return (device.GetPressDown(triggerButton)); }
+//	}
 
-	/* This will allow us to indicate if up on the hand controller DPad has been pressed. */
-	public bool UpPressed
-	{
-		get { return (device.GetPressDown(dPadUp));}
-	}
-
-	/* This will allow us to indicate if right on the hand controller DPad has been pressed. */
-	public bool RightPressed
-	{
-		get { return (device.GetPressDown(dPadRight));}
-	}
-
-	/* This will allow us to indicate if left on the hand controller DPad has been pressed. */
-	public bool LeftPressed
-	{
-		get { return (device.GetPressDown(dPadLeft));}
-	}
-
-	/* This will allow us to indicate if down on the hand controller DPad has been pressed. */
-	public bool DownPressed
-	{
-		get { return (device.GetPressDown(dPadDown));}
-	}
+//	/* This will allow us to indicate if up on the hand controller DPad has been pressed. */
+//	public bool UpPressed
+//	{
+//		get { return (device.GetPressDown(dPadUp));}
+//	}
+//
+//	/* This will allow us to indicate if right on the hand controller DPad has been pressed. */
+//	public bool RightPressed
+//	{
+//		get { return (device.GetPressDown(dPadRight));}
+//	}
+//
+//	/* This will allow us to indicate if left on the hand controller DPad has been pressed. */
+//	public bool LeftPressed
+//	{
+//		get { return (device.GetPressDown(dPadLeft));}
+//	}
+//
+//	/* This will allow us to indicate if down on the hand controller DPad has been pressed. */
+//	public bool DownPressed
+//	{
+//		get { return (device.GetPressDown(dPadDown));}
+//	}
 
 	/* This will allow us to get the current object that we are aiming at with the raycasting. */
 	public RaycastHit TargetAimedAt
