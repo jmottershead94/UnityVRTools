@@ -23,12 +23,58 @@ public class SCR_BaseUIElement : MonoBehaviour
 {
 
 	/* Attributes. */
-	protected bool isInFocus = false;	/* Used to indicate if this game object is in focus or not. */
+	protected SCR_VRControllerInput rightController = null;
+	protected SCR_VRControllerInput leftController = null;
+	protected bool isInFocus = false;							/* Used to indicate if this game object is in focus or not. */
 
 	/* Methods. */
+	/* Delegates. */
+	public delegate void UIResponseDelegate();
+
 	/* Virtual. */
 	/* All UI elements must check focus. */
 	protected virtual void CheckFocus(){}
+
+	/*
+	*
+	*	Overview
+	*	--------
+	*	This method will provide checks for user input through VR.
+	*
+	*/
+	protected void VRControls(UIResponseDelegate method)
+	{
+
+		if (GameObject.Find ("Controller (right)") != null) 
+		{
+
+			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
+
+			if(rightController.IsAimingAtSomething)
+			{
+
+				if (rightController.Target.transform.gameObject != null) 
+				{
+
+					if (rightController.Target.transform.gameObject == gameObject) 
+					{
+
+						if (rightController.TriggerPressed ()) 
+						{
+
+							method();
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
 
 	/* Getters/Setters. */
 	/* This will allow us to get/set the current focus status of this game object. */

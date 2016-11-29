@@ -36,8 +36,6 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private Vector3 destinationScale = Vector3.zero;				/* The destination scale of the 3D button, used to lerp to when in focus. */
 	private Vector3 originalDistanceDifference = Vector3.zero;		/* Used to update the 3D buttons with the camera. */
 	private bool isInteractable = true;								/* Used to indicate if this button is interactable or not. */
-	private SCR_VRControllerInput leftController = null;			/* Used to assign a left controller to follow. */
-	private SCR_VRControllerInput rightController = null;			/* . */
 	protected SCR_3DMenu menu = null;
 	protected SCR_Panel parentPanel = null;							/* Accessing the panel that this button belongs to. */
 
@@ -192,57 +190,6 @@ public class SCR_3DButton : SCR_BaseUIElement
 	*
 	*	Overview
 	*	--------
-	*	This method will provide checks for user input through VR.
-	*
-	*/
-	private void VRControls()
-	{
-
-		/* Try this tomorrow in the VR lab. */
-
-/*		
-		if (GameObject.Find ("Controller (right)") != null) 
-		{
-			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
-
-			if(rightController.ControllerIsAimingAtSomething)
-			{
-				if (rightController.Target.transform.gameObject != null) 
-				{
-					if (rightController.Target.transform.gameObject == gameObject) 
-					{
-						if (rightController.TriggerPressed ()) 
-						{
-							ButtonPressResponse ();
-						}
-					}
-				}
-			}
-		}
-*/
-
-		/* 
-
-		If the VR right hand controller is aiming at this button. 
-
-			ButtonInFocusStandardResponse();
-
-			If the user has pressed the right hand controller trigger.
-
-				ButtonPressResponse();
-
-		Else, the VR right hand controller is not aiming at this button.
-
-			ButtonOutOfFocusStandardResponse();
-
-		*/
-
-	}
-
-	/*
-	*
-	*	Overview
-	*	--------
 	*	This will check and provide the appropriate method calls depending
 	*	on the current focus of the object.
 	*
@@ -321,7 +268,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 		{
 
 			/* Handles VR control logic. */
-			VRControls();
+			VRControls(ButtonPressResponse);
 
 			/* Comment this out for VR. */
 			/* Keep checking the focus of this object. */

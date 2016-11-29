@@ -25,11 +25,11 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 {
 
 	/* Attributes. */
-	private PrimitiveType primitiveType;		/* Accessing what primitive type we are using. */
-	private int id;								/* Accessing the ID number of the object. */
-	private Material currentMaterial = null;	/* The current material attached to the game object, will be used to update the current material of the mesh renderer. */
-	private Material glowingMaterial = null;	/* Stores the material used to indicate that the game object has been highlighted. */
-	private Material defaultMaterial = null;	/* Stores the default material used originally for the game object. */
+	private PrimitiveType primitiveType;					/* Accessing what primitive type we are using. */
+	private int id;											/* Accessing the ID number of the object. */
+	private Material currentMaterial = null;				/* The current material attached to the game object, will be used to update the current material of the mesh renderer. */
+	private Material glowingMaterial = null;				/* Stores the material used to indicate that the game object has been highlighted. */
+	private Material defaultMaterial = null;				/* Stores the default material used originally for the game object. */
 
 	/* Methods. */
 	/* Virtual. */
@@ -53,6 +53,11 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		currentMaterial = GetComponent<MeshRenderer>().materials[0];
 		defaultMaterial = currentMaterial;
 		glowingMaterial = Resources.Load("Materials/MAT_ObjectSelected") as Material;
+
+		if(GameObject.Find("Controller (right)") != null)
+		{
+			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
+		}
 
 	}
 
@@ -106,17 +111,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	}
 
-	/* This function will need a VR equivalent. */
-	/* VR Equivalent: If the user is aiming at this game object with the right hand controller and they have pressed the right hand controller trigger. */
-	/*
-	*
-	*	Overview
-	*	--------
-	*	This method checks if there has been a left mouse click on this 
-	*	game object.
-	*
-	*/
-	private void OnMouseDown()
+	private void FocusSwitch()
 	{
 
 		/* If this object is currently in focus. */
@@ -135,6 +130,23 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			isInFocus = true;
 
 		}
+
+	}
+
+	/* This function will need a VR equivalent. */
+	/* VR Equivalent: If the user is aiming at this game object with the right hand controller and they have pressed the right hand controller trigger. */
+	/*
+	*
+	*	Overview
+	*	--------
+	*	This method checks if there has been a left mouse click on this 
+	*	game object.
+	*
+	*/
+	private void OnMouseDown()
+	{
+
+		FocusSwitch();
 
 	}
 
@@ -183,6 +195,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	protected void Update()
 	{
+
+		VRControls(FocusSwitch);
 
 		/* Handles any game object focus updates. */
 		CheckFocus();

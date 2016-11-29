@@ -92,6 +92,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 				device.TriggerHapticPulse (500);
 
+				/* This works for pressing on buttons, but hopefully my solution in the SCR_3DButton class will sort this out. */
 //				if (tempBaseUIElement.GetComponent<SCR_3DButton> () != null) 
 //				{
 //
@@ -203,7 +204,7 @@ public class SCR_VRControllerInput : MonoBehaviour
 	}
 
 	/* Getters. */
-	public bool ControllerIsAimingAtSomething
+	public bool IsAimingAtSomething
 	{
 		get { return (Physics.Raycast (ray, out raycastTarget, rayDistance)); }
 	}
