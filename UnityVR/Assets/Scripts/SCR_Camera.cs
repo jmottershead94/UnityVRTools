@@ -26,8 +26,36 @@ public class SCR_Camera : MonoBehaviour
 
 	/* Attributes. */
 	[SerializeField]	private Vector3 speed = Vector3.zero;	/* This will store how fast the camera will move. */
+	private SCR_VRController leftController = null;				/* Provides access to the left hand controller (and will allow access to input on this controller). */
+	private SCR_VRController rightController = null;			/* Provides access to the right hand controller (and will allow access to input on this controller). */
 
 	/* Methods. */
+	/*
+	*
+	*	Overview
+	*	--------
+	*	This will be called before initialisation.
+	*
+	*/
+	private void Awake()
+	{
+
+		/*
+
+			if(inUniversity)
+
+				Assign the steam VR controller manager attribute
+				leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRController>();
+				rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRController>();
+
+		*/
+
+		//steamVRControllerManager = GameObject.Find("[CameraRig]").GetComponent<SteamVR_ControllerManager>();
+		//leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRController>();
+		//rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRController>();
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -35,7 +63,7 @@ public class SCR_Camera : MonoBehaviour
 	*	This method will check user input to provide camera movement.
 	*
 	*/
-	private void Controls()
+	private void PCControls()
 	{
 
 		/* Set the transform of the camera to look at the reference point of the user. */
@@ -43,6 +71,80 @@ public class SCR_Camera : MonoBehaviour
 
 		/* If the W key has been pressed. */
 		/* VR Equivalent: If the user pushes up on the left touch pad? */
+		if(Input.GetKey(KeyCode.W))
+		{
+
+			/* Move the camera. */
+			transform.Translate(0.0f, 0.0f, speed.z);
+
+		}
+
+		/* If the A key has been pressed. */
+		/* VR Equivalent: If the user pushes left on the left touch pad? */
+		if(Input.GetKey(KeyCode.A))
+		{
+
+			/* Move the camera. */
+			transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
+
+		}
+
+		/* If the S key has been pressed. */
+		/* VR Equivalent: If the user pushes down on the left touch pad? */
+		if(Input.GetKey(KeyCode.S))
+		{
+
+			/* Move the camera. */
+			transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
+
+		}
+
+		/* If the D key has been pressed. */
+		/* VR Equivalent: If the user pushes right on the left touch pad? */
+		if(Input.GetKey(KeyCode.D))
+		{
+
+			/* Move the camera. */
+			transform.Translate(speed.x, 0.0f, 0.0f);
+
+		}
+
+		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking up and pressing up. */
+		/* If the E key has been pressed. */
+		/* VR Equivalent: If the user holds the left hand controller trigger and pushes up on the touch up. */
+		if(Input.GetKey(KeyCode.E))
+		{
+
+			/* Move the camera. */
+			transform.Translate(0.0f, speed.y, 0.0f);
+
+		}
+
+		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking down and pressing up. */
+		/* If the Q key has been pressed. */
+		/* VR Equivalent: If the user holds the left hand controller trigger and pushes down on the touch up. */
+		if(Input.GetKey(KeyCode.Q))
+		{
+
+			/* Move the camera. */
+			transform.Translate(0.0f, speed.y * -1.0f, 0.0f);
+
+		}
+
+	}
+
+	private void VRControls()
+	{
+
+		/* If the W key has been pressed. */
+		/* VR Equivalent: If the user pushes up on the left touch pad? */
+		/*if(leftController.HasTriggerBeenPressed)
+		{
+
+			
+
+		}*/
+
 		if(Input.GetKey(KeyCode.W))
 		{
 
@@ -115,8 +217,20 @@ public class SCR_Camera : MonoBehaviour
 	private void Update () 
 	{
 
+		/*
+
+			if(inUniversity)
+
+				VRControls();
+
+			else
+
+				PCControls();
+
+		*/
+
 		/* Handles user input for camera control. */
-		Controls();
+		PCControls();
 
 	}
 

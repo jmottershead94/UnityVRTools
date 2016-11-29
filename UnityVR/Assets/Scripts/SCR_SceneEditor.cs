@@ -206,6 +206,16 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckTranslations(SCR_PersistentObject persistentObject)
 	{
+		
+		/*	
+			Device Example Usage:
+
+			var deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Leftmost);
+
+			if (deviceIndex != -1 && SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+				SteamVR_Controller.Input(deviceIndex).TriggerHapticPulse(1000); 
+
+		*/
 
 		/* If the I key has been pressed. */
 		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
