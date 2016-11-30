@@ -597,6 +597,7 @@ public class SCR_SceneEditor : MonoBehaviour
 
 			/* Check any input for translation manipulation. */
 			CheckTranslations(persistentObject);
+			CheckTranslationsVR (persistentObject);
 
 		}
 		/* Otherwise, the user is currently manipulating the rotation of the object. */
@@ -605,6 +606,7 @@ public class SCR_SceneEditor : MonoBehaviour
 
 			/* Check any input for rotation manipulation. */
 			CheckRotation(persistentObject);	
+			CheckRotationVR (persistentObject);
 
 		}
 		/* Otherwise, the user is currently manipulating the scale of the object. */
@@ -613,6 +615,7 @@ public class SCR_SceneEditor : MonoBehaviour
 
 			/* Check any input for scale manipulation. */
 			CheckScale(persistentObject);
+			CheckScaleVR (persistentObject);
 
 		}
 

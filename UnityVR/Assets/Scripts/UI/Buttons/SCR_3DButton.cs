@@ -62,7 +62,11 @@ public class SCR_3DButton : SCR_BaseUIElement
 		base.Awake();
 
 		/* Initialising our attributes. */
-		menu = GameObject.Find ("PRE_3DMenu").transform.FindChild("Menu").GetComponent<SCR_3DMenu>();
+		if (GameObject.Find ("PRE_3DMenu") != null) 
+		{
+			menu = GameObject.Find ("PRE_3DMenu").transform.FindChild ("Menu").GetComponent<SCR_3DMenu> ();
+		}
+
 		sceneEditor = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
 		originalPosition = transform.position;
 		originalScale = transform.localScale;

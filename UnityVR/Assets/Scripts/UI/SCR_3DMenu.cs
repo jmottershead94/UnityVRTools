@@ -142,7 +142,7 @@ public class SCR_3DMenu : SCR_BaseUIElement
 		CheckPanelFocus();
 
 		/* This needs testing out. */
-		VRControls();
+		//VRControls();
 
 	}
 

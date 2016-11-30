@@ -90,7 +90,12 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 				SCR_BaseUIElement tempBaseUIElement = raycastTarget.transform.GetComponent<SCR_BaseUIElement> ();
 
-				device.TriggerHapticPulse (500);
+				if (device != null) 
+				{
+					
+					//device.TriggerHapticPulse (500);
+
+				}
 
 				/* This works for pressing on buttons, but hopefully my solution in the SCR_3DButton class will sort this out. */
 //				if (tempBaseUIElement.GetComponent<SCR_3DButton> () != null) 

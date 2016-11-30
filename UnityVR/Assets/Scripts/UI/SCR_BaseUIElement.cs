@@ -77,6 +77,8 @@ public class SCR_BaseUIElement : MonoBehaviour
 						if (rightController.TriggerPressed ()) 
 						{
 
+							Debug.Log ("Should execute for " + name);
+
 							method();
 
 						}
