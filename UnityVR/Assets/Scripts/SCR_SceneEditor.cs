@@ -345,14 +345,14 @@ public class SCR_SceneEditor : MonoBehaviour
 
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y, tempScale.z + scaleIncrement.z);
+					tempScale.Set(tempScale.x, tempScale.y, tempScale.z + (scaleIncrement.z));
 
 				}
 
@@ -361,14 +361,14 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the J key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x - scaleIncrement.x, tempScale.y, tempScale.z);
+					tempScale.Set(tempScale.x - (scaleIncrement.x), tempScale.y, tempScale.z);
 
 				}
 
@@ -377,14 +377,14 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the K key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
 				{
 
 					/* Set the value of the temporary scale attribute. */
-					tempScale.Set(tempScale.x, tempScale.y, tempScale.z - scaleIncrement.z);
+					tempScale.Set(tempScale.x, tempScale.y, tempScale.z - (scaleIncrement.z));
 
 				}
 
@@ -393,14 +393,14 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the L key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x + scaleIncrement.x, tempScale.y, tempScale.z);
+					tempScale.Set(tempScale.x + (scaleIncrement.x), tempScale.y, tempScale.z);
 
 				}
 
@@ -409,14 +409,14 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the U key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y - scaleIncrement.y, tempScale.z);
+					tempScale.Set(tempScale.x, tempScale.y - (scaleIncrement.y), tempScale.z);
 
 				}
 			}
@@ -424,14 +424,14 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the O key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y + scaleIncrement.y, tempScale.z);
+					tempScale.Set(tempScale.x, tempScale.y + (scaleIncrement.y), tempScale.z);
 
 				}
 			}
@@ -474,18 +474,16 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		if(leftController != null && rightController != null)
 		{
-
 			/* If the I key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
 				{
-
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, 0.0f, translationSpeed.z);
+					persistentObject.transform.Translate(0.0f, 0.0f, (translationSpeed.z));
 
 				}
 
@@ -494,14 +492,18 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the J key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
+
+				Debug.Log ("Both triggers pressed.");
 
 				if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
 				{
 
+					Debug.Log ("Should move object to the left.");
+
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(-translationSpeed.x, 0.0f, 0.0f);
+					persistentObject.transform.Translate((-translationSpeed.x), 0.0f, 0.0f);
 
 				}
 
@@ -510,14 +512,16 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the K key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
 				{
 
+					Debug.Log ("Should move object backwards.");
+
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, 0.0f, -translationSpeed.z);
+					persistentObject.transform.Translate(0.0f, 0.0f, (-translationSpeed.z));
 
 				}
 
@@ -526,14 +530,16 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the L key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
 				{
 
+					Debug.Log ("Should move object to the right.");
+
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(translationSpeed.x, 0.0f, 0.0f);
+					persistentObject.transform.Translate((translationSpeed.x), 0.0f, 0.0f);
 
 				}
 
@@ -542,14 +548,16 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the U key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
 				{
 
+					Debug.Log ("Should move object down.");
+
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, -translationSpeed.y, 0.0f);
+					persistentObject.transform.Translate(0.0f, (-translationSpeed.y), 0.0f);
 
 				}
 
@@ -558,14 +566,16 @@ public class SCR_SceneEditor : MonoBehaviour
 			/* If the O key has been pressed. */
 			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
 			/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerPressed() && rightController.TriggerPressed())
+			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
 				if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
 				{
 
+					Debug.Log ("Should move object up.");
+
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, translationSpeed.y, 0.0f);
+					persistentObject.transform.Translate(0.0f, (translationSpeed.y), 0.0f);
 
 				}
 

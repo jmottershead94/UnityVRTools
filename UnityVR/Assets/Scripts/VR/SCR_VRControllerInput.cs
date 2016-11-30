@@ -152,6 +152,20 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 	}
 
+	public bool TriggerHeld()
+	{
+
+		if (device != null) 
+		{
+
+			return device.GetPress(triggerButton);
+
+		}
+
+		return false;
+
+	}
+
 	public bool UpPressed()
 	{
 
