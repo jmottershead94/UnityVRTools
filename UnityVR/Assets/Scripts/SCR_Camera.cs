@@ -143,17 +143,22 @@ public class SCR_Camera : MonoBehaviour
 	private void VRControls()
 	{
 
-		if (GameObject.Find ("Controller (left)") != null) {
+		/* Need to test this for y axis movement. */
+		/*
+		if(GameObject.Find ("Camera (eye)") != null)
+		{
 
-			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput> ();
+			transform.forward = GameObject.Find ("Camera (eye)").transform.forward;
 
-			if (leftController.TriggerPressed ()) 
-			{
+		}
+		*/
 
-			}
+		if (GameObject.Find ("Controller (right)") != null) {
+
+			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput> ();
 
 			/* VR Equivalent: If the user pushes up on the left touch pad? */
-			if(leftController.UpPressed())
+			if(rightController.UpPressed())
 			{
 
 				/* Move the camera. */
@@ -163,7 +168,7 @@ public class SCR_Camera : MonoBehaviour
 			}
 
 			/* VR Equivalent: If the user pushes left on the left touch pad? */
-			if(leftController.LeftPressed())
+			if(rightController.LeftPressed())
 			{
 
 				/* Move the camera. */
@@ -173,7 +178,7 @@ public class SCR_Camera : MonoBehaviour
 			}
 
 			/* VR Equivalent: If the user pushes down on the left touch pad? */
-			if(leftController.DownPressed())
+			if(rightController.DownPressed())
 			{
 
 				/* Move the camera. */
@@ -183,7 +188,7 @@ public class SCR_Camera : MonoBehaviour
 			}
 
 			/* VR Equivalent: If the user pushes right on the left touch pad? */
-			if(leftController.RightPressed())
+			if(rightController.RightPressed())
 			{
 
 				/* Move the camera. */
@@ -192,12 +197,6 @@ public class SCR_Camera : MonoBehaviour
 
 			}
 		}
-
-		if (GameObject.Find ("Controller (right)") != null) {
-			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput> ();
-		}
-
-
 
 		/* Hopefully shouldn't need these for VR. */
 		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking up and pressing up. */
