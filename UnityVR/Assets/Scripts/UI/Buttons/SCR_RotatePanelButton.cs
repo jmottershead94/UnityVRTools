@@ -154,6 +154,31 @@ public class SCR_RotatePanelButton : SCR_3DButton
 
 	}
 
+	/* This needs testing out. */
+	protected override void VRControls()
+	{
+
+		/* Check to see if the left controller is in the tracking area. */
+		if (GameObject.Find ("Controller (left)") != null) 
+		{
+
+			/* Update the value for the left controller. */
+			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
+
+			/* If the user presses left OR right on the left controller. */
+			if (leftController.LeftPressed() || leftController.RightPressed()) 
+			{
+
+				/* Perform a specific button response. */
+				ButtonPressResponse();
+
+			}
+
+		}
+
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -166,6 +191,9 @@ public class SCR_RotatePanelButton : SCR_3DButton
 
 		/* Handles base update method call. */
 		base.Update();
+
+		/* This needs testing out. */
+		VRControls();
 
 		/* If the menu should rotate. */
 		if(shouldRotate)

@@ -47,6 +47,8 @@ public class SCR_3DButton : SCR_BaseUIElement
 	/* Each inheriting button class can implement a specific button release response. */
 	public virtual void ButtonReleasedResponse(){}
 
+	protected virtual void VRControls(){}
+
 	/*
 	*
 	*	Overview
