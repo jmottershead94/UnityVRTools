@@ -323,8 +323,8 @@ public class SCR_SceneEditor : MonoBehaviour
 				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
 				{
 
-					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (0.0f, 0.0f, rotationIncrement.z);
+					/* Set the value of the temporary scale attribute. */
+					persistentObject.transform.Rotate (0.0f, 0.0f, rotationIncrement.x);
 
 				}
 
@@ -340,7 +340,7 @@ public class SCR_SceneEditor : MonoBehaviour
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (-rotationIncrement.x, 0.0f, 0.0f);
+					persistentObject.transform.Rotate (0.0f, rotationIncrement.y, 0.0f);
 
 				}
 
@@ -356,7 +356,7 @@ public class SCR_SceneEditor : MonoBehaviour
 				{
 
 					/* Set the value of the temporary scale attribute. */
-					persistentObject.transform.Rotate (0.0f, 0.0f, -rotationIncrement.z);
+					persistentObject.transform.Rotate (0.0f, 0.0f, -rotationIncrement.x);
 
 				}
 
@@ -372,7 +372,7 @@ public class SCR_SceneEditor : MonoBehaviour
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (rotationIncrement.x, 0.0f, 0.0f);
+					persistentObject.transform.Rotate (0.0f, -rotationIncrement.y, 0.0f);
 
 				}
 
@@ -388,7 +388,7 @@ public class SCR_SceneEditor : MonoBehaviour
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (0.0f, -rotationIncrement.y, 0.0f);
+					persistentObject.transform.Rotate (-rotationIncrement.z, 0.0f, 0.0f);
 
 				}
 			}
@@ -403,7 +403,7 @@ public class SCR_SceneEditor : MonoBehaviour
 				{
 
 					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (0.0f, rotationIncrement.y, 0.0f);
+					persistentObject.transform.Rotate (rotationIncrement.z, 0.0f, 0.0f);
 
 				}
 
