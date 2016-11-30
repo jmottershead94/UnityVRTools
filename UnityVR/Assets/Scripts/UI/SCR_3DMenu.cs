@@ -27,9 +27,10 @@ public class SCR_3DMenu : SCR_BaseUIElement
 {
 
 	/* Attributes. */
-	private List<SCR_Panel> panels = null;			/* Used to store the different panels that the 3D menu has access to. */
-	private SCR_Panel currentFocusPanel = null;		/* What current panel is in focus. */
-	private int panelIndex = 0;						/* The current panel index that is in focus, used to update the current focussed panel. */
+	private List<SCR_Panel> panels = null;				/* Used to store the different panels that the 3D menu has access to. */
+	private SCR_Panel currentFocusPanel = null;			/* What current panel is in focus. */
+	private int panelIndex = 0;							/* The current panel index that is in focus, used to update the current focussed panel. */
+	private Vector3 offScreenPosition = Vector3.zero;
 
 	/* Methods. */
 	/*
@@ -39,11 +40,12 @@ public class SCR_3DMenu : SCR_BaseUIElement
 	*	This will be called before initialisation.
 	*
 	*/
-	private void Awake()
+	new private void Awake()
 	{
 
 		/* Initialising our attributes. */
 		panels = new List<SCR_Panel>();
+		offScreenPosition = new Vector3(SCR_UIConstants.OffScreen.x, SCR_UIConstants.OffScreen.y, transform.position.z);
 
 		/* Initialising local attributes. */
 		SCR_Panel[] tempChildrenPanels = transform.FindChild("Panels").GetComponentsInChildren<SCR_Panel>();
@@ -60,6 +62,47 @@ public class SCR_3DMenu : SCR_BaseUIElement
 		/* Setting which panel is currently in focus. */
 		panels[panelIndex].InFocus = true;
 		currentFocusPanel = panels[panelIndex];
+
+	}
+
+	/* This needs testing out. */
+	private void VRControls()
+	{
+
+		if(GameObject.Find("Controller (left)") != null)
+		{
+
+			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+
+		}
+
+		if(leftController != null)
+		{
+
+			if(leftController.TriggerPressed())
+			{
+
+				if(transform.position != offScreenPosition)
+				{
+
+					transform.position = offScreenPosition;
+
+				}
+
+			}
+			else
+			{
+
+				if(transform.position != leftController.transform.position)
+				{
+
+					transform.position = leftController.transform.position;
+
+				}
+
+			}
+
+		}
 
 	}
 
@@ -97,6 +140,9 @@ public class SCR_3DMenu : SCR_BaseUIElement
 
 		/* Handles any updates with the panel that is currently in focus. */
 		CheckPanelFocus();
+
+		/* This needs testing out. */
+		VRControls();
 
 	}
 
