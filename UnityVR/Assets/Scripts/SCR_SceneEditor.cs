@@ -482,8 +482,21 @@ public class SCR_SceneEditor : MonoBehaviour
 
 				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
 				{
+					
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, 0.0f, (translationSpeed.z));
+					persistentObject.transform.Translate (0.0f, 0.0f, (-translationSpeed.z));
+
+//					if (persistentObject.transform.position.z < 0.0f) {
+//
+//						persistentObject.transform.Translate (0.0f, 0.0f, (-translationSpeed.z));
+//
+//					}
+//					else {
+//
+//						/* Set the new position of the object. */ 
+//						persistentObject.transform.Translate (0.0f, 0.0f, (translationSpeed.z));
+//
+//					}
 
 				}
 
@@ -495,12 +508,8 @@ public class SCR_SceneEditor : MonoBehaviour
 			if(leftController.TriggerHeld() && rightController.TriggerHeld())
 			{
 
-				Debug.Log ("Both triggers pressed.");
-
 				if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
 				{
-
-					Debug.Log ("Should move object to the left.");
 
 					/* Set the new position of the object. */ 
 					persistentObject.transform.Translate((-translationSpeed.x), 0.0f, 0.0f);
@@ -517,11 +526,21 @@ public class SCR_SceneEditor : MonoBehaviour
 
 				if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
 				{
-
-					Debug.Log ("Should move object backwards.");
-
+					
 					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, 0.0f, (-translationSpeed.z));
+					persistentObject.transform.Translate (0.0f, 0.0f, (translationSpeed.z));
+
+//					if (persistentObject.transform.position.z < 0.0f) {
+//
+//						persistentObject.transform.Translate (0.0f, 0.0f, (translationSpeed.z));
+//
+//					}
+//					else {
+//
+//						/* Set the new position of the object. */ 
+//						persistentObject.transform.Translate (0.0f, 0.0f, (-translationSpeed.z));
+//
+//					}
 
 				}
 
@@ -535,8 +554,6 @@ public class SCR_SceneEditor : MonoBehaviour
 
 				if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
 				{
-
-					Debug.Log ("Should move object to the right.");
 
 					/* Set the new position of the object. */ 
 					persistentObject.transform.Translate((translationSpeed.x), 0.0f, 0.0f);
@@ -554,8 +571,6 @@ public class SCR_SceneEditor : MonoBehaviour
 				if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
 				{
 
-					Debug.Log ("Should move object down.");
-
 					/* Set the new position of the object. */ 
 					persistentObject.transform.Translate(0.0f, (-translationSpeed.y), 0.0f);
 
@@ -572,8 +587,6 @@ public class SCR_SceneEditor : MonoBehaviour
 				if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
 				{
 
-					Debug.Log ("Should move object up.");
-
 					/* Set the new position of the object. */ 
 					persistentObject.transform.Translate(0.0f, (translationSpeed.y), 0.0f);
 
@@ -584,8 +597,7 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
-
-
+		
 	/*
 	*
 	*	Overview

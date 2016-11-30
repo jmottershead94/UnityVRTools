@@ -31,6 +31,8 @@ public class SCR_3DMenu : SCR_BaseUIElement
 	private SCR_Panel currentFocusPanel = null;			/* What current panel is in focus. */
 	private int panelIndex = 0;							/* The current panel index that is in focus, used to update the current focussed panel. */
 	private Vector3 offScreenPosition = Vector3.zero;
+	private Vector3 originalPosition = Vector3.zero;
+	private Vector3 originalDistance = Vector3.zero;
 
 	/* Methods. */
 	/*
@@ -79,7 +81,10 @@ public class SCR_3DMenu : SCR_BaseUIElement
 		if(leftController != null)
 		{
 
-			if(leftController.TriggerPressed())
+			originalPosition = new Vector3 (leftController.transform.position.x, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
+			transform.up = leftController.transform.up;
+
+			if(leftController.TriggerHeld())
 			{
 
 				if(transform.position != offScreenPosition)
@@ -93,10 +98,12 @@ public class SCR_3DMenu : SCR_BaseUIElement
 			else
 			{
 
-				if(transform.position != leftController.transform.position)
+				if(transform.position != originalPosition)
 				{
 
-					transform.position = leftController.transform.position;
+					transform.position = originalPosition;
+					//transform.position = new Vector3(leftController.transform.position.x, leftController.transform.position.y, leftController.transform.position.z + 0.5f);
+					//transform.rotation = leftController.transform.rotation;
 
 				}
 
@@ -142,7 +149,7 @@ public class SCR_3DMenu : SCR_BaseUIElement
 		CheckPanelFocus();
 
 		/* This needs testing out. */
-		//VRControls();
+		VRControls();
 
 	}
 

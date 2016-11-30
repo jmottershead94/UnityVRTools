@@ -30,8 +30,20 @@ public class SCR_RotatePanelButton : SCR_3DButton
 	private int currentRotation = 0;									/* Stores the current rotation value. */
 	private const int targetAngle = 90;									/* Used to set the current target angle for the rotation. */
 	private bool shouldRotate = false;									/* Indicates if the button should rotate the panel or not. */
+	private Vector3 offScreenPosition = Vector3.zero;
+	private Vector3 originalPosition = Vector3.zero;
+	private bool doOnce = true;
 
 	/* Methods. */
+	new private void Awake()
+	{
+
+		base.Awake ();
+
+		offScreenPosition = new Vector3(SCR_UIConstants.OffScreen.x, SCR_UIConstants.OffScreen.y, transform.position.z);
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -165,17 +177,87 @@ public class SCR_RotatePanelButton : SCR_3DButton
 			/* Update the value for the left controller. */
 			leftController = GameObject.Find ("Controller (left)").GetComponent<SCR_VRControllerInput>();
 
-			/* If the user presses left OR right on the left controller. */
-			if (leftController.LeftPressed() || leftController.RightPressed()) 
+			if (name == "Right Arrow") 
+			{
+				/* If the user presses left OR right on the left controller. */
+				if (leftController.RightPressed ()) 
+				{
+
+					if (doOnce) 
+					{
+						/* Perform a specific button response. */
+						ButtonPressResponse ();
+
+						doOnce = false;
+					}
+
+				}
+				else 
+				{
+
+					doOnce = true;
+
+				}
+
+			}
+			else if (name == "Left Arrow") 
+			{
+				/* If the user presses left OR right on the left controller. */
+				if (leftController.LeftPressed ())
+				{
+
+					if (doOnce) 
+					{
+
+						/* Perform a specific button response. */
+						ButtonPressResponse ();
+
+						doOnce = false;
+
+					}
+				}
+				else 
+				{
+
+					doOnce = true;
+
+				}
+
+			}
+
+			if (name == "Right Arrow") 
+			{
+				originalPosition = new Vector3 (leftController.transform.position.x + 0.3f, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
+			} 
+			else 
+			{
+				originalPosition = new Vector3 (leftController.transform.position.x - 0.3f, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
+			}
+
+			if(leftController.TriggerHeld())
 			{
 
-				/* Perform a specific button response. */
-				ButtonPressResponse();
+				if(transform.position != offScreenPosition)
+				{
+
+					transform.position = offScreenPosition;
+
+				}
+
+			}
+			else
+			{
+
+				if(transform.position != originalPosition)
+				{
+
+					transform.position = originalPosition;
+
+				}
 
 			}
 
 		}
-
 
 	}
 

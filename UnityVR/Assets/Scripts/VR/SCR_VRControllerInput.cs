@@ -97,21 +97,6 @@ public class SCR_VRControllerInput : MonoBehaviour
 
 				}
 
-				/* This works for pressing on buttons, but hopefully my solution in the SCR_3DButton class will sort this out. */
-//				if (tempBaseUIElement.GetComponent<SCR_3DButton> () != null) 
-//				{
-//
-//					SCR_3DButton button = tempBaseUIElement.GetComponent<SCR_3DButton> ();
-//
-//					if (TriggerPressed ()) 
-//					{
-//
-//						button.ButtonPressResponse ();
-//
-//					}
-//
-//				}
-
 			}
 
 		}
