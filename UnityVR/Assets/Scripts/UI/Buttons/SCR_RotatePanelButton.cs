@@ -31,7 +31,7 @@ public class SCR_RotatePanelButton : SCR_3DButton
 	private const int targetAngle = 90;									/* Used to set the current target angle for the rotation. */
 	private bool shouldRotate = false;									/* Indicates if the button should rotate the panel or not. */
 	private Vector3 offScreenPosition = Vector3.zero;
-	private Vector3 originalPosition = Vector3.zero;
+	private Vector3 originalVRPosition = Vector3.zero;
 	private bool doOnce = true;
 
 	/* Methods. */
@@ -227,11 +227,11 @@ public class SCR_RotatePanelButton : SCR_3DButton
 
 			if (name == "Right Arrow") 
 			{
-				originalPosition = new Vector3 (leftController.transform.position.x + 0.3f, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
+				originalVRPosition = new Vector3 (leftController.transform.position.x + 0.2f, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
 			} 
 			else 
 			{
-				originalPosition = new Vector3 (leftController.transform.position.x - 0.3f, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
+				originalVRPosition = new Vector3 (leftController.transform.position.x - 0.4f, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
 			}
 
 			if(leftController.TriggerHeld())
@@ -248,10 +248,10 @@ public class SCR_RotatePanelButton : SCR_3DButton
 			else
 			{
 
-				if(transform.position != originalPosition)
+				if(transform.position != originalVRPosition)
 				{
 
-					transform.position = originalPosition;
+					transform.position = originalVRPosition;
 
 				}
 
