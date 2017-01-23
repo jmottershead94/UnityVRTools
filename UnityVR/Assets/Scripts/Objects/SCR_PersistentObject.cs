@@ -215,4 +215,16 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		set { id = value; }
 	}
 
+	public Material DefaultMaterial
+	{
+		get { return defaultMaterial; }
+		set { defaultMaterial = value; }
+	}
+
+	public Material CurrentMaterial
+	{
+		get { return currentMaterial; }
+		set { currentMaterial = value; }
+	}
+
 }

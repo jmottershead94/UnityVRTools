@@ -120,6 +120,9 @@ public class SCR_SceneData : MonoBehaviour
 		/* Saving the current persistent object data (Primitive Type and Object ID). */
 		savingPersistentObject.ObjectType 	= referencePersistentObject.ObjectType;
 		savingPersistentObject.ID 			= referencePersistentObject.ID;
+		savingPersistentObject.Red			= referencePersistentObject.DefaultMaterial.color.r;
+		savingPersistentObject.Green		= referencePersistentObject.DefaultMaterial.color.g;
+		savingPersistentObject.Blue			= referencePersistentObject.DefaultMaterial.color.b;
 
 	}
 
@@ -198,8 +201,10 @@ public class SCR_SceneData : MonoBehaviour
 		loadingPersistentObject.transform.parent 		= scene.transform;
 
 		/* Loading the current persistent object data (Primitive Type and Object ID). */
-		loadingPersistentObject.ObjectType 	= referencePersistentObject.ObjectType;
-		loadingPersistentObject.ID 			= referencePersistentObject.ID;
+		loadingPersistentObject.ObjectType 				= referencePersistentObject.ObjectType;
+		loadingPersistentObject.ID 						= referencePersistentObject.ID;
+		loadingPersistentObject.DefaultMaterial.color 	= new Color(referencePersistentObject.Red, referencePersistentObject.Green, referencePersistentObject.Blue);
+		loadingPersistentObject.CurrentMaterial.color 	= loadingPersistentObject.DefaultMaterial.color;
 
 	}
 
@@ -314,6 +319,7 @@ class PersistentObjectData
 	private float scaleX, scaleY, scaleZ;			/* Used for storing the current scale. */
 	private PrimitiveType primitiveType;			/* Used to store the current primitive type of the object. */
 	private int id;									/* Used to store the current ID of the object. */
+	private float red, green, blue;					/* Used to store the current colour of the object material. */
 
 	/* Methods. */
 	/* Getters/Setters. */
@@ -386,6 +392,24 @@ class PersistentObjectData
 	{
 		get { return id; }
 		set { id = value; }
+	}
+
+	public float Red
+	{
+		get { return red; }
+		set { red = value; }
+	}
+
+	public float Green
+	{
+		get { return green; }
+		set { green = value; }
+	}
+
+	public float Blue
+	{
+		get { return blue; }
+		set { blue = value; }
 	}
 
 }
