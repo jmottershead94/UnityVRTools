@@ -22,7 +22,7 @@ using System.Collections.Generic;
 /* Scene editor IS A game object, therefore inherits from it. */
 public class SCR_SceneEditor : MonoBehaviour 
 {
-
+#region Attributes
 	/* Attributes. */
 	[SerializeField]	private List<SCR_PersistentObject> sceneObjects = null;		/* The current list of scene objects. */
 
@@ -42,7 +42,9 @@ public class SCR_SceneEditor : MonoBehaviour
 
 	private SCR_VRControllerInput leftController = null;
 	private SCR_VRControllerInput rightController = null;
+#endregion
 
+#region Awake
 	/* Methods. */
 	/*
 	*
@@ -58,7 +60,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		sceneObjects = new List<SCR_PersistentObject>();
 
 	}
+#endregion
 
+#region Spawn Primitive
 	/*
 	*
 	*	Overview
@@ -92,7 +96,9 @@ public class SCR_SceneEditor : MonoBehaviour
         sceneObjects.Add(tempPersistentObject);
 
 	}
+#endregion
 
+#region Rotation
 	/*
 	*
 	*	Overview
@@ -106,8 +112,78 @@ public class SCR_SceneEditor : MonoBehaviour
 	*
 	*/
 	private void CheckRotation(SCR_PersistentObject persistentObject)
-	{}
+	{
 
+		/* If the I key has been pressed. */
+		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
+		/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the translation increment attribute. */
+		if(Input.GetKey(KeyCode.I))
+		{
+
+			/* Set the new rotation of the object. */ 
+			persistentObject.transform.Rotate(rotationIncrement.x, 0.0f, 0.0f);
+
+		}
+
+		/* If the J key has been pressed. */
+		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
+		/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
+		if(Input.GetKey(KeyCode.J))
+		{
+
+			/* Set the new rotation of the object. */ 
+			persistentObject.transform.Rotate(0.0f, rotationIncrement.y, 0.0f);
+
+		}
+
+		/* If the K key has been pressed. */
+		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
+		/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
+		if(Input.GetKey(KeyCode.K))
+		{
+
+			/* Set the new rotation of the object. */ 
+			persistentObject.transform.Rotate(-rotationIncrement.x, 0.0f, 0.0f);
+
+		}
+
+		/* If the L key has been pressed. */
+		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
+		/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
+		if(Input.GetKey(KeyCode.L))
+		{
+
+			/* Set the new rotation of the object. */ 
+			persistentObject.transform.Rotate(0.0f, -rotationIncrement.y, 0.0f);
+
+		}
+
+		/* If the U key has been pressed. */
+		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
+		/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the translation increment attribute. */
+		if(Input.GetKey(KeyCode.U))
+		{
+
+			/* Set the new rotation of the object. */ 
+			persistentObject.transform.Rotate(0.0f, 0.0f, rotationIncrement.z);
+
+		}
+
+		/* If the O key has been pressed. */
+		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
+		/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the translation increment attribute. */
+		if(Input.GetKey(KeyCode.O))
+		{
+
+			/* Set the new rotation of the object. */ 
+			persistentObject.transform.Rotate(0.0f, 0.0f, -rotationIncrement.z);
+
+		}
+
+	}
+#endregion
+
+#region Scale
 	/*
 	*
 	*	Overview
@@ -196,7 +272,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		persistentObject.transform.localScale = tempScale;
 
 	}
+#endregion
 
+#region Translations
 	/*
 	*
 	*	Overview
@@ -279,7 +357,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
+#endregion
 
+#region VR Rotation
 	/*
 	*
 	*	Overview
@@ -412,7 +492,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
+#endregion
 
+#region VR Scale
 	/*
 	*
 	*	Overview
@@ -550,7 +632,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
+#endregion
 
+#region VR Translations
 	/*
 	*
 	*	Overview
@@ -568,14 +652,14 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		if(GameObject.Find("Controller (left)") != null)
 		{
-
+			
 			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
 
 		}
 
 		if(GameObject.Find("Controller (right)") != null)
 		{
-
+			
 			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
 
 		}
@@ -684,7 +768,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
-		
+#endregion
+
+#region Object Manipulation	
 	/*
 	*
 	*	Overview
@@ -712,7 +798,7 @@ public class SCR_SceneEditor : MonoBehaviour
 		/* Otherwise, the user is currently manipulating the rotation of the object. */
 		else if(currentTransformState == TransformState.rotation)
 		{
-
+			
 			/* Check any input for rotation manipulation. */
 			CheckRotation(persistentObject);	
 			CheckRotationVR (persistentObject);
@@ -728,9 +814,10 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		}
 
-
 	}
+#endregion
 
+#region Highlighted Object Check
 	/*
 	*
 	*	Overview
@@ -758,7 +845,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
+#endregion
 
+#region Transform State Check
 	/*
 	*
 	*	Overview
@@ -781,7 +870,6 @@ public class SCR_SceneEditor : MonoBehaviour
 			{
 
 				/* Set the current transform state to translation. */
-				print("Translating.");
 				currentTransformState = TransformState.translation;
 
 			}
@@ -797,7 +885,6 @@ public class SCR_SceneEditor : MonoBehaviour
 			{
 
 				/* Set the current transform state to rotation. */
-				print("Rotating.");
 				currentTransformState = TransformState.rotation;
 
 			}
@@ -813,7 +900,6 @@ public class SCR_SceneEditor : MonoBehaviour
 			{
 
 				/* Set the current transform state to scale. */
-				print("Scaling.");
 				currentTransformState = TransformState.scale;
 
 			}
@@ -821,7 +907,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
+#endregion
 
+#region Update
 	/*
 	*
 	*	Overview
@@ -839,7 +927,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		CheckForHighlightedObjects();
 
 	}
+#endregion
 
+#region Getters / Setters
 	/* Getters. */
 	/* This will allow us to get/set the current list of persistent objects in the scene. */
 	public List<SCR_PersistentObject> Objects
@@ -853,5 +943,6 @@ public class SCR_SceneEditor : MonoBehaviour
 		get { return currentTransformState; }
 		set { currentTransformState = value; }
 	}
+#endregion
 
 }
