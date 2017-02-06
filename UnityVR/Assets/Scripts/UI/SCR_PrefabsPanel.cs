@@ -89,21 +89,29 @@ public class SCR_PrefabsPanel : SCR_Panel
 
 		for(int i = 0; i < prefabPreviews.Count; i++)
 		{
-			GameObject prefabPreview = Resources.Load("Standard VR Assets/PRE_TexturePreview", typeof (GameObject)) as GameObject;
+			GameObject prefabPreview = Resources.Load("Standard VR Assets/PRE_PrefabButton", typeof (GameObject)) as GameObject;
 			prefabPreview = Instantiate(prefabPreview, transform.position, Quaternion.identity) as GameObject;
 			prefabPreview.name = prefabs[i].name;
 			prefabPreview.transform.SetParent(transform);
 
 			Transform label = transform.FindChild("Label").transform;
-			prefabPreview.transform.position = new Vector3(label.position.x, label.position.y - 1.25f, label.position.z - 0.3f);
+			prefabPreview.transform.position = new Vector3(label.position.x + (i * 0.5f), label.position.y - 1.25f, label.position.z - 0.3f);
 			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
 		}
+
 	}
 
 	void Start () 
-	{}
+	{
+		//AddPrefabs(filePathToStandardPrefabs);
+	}
 
 	void Update () 
 	{}
+
+	public List<GameObject> Prefabs
+	{
+		get { return prefabs;}
+	}
 
 }

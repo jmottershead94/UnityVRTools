@@ -27,6 +27,7 @@ public class SCR_BaseUIElement : MonoBehaviour
 	protected SCR_VRControllerInput leftController = null;
 	protected bool isInFocus = false;							/* Used to indicate if this game object is in focus or not. */
 
+
 	/* Methods. */
 	/* Delegates. */
 	public delegate void UIResponseDelegate();
