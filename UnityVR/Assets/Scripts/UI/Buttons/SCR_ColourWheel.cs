@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Microsoft.Win32;
-
 public class SCR_ColourWheel : SCR_3DButton 
 {
 

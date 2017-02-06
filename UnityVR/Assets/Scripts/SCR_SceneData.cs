@@ -16,6 +16,7 @@
 
 /* Unity includes here.*/
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Collections;
@@ -27,13 +28,14 @@ public class SCR_SceneData : MonoBehaviour
 {
 
 	/* Attributes. */
-	private const string sceneDataFilename = "/SceneData.dat";	/* The file name of the scene that we are saving. */
-	private string format = "dd mm yyyy  hh:mm";				/* The format to be used for the data. */
-	private string loadDate;									/* The current load date of the data. */
-	private string saveDate;									/* The current save date of the data. */
-	private DateTime now = DateTime.Now;						/* What date/time it is now. */
-	private SCR_SceneEditor scene;								/* Accessing the current scene. */
-	private static SCR_SceneData sceneDataInstance;				/* The current instance of scene data for a singleton design and to allow access between scenes. */
+	private const string sceneDataFilename = "/SceneData.dat";				/* The file name of the scene that we are saving. */
+	private string format = "dd mm yyyy  hh:mm";							/* The format to be used for the data. */
+	private string loadDate;												/* The current load date of the data. */
+	private string saveDate;												/* The current save date of the data. */
+	private DateTime now = DateTime.Now;									/* What date/time it is now. */
+	private SCR_SceneEditor scene;											/* Accessing the current scene. */
+	private static SCR_SceneData sceneDataInstance;							/* The current instance of scene data for a singleton design and to allow access between scenes. */
+	private string filePath = "";
 
 	/* Methods. */
 	/*
@@ -74,6 +76,8 @@ public class SCR_SceneData : MonoBehaviour
 			Destroy(gameObject);
 
 		}
+
+		filePath = Application.dataPath + sceneDataFilename;
 
 	}
 
@@ -126,6 +130,20 @@ public class SCR_SceneData : MonoBehaviour
 
 	}
 
+	private void AddObjectsToScene(Scene newScene)
+	{
+
+		/* Looping through the amount of objects there are in the current scene. */
+		for(int i = 0; i < scene.Objects.Count; i++)
+		{
+
+			/* Set the game objects from the current scene to the new scene. */
+			newScene.GetRootGameObjects().SetValue(scene.Objects[i], i);
+
+		}
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -144,8 +162,8 @@ public class SCR_SceneData : MonoBehaviour
 		List<PersistentObjectData> tempSceneObjectData = new List<PersistentObjectData>();
 
 		/* Creating a file to save the local scene data. */
-		FileStream tempFile = File.Create(Application.persistentDataPath + sceneDataFilename);
-	
+		FileStream tempFile = File.Create(filePath);
+		
 		/* Looping through the amount of objects there are in the current scene. */
 		for(int i = 0; i < scene.Objects.Count; i++)
 		{
@@ -166,6 +184,25 @@ public class SCR_SceneData : MonoBehaviour
 
 		/* Close the text file. */
 		tempFile.Close();
+
+		/* Store the name of the scene. */
+		string sceneName = "SCN_RenameMe_" + sceneDataFilename;
+
+		/* If the scene does not already exist. */
+		if(!SceneManager.GetSceneByName(sceneName).IsValid())
+		{
+			/* Create the scene. */
+			SceneManager.CreateScene(sceneName);
+
+			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
+
+		}
+		else
+		{
+
+			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
+
+		}
 
 	}
 
@@ -226,14 +263,14 @@ public class SCR_SceneData : MonoBehaviour
 		loadDate = (now.ToString(format));
 
 		/* If the scene data file exists. */
-		if(File.Exists(Application.persistentDataPath + sceneDataFilename))
+		if(File.Exists(filePath))
 		{
 
 			/* Initialising local attributes. */
 			BinaryFormatter tempBinary = new BinaryFormatter();
 
 			/* Opening the file to the current scene being edited. */
-			FileStream tempFile = File.Open(Application.persistentDataPath + sceneDataFilename, FileMode.Open);
+			FileStream tempFile = File.Open(filePath, FileMode.Open);
 
 			/* Deserializing the data from the text file, and casting it to a list data structure of persistent object data. */
 			/* Basically gaining access to any scene object data we saved previously. */
@@ -242,36 +279,39 @@ public class SCR_SceneData : MonoBehaviour
 			/* Close the text file. */
 			tempFile.Close();
 
-			/* If we currently have objects in our scene. */
-			if(scene.Objects.Count > 0)
+			if(scene.Objects != null)
 			{
-
-				/* Loop through each object in the current scene. */
-				for(int i = 0; i < scene.Objects.Count; i++)
+				/* If we currently have objects in our scene. */
+				if(scene.Objects.Count > 0)
 				{
 
-					/* If the application is currently playing. */
-					if(Application.isPlaying)
+					/* Loop through each object in the current scene. */
+					for(int i = 0; i < scene.Objects.Count; i++)
 					{
 
-						/* Destroy the current game object. */
-						Destroy(scene.Objects[i].gameObject);
+						/* If the application is currently playing. */
+						if(Application.isPlaying)
+						{
+
+							/* Destroy the current game object. */
+							Destroy(scene.Objects[i].gameObject);
+
+						}
+						/* Otherwise, the application is being used in the editor. */
+						else
+						{
+
+							/* Destroy the current game object. */
+							DestroyImmediate(scene.Objects[i].gameObject);
+
+						}
 
 					}
-					/* Otherwise, the application is being used in the editor. */
-					else
-					{
 
-						/* Destroy the current game object. */
-						DestroyImmediate(scene.Objects[i].gameObject);
-
-					}
-
+					/* Clear the current scene, because we are about to load and don't want duplicates. */
+					scene.Objects.Clear();
+					
 				}
-
-				/* Clear the current scene, because we are about to load and don't want duplicates. */
-				scene.Objects.Clear();
-				
 			}
 
 			/* Loop through each of the objects from the text file. */

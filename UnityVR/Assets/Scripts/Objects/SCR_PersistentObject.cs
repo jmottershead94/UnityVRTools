@@ -30,6 +30,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	private Material currentMaterial = null;				/* The current material attached to the game object, will be used to update the current material of the mesh renderer. */
 	private Material glowingMaterial = null;				/* Stores the material used to indicate that the game object has been highlighted. */
 	private Material defaultMaterial = null;				/* Stores the default material used originally for the game object. */
+	private Material changingMaterial = null;
 
 	/* Methods. */
 	/* Virtual. */
@@ -55,6 +56,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		currentMaterial = GetComponent<MeshRenderer>().materials[0];
 		defaultMaterial = currentMaterial;
 		glowingMaterial = Resources.Load("Materials/MAT_ObjectSelected") as Material;
+		changingMaterial = Resources.Load("Materials/MAT_ChangingColour") as Material;
 
 	}
 
@@ -225,6 +227,19 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	{
 		get { return currentMaterial; }
 		set { currentMaterial = value; }
+	}
+
+	public Material HighLightedMaterial
+	{
+		get { return glowingMaterial; }
+		set { glowingMaterial = value; }
+	}
+
+
+	public Material ChangingMaterial
+	{
+		get { return changingMaterial; }
+		set { changingMaterial = value; }
 	}
 
 }
