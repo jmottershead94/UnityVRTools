@@ -97,8 +97,6 @@ public class SCR_VREditorWindow : EditorWindow
 
 				sceneData.Load();
 
-				Debug.Log("Should load scene?");
-
 			}
 
 		}
@@ -108,16 +106,14 @@ public class SCR_VREditorWindow : EditorWindow
 	void WindowButtons()
 	{
 
-		if(GUILayout.Button("Use VR"))
-		{
+//		if(GUI.Button(new Rect(new Vector2(0.0f, 150.0f), new Vector2(200.0f, 100.0f)), "Use VR"))
+//		{
+//
+//			PlayVREditor();
+//
+//		}
 
-			PlayVREditor();
-
-		}
-
-		GUILayout.Space(10.0f);
-
-		if(GUILayout.Button("Load Latest Scene"))
+		if(GUI.Button(new Rect(new Vector2(0.0f, 125.0f), new Vector2(200.0f, 100.0f)), "Load Latest Scene"))
 		{
 
 			LoadLatestVRScene();
@@ -130,6 +126,14 @@ public class SCR_VREditorWindow : EditorWindow
 	{
 
 		GUILayout.Label("VR Editor", EditorStyles.boldLabel);
+
+		GUILayout.Space(10.0f);
+
+		GUILayout.Label("Loading Objects from VR Scene", EditorStyles.boldLabel);
+
+		GUILayout.Space(10.0f);
+
+		GUILayout.Label("If you want to populate a new scene with the same scene you created in VR, you can use the 'Load Latest Scene' button to load the last VR scene you worked on into whatever current scene you have open.", EditorStyles.wordWrappedLabel);
 
 		GUILayout.Space(10.0f);
 
