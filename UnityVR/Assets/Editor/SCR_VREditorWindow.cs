@@ -7,7 +7,8 @@ public class SCR_VREditorWindow : EditorWindow
 {
 
 	/* Attributes. */
-
+	private SCR_SceneData sceneData = null;
+	private SCR_SceneEditor sceneEditor = null;
 
 	/* Methods. */
 	[MenuItem("Window/VR Editor/Show")]
@@ -32,6 +33,38 @@ public class SCR_VREditorWindow : EditorWindow
 	{
 
 		titleContent.text = "VR Editor";
+
+		if(GameObject.Find("Scene Data") != null)
+		{
+
+			sceneData = GameObject.Find("Scene Data").GetComponent<SCR_SceneData>();
+
+		}
+		else
+		{
+
+			GameObject newGameObject = new GameObject("Scene Data");
+			newGameObject.AddComponent<SCR_SceneData>();
+
+			Debug.Log("Making new Scene Data script.");
+
+		}
+
+		if(GameObject.Find("Scene Editor") != null)
+		{
+
+			sceneEditor = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
+
+		}
+		else
+		{
+
+			GameObject newGameObject = new GameObject("Scene Editor");
+			newGameObject.AddComponent<SCR_SceneEditor>();
+
+			Debug.Log("Making new Scene Editor script.");
+
+		}
 
 	}
 
@@ -62,11 +95,9 @@ public class SCR_VREditorWindow : EditorWindow
 			if(GameObject.Find("Scene Data") != null)
 			{
 
-				
-				SCR_SceneData sceneData = GameObject.Find("Scene Data").GetComponent<SCR_SceneData>();
-
-
 				sceneData.Load();
+
+				Debug.Log("Should load scene?");
 
 			}
 

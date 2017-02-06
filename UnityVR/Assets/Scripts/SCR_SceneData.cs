@@ -185,22 +185,60 @@ public class SCR_SceneData : MonoBehaviour
 		/* Close the text file. */
 		tempFile.Close();
 
-		/* Store the name of the scene. */
-		string sceneName = "SCN_RenameMe_" + sceneDataFilename;
+//		/* Store the name of the scene. */
+//		string sceneName = "SCN_RenameMe_" + sceneDataFilename;
+//
+//		/* If the scene does not already exist. */
+//		if(!SceneManager.GetSceneByName(sceneName).IsValid())
+//		{
+//			/* Create the scene. */
+//			SceneManager.CreateScene(sceneName);
+//
+//			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
+//
+//		}
+//		else
+//		{
+//
+//			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
+//
+//		}
 
-		/* If the scene does not already exist. */
-		if(!SceneManager.GetSceneByName(sceneName).IsValid())
+	}
+
+	private void LoadMaterials(ref SCR_PersistentObject loadingPersistentObject, Color colour)
+	{
+
+		Renderer renderer = loadingPersistentObject.GetComponent<Renderer>();
+		Material tempMaterial = new Material(renderer.sharedMaterial);
+		tempMaterial.color = colour;
+
+		if(loadingPersistentObject.CurrentMaterial != null)
 		{
-			/* Create the scene. */
-			SceneManager.CreateScene(sceneName);
 
-			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
+			loadingPersistentObject.CurrentMaterial.color = colour;
+
+		}
+		else
+		{
+			
+			renderer.sharedMaterial = tempMaterial;
+			loadingPersistentObject.CurrentMaterial = tempMaterial;
+			loadingPersistentObject.CurrentMaterial.color = tempMaterial.color;
+
+		}
+
+		if(loadingPersistentObject.DefaultMaterial != null)
+		{
+
+			loadingPersistentObject.DefaultMaterial.color = colour;
 
 		}
 		else
 		{
 
-			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
+			loadingPersistentObject.DefaultMaterial = tempMaterial;
+			loadingPersistentObject.DefaultMaterial.color = tempMaterial.color;
 
 		}
 
@@ -240,9 +278,10 @@ public class SCR_SceneData : MonoBehaviour
 		/* Loading the current persistent object data (Primitive Type and Object ID). */
 		loadingPersistentObject.ObjectType 				= referencePersistentObject.ObjectType;
 		loadingPersistentObject.ID 						= referencePersistentObject.ID;
-		loadingPersistentObject.DefaultMaterial.color 	= new Color(referencePersistentObject.Red, referencePersistentObject.Green, referencePersistentObject.Blue);
-		loadingPersistentObject.CurrentMaterial.color 	= loadingPersistentObject.DefaultMaterial.color;
 
+		Color loadedColour = new Color(referencePersistentObject.Red, referencePersistentObject.Green, referencePersistentObject.Blue);
+
+		LoadMaterials(ref loadingPersistentObject, loadedColour);
 	}
 
 	/*
@@ -255,9 +294,14 @@ public class SCR_SceneData : MonoBehaviour
 	public void Load()
 	{
 
+		if(filePath == "")
+		{
+			filePath = Application.dataPath + sceneDataFilename;
+		}
+
 		/* Find the scene editor script in the current scene. */
 		/* Place this in to show that the scene saves correctly, and to allow the application to load using the editor. */
-		/* scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>(); */
+		scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
 
 		/* Record the load date. */
 		loadDate = (now.ToString(format));
