@@ -30,8 +30,8 @@ public class SCR_PrefabsPanel : SCR_Panel
 
 	/* Attributes. */
 	private string filePathToStandardPrefabs = "";
-	//private string filePathToResourcePrefabs = "";
 	[SerializeField]	private List<GameObject> prefabs = null;
+	[SerializeField]	List<Texture2D> prefabPreviews = null;
 
 	/* Methods. */
 	/*
@@ -46,6 +46,7 @@ public class SCR_PrefabsPanel : SCR_Panel
 		
 		filePathToStandardPrefabs = "Assets/Prefabs/";
 		prefabs = new List<GameObject>();
+		prefabPreviews = new List<Texture2D>();
 		AddPrefabs(filePathToStandardPrefabs);
 
 	}
@@ -53,25 +54,19 @@ public class SCR_PrefabsPanel : SCR_Panel
 	private void AddPrefabs(string filePath)
 	{
 
+		/* Loading prefabs from the standard file path. */
 		string searchPattern = "*";
 		SearchOption searchOption = SearchOption.AllDirectories;
-
-		//Debug.Log(file.Name);
-		//DirectoryInfo directoryInfo = new DirectoryInfo(filePathToStandardPrefabs);
-		//FileInfo[] fileInfo = directoryInfo.GetFiles();
-
-		/* This will search all of teh directories under  */
 		string[] filePaths = Directory.GetFiles(filePath, searchPattern, searchOption);
 
 		if(filePaths.Length > 0)
 		{
-			Debug.Log("Files found.");
-
 			foreach(string path in filePaths)
 			{
 				if(path.EndsWith(".meta")) continue;
 
 				GameObject tempPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
+				prefabPreviews.Add(AssetPreview.GetAssetPreview(tempPrefab));
 
 				if(tempPrefab != null)
 				{
@@ -80,16 +75,29 @@ public class SCR_PrefabsPanel : SCR_Panel
 			}
 		}
 
+		/* Loading prefabs from resources folder. */
 		GameObject[] resourcePrefabs = Resources.LoadAll<GameObject>("Prefabs");
 
 		if(resourcePrefabs.Length > 0)
 		{
-			foreach(GameObject tempObject in resourcePrefabs)
+			foreach(GameObject tempPrefab in resourcePrefabs)
 			{
-				prefabs.Add(tempObject);
+				prefabPreviews.Add(AssetPreview.GetAssetPreview(tempPrefab));
+				prefabs.Add(tempPrefab);
 			}
 		}
 
+		for(int i = 0; i < prefabPreviews.Count; i++)
+		{
+			GameObject prefabPreview = Resources.Load("Standard VR Assets/PRE_TexturePreview", typeof (GameObject)) as GameObject;
+			prefabPreview = Instantiate(prefabPreview, transform.position, Quaternion.identity) as GameObject;
+			prefabPreview.name = prefabs[i].name;
+			prefabPreview.transform.SetParent(transform);
+
+			Transform label = transform.FindChild("Label").transform;
+			prefabPreview.transform.position = new Vector3(label.position.x, label.position.y - 1.25f, label.position.z - 0.3f);
+			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
+		}
 	}
 
 	void Start () 
