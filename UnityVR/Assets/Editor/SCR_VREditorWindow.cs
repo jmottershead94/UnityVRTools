@@ -80,9 +80,7 @@ public class SCR_VREditorWindow : EditorWindow
 			/* May want to use this at some other point. */
 			/* EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive); */
 
-
 		}
-
 
 	}
 

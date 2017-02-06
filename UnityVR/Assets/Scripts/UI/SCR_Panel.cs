@@ -16,9 +16,13 @@
 
 /* Unity includes here. */
 using UnityEngine;
+using System;
+using System.IO;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 
-/* Detailed window IS A UI element, therefore inherits from it. */
+/* Panel IS A UI element, therefore inherits from it. */
 public class SCR_Panel : SCR_BaseUIElement 
 {
 
