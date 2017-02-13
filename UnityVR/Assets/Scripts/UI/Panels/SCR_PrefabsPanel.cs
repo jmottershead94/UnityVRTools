@@ -25,13 +25,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Win32;
 
 /* Prefabs panel IS A panel, therefore inherits from it. */
-public class SCR_PrefabsPanel : SCR_Panel 
+public class SCR_PrefabsPanel : SCR_FileLoadingPanel 
 {
 
 	/* Attributes. */
-	private string filePathToStandardPrefabs = "";
-	[SerializeField]	private List<GameObject> prefabs = null;
-	[SerializeField]	List<Texture2D> prefabPreviews = null;
+	[HideInInspector] 	[SerializeField]	private List<GameObject> prefabs = null;
+	[HideInInspector]	[SerializeField]	private List<Texture2D> prefabPreviews = null;
 
 	/* Methods. */
 	/*
@@ -41,21 +40,20 @@ public class SCR_PrefabsPanel : SCR_Panel
 	*	This will be called before initialisation.
 	*
 	*/
-	new private void Awake()
+	new protected void Awake()
 	{
-		
-		filePathToStandardPrefabs = "Assets/Prefabs/";
+		base.Awake();
+
 		prefabs = new List<GameObject>();
 		prefabPreviews = new List<Texture2D>();
-		AddPrefabs(filePathToStandardPrefabs);
-
+		AddPrefabs(filePathToAssets);
 	}
 
 	private void AddPrefabs(string filePath)
 	{
 
 		/* Loading prefabs from the standard file path. */
-		string searchPattern = "*";
+		string searchPattern = filesToLookFor;
 		SearchOption searchOption = SearchOption.AllDirectories;
 		string[] filePaths = Directory.GetFiles(filePath, searchPattern, searchOption);
 
@@ -63,7 +61,7 @@ public class SCR_PrefabsPanel : SCR_Panel
 		{
 			foreach(string path in filePaths)
 			{
-				if(path.EndsWith(".meta")) continue;
+				if(path.EndsWith(fileExtensionToIgnore)) continue;
 
 				GameObject tempPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
 				prefabPreviews.Add(AssetPreview.GetAssetPreview(tempPrefab));
@@ -76,7 +74,7 @@ public class SCR_PrefabsPanel : SCR_Panel
 		}
 
 		/* Loading prefabs from resources folder. */
-		GameObject[] resourcePrefabs = Resources.LoadAll<GameObject>("Prefabs");
+		GameObject[] resourcePrefabs = Resources.LoadAll<GameObject>(folderToCheck);
 
 		if(resourcePrefabs.Length > 0)
 		{
@@ -95,7 +93,7 @@ public class SCR_PrefabsPanel : SCR_Panel
 			prefabPreview.transform.SetParent(transform);
 
 			Transform label = transform.FindChild("Label").transform;
-			prefabPreview.transform.position = new Vector3((label.position.x + 0.85f) - (i * 1.25f), label.position.y - 1.25f, label.position.z - 0.3f);
+			prefabPreview.transform.position = new Vector3((label.position.x + 0.85f) - (i * 1.25f), (label.position.y - 1.25f), label.position.z - 0.3f);
 			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
 		}
 
@@ -111,7 +109,7 @@ public class SCR_PrefabsPanel : SCR_Panel
 
 	public List<GameObject> Prefabs
 	{
-		get { return prefabs;}
+		get { return prefabs; }
 	}
 
 }
