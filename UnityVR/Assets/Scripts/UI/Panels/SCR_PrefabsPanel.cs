@@ -19,10 +19,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
-using Microsoft.Win32;
 
 /* Prefabs panel IS A panel, therefore inherits from it. */
 public class SCR_PrefabsPanel : SCR_FileLoadingPanel 
@@ -31,6 +28,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 	/* Attributes. */
 	[HideInInspector] 	[SerializeField]	private List<GameObject> prefabs = null;
 	[HideInInspector]	[SerializeField]	private List<Texture2D> prefabPreviews = null;
+	private SCR_3DGridView gridView = null;
 
 	/* Methods. */
 	/*
@@ -46,6 +44,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 
 		prefabs = new List<GameObject>();
 		prefabPreviews = new List<Texture2D>();
+		gridView = GetComponent<SCR_3DGridView>();
 		AddPrefabs(filePathToAssets);
 	}
 
@@ -56,6 +55,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 		string searchPattern = filesToLookFor;
 		SearchOption searchOption = SearchOption.AllDirectories;
 		string[] filePaths = Directory.GetFiles(filePath, searchPattern, searchOption);
+		Vector3 startingPosition = transform.FindChild("Label").transform.position;
 
 		if(filePaths.Length > 0)
 		{
@@ -92,20 +92,15 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 			prefabPreview.name = prefabs[i].name;
 			prefabPreview.transform.SetParent(transform);
 
-			Transform label = transform.FindChild("Label").transform;
-			prefabPreview.transform.position = new Vector3((label.position.x + 0.85f) - (i * 1.25f), (label.position.y - 1.25f), label.position.z - 0.3f);
+			//Transform label = transform.FindChild("Label").transform;
+			//prefabPreview.transform.position = new Vector3((label.position.x + 0.85f) - (i * 1.25f), (label.position.y - 1.25f), label.position.z - 0.3f);
 			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
+			gridView.GridObjects.Add(prefabPreview);
 		}
 
+		// Align the grid elements.
+		gridView.AlignGridElements(startingPosition);
 	}
-
-	void Start () 
-	{
-		//AddPrefabs(filePathToStandardPrefabs);
-	}
-
-	void Update () 
-	{}
 
 	public List<GameObject> Prefabs
 	{

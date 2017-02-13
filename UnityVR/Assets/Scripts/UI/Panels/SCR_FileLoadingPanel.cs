@@ -1,16 +1,9 @@
 ﻿/* Unity includes here. */
-using UnityEngine;
-using UnityEditor;
 using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
-using Microsoft.Win32;
+using UnityEngine;
 
 public class SCR_FileLoadingPanel : SCR_Panel 
 {
-
 	/* Attributes. */
 	protected enum FileExtensions
 	{
@@ -22,10 +15,11 @@ public class SCR_FileLoadingPanel : SCR_Panel
 	protected const string fileExtensionToIgnore = ".meta";
 	protected string filePathToAssets = "";
 
-	[Header ("File Loading Panel Properties")]
+	[Header ("File Loading")]
 	[SerializeField]	protected FileExtensions fileExtension = FileExtensions.Prefabs;
-	[SerializeField]	protected string folderToCheck = "";
-	[SerializeField]	protected string filesToLookFor = "";
+	protected string folderToCheck = "";
+	protected string filesToLookFor = "";
+	protected UnityEngine.Object assetType;
 
 	/* Methods. */
 	/*
@@ -37,6 +31,7 @@ public class SCR_FileLoadingPanel : SCR_Panel
 	*/
 	new protected void Awake()
 	{
+
 		switch(fileExtension)
 		{
 			case FileExtensions.Audio:
@@ -63,13 +58,4 @@ public class SCR_FileLoadingPanel : SCR_Panel
 
 	}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
