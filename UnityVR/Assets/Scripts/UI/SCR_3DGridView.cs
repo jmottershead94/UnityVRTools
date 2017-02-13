@@ -9,7 +9,7 @@ public class SCR_3DGridView : SCR_BaseUIElement
 	[SerializeField] 	private int numberOfColumns = 2;
 	[SerializeField] 	private int numberOfRows = 2;
 	[SerializeField]	private float cellSize = 1.25f;
-	[SerializeField]	private List<GameObject> gridObjects = null;
+	private List<GameObject> gridObjects = null;
 	private List<Vector3> gridPositions = null;
 
 	/* Methods. */
@@ -35,7 +35,7 @@ public class SCR_3DGridView : SCR_BaseUIElement
 					gridPositions.Add(currentGridPosition);
 					currentGridPosition.x -= (column * cellSize);
 				}
-
+				
 				currentGridPosition.x = startingGridPosition.x;
 				currentGridPosition.y -= (row * cellSize);
 			}
@@ -44,7 +44,9 @@ public class SCR_3DGridView : SCR_BaseUIElement
 		if(gridObjects.Count > 0)
 		{
 			for(int i = 0; i < gridObjects.Count; i++)
+			{
 				gridObjects[i].transform.position = gridPositions[i];
+			}
 		}
 
 	}

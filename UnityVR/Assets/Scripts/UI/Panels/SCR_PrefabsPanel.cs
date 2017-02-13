@@ -90,10 +90,8 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 			GameObject prefabPreview = Resources.Load("Standard VR Assets/PRE_PrefabButton", typeof (GameObject)) as GameObject;
 			prefabPreview = Instantiate(prefabPreview, transform.position, Quaternion.identity) as GameObject;
 			prefabPreview.name = prefabs[i].name;
+			prefabPreview.transform.localScale = GameObject.Find("PRE_3DMenu").GetComponent<Transform>().localScale;
 			prefabPreview.transform.SetParent(transform);
-
-			//Transform label = transform.FindChild("Label").transform;
-			//prefabPreview.transform.position = new Vector3((label.position.x + 0.85f) - (i * 1.25f), (label.position.y - 1.25f), label.position.z - 0.3f);
 			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
 			gridView.GridObjects.Add(prefabPreview);
 		}
