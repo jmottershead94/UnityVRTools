@@ -95,7 +95,7 @@ public class SCR_PrefabsPanel : SCR_Panel
 			prefabPreview.transform.SetParent(transform);
 
 			Transform label = transform.FindChild("Label").transform;
-			prefabPreview.transform.position = new Vector3(label.position.x + (i * 0.5f), label.position.y - 1.25f, label.position.z - 0.3f);
+			prefabPreview.transform.position = new Vector3((label.position.x + 0.85f) - (i * 1.25f), label.position.y - 1.25f, label.position.z - 0.3f);
 			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
 		}
 

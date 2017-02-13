@@ -31,22 +31,15 @@ public class SCR_PrefabButton : SCR_3DButton
 		/* Looping through each of our prefabs. */
 		foreach(GameObject tempPrefab in prefabPanel.Prefabs)
 		{
-
 			/* If the name of the prefab is equal to the name of the button. */
 			if(tempPrefab.name == name)
 			{
-
-				/* Spawn in the prefab. */
-				GameObject tempGameObject = new GameObject(name);
-
 				if(tempPrefab != null)
 				{
-					tempGameObject = Instantiate(tempPrefab, spawner.position, Quaternion.identity) as GameObject;
+					GameObject tempGameObject = Instantiate(tempPrefab, spawner.position, Quaternion.identity) as GameObject;
 					tempGameObject.transform.SetParent(sceneEditor.transform);
 				}
-
 			}
-
 		}
 
 	}
