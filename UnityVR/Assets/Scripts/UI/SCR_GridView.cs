@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SCR_3DGridView : SCR_BaseUIElement 
+public class SCR_GridView : SCR_BaseUIElement 
 {
 
 	/* Attributes. */
@@ -23,9 +23,24 @@ public class SCR_3DGridView : SCR_BaseUIElement
 
 	public void AlignGridElements(Vector3 startingPosition)
 	{
+		if(gridObjects.Count < 1)
+			return;
+
+		int rowsNeeded = 0;
+
+		for(int i = 0; i < gridObjects.Count; i++)
+		{
+			if(i % 2 == 0)
+			{
+				rowsNeeded++;
+			}
+		}
+
+		numberOfRows = rowsNeeded;
+
 		if(numberOfRows > 0 && numberOfColumns > 0)
 		{
-			Vector3 startingGridPosition = new Vector3((startingPosition.x + 0.85f), (startingPosition.y - 1.25f), startingPosition.z - 0.3f);
+			Vector3 startingGridPosition = new Vector3((startingPosition.x + (cellSize * 0.75f)), (startingPosition.y - cellSize), startingPosition.z - 0.3f);
 			Vector3 currentGridPosition = startingGridPosition;
 
 			for(int row = 1; row <= numberOfRows; row++)

@@ -28,7 +28,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 	/* Attributes. */
 	[HideInInspector] 	[SerializeField]	private List<GameObject> prefabs = null;
 	[HideInInspector]	[SerializeField]	private List<Texture2D> prefabPreviews = null;
-	private SCR_3DGridView gridView = null;
+	private SCR_GridView gridView = null;
 
 	/* Methods. */
 	/*
@@ -44,7 +44,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 
 		prefabs = new List<GameObject>();
 		prefabPreviews = new List<Texture2D>();
-		gridView = GetComponent<SCR_3DGridView>();
+		gridView = GetComponent<SCR_GridView>();
 		AddPrefabs(filePathToAssets);
 	}
 
@@ -93,11 +93,18 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 			prefabPreview.transform.localScale = GameObject.Find("PRE_3DMenu").GetComponent<Transform>().localScale;
 			prefabPreview.transform.SetParent(transform);
 			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
-			gridView.GridObjects.Add(prefabPreview);
+
+			if(gridView != null && gridView.GridObjects != null)
+			{
+				gridView.GridObjects.Add(prefabPreview);
+			}
 		}
 
-		// Align the grid elements.
-		gridView.AlignGridElements(startingPosition);
+		if(gridView != null)
+		{
+			// Align the grid elements.
+			gridView.AlignGridElements(startingPosition);
+		}
 	}
 
 	public List<GameObject> Prefabs
