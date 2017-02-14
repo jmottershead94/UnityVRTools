@@ -13,7 +13,6 @@ public class SCR_PrefabButton : SCR_3DButton
 	{
 
 		base.Start();
-
 		prefabPanel = parentPanel.GetComponent<SCR_PrefabsPanel>();
 
 	}

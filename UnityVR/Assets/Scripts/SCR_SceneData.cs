@@ -81,6 +81,13 @@ public class SCR_SceneData : MonoBehaviour
 
 	}
 
+	private void SaveTransformData(GameObject savingGameObject, GameObject referenceGameObject)
+	{
+
+		
+
+	}
+
 	/*
 	*
 	*	Overview
@@ -127,6 +134,7 @@ public class SCR_SceneData : MonoBehaviour
 		savingPersistentObject.Red			= referencePersistentObject.DefaultMaterial.color.r;
 		savingPersistentObject.Green		= referencePersistentObject.DefaultMaterial.color.g;
 		savingPersistentObject.Blue			= referencePersistentObject.DefaultMaterial.color.b;
+		savingPersistentObject.Name			= referencePersistentObject.name;
 
 	}
 
@@ -178,6 +186,8 @@ public class SCR_SceneData : MonoBehaviour
 			tempSceneObjectData.Add(tempObjectData);
 
 		}
+
+	
 
 		/* Serializing the list of scene objects to a text file. */
 		tempBinary.Serialize(tempFile, tempSceneObjectData);
@@ -404,6 +414,7 @@ class PersistentObjectData
 	private PrimitiveType primitiveType;			/* Used to store the current primitive type of the object. */
 	private int id;									/* Used to store the current ID of the object. */
 	private float red, green, blue;					/* Used to store the current colour of the object material. */
+	private string name;							
 
 	/* Methods. */
 	/* Getters/Setters. */
@@ -494,6 +505,12 @@ class PersistentObjectData
 	{
 		get { return blue; }
 		set { blue = value; }
+	}
+
+	public string Name
+	{
+		get { return name; }
+		set { name = value; }
 	}
 
 }

@@ -56,6 +56,8 @@ public class SCR_LightButton : SCR_3DButton
 		gameObject.transform.position = spawner.position;
 		gameObject.transform.SetParent(sceneEditor.transform);
 		Light lightComponent = gameObject.AddComponent<Light>();
+		SCR_PersistentObject saveObjectComponent = gameObject.AddComponent<SCR_PersistentObject>();
+
 
 		switch(type)
 		{

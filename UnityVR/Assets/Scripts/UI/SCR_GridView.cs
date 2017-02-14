@@ -40,7 +40,7 @@ public class SCR_GridView : SCR_BaseUIElement
 
 		if(numberOfRows > 0 && numberOfColumns > 0)
 		{
-			Vector3 startingGridPosition = new Vector3((startingPosition.x + (cellSize * 0.75f)), (startingPosition.y - cellSize), startingPosition.z - 0.3f);
+			Vector3 startingGridPosition = new Vector3((startingPosition.x + (cellSize * 0.5f)), (startingPosition.y - cellSize), startingPosition.z - 0.3f);
 			Vector3 currentGridPosition = startingGridPosition;
 
 			for(int row = 1; row <= numberOfRows; row++)
