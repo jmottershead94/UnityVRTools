@@ -1,12 +1,13 @@
 fileFormatVersion: 2
 guid: f4f9b3cda307a804a9d392e5fa119536
-timeCreated: 1485269683
+timeCreated: 1487076064
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: SPR_UILabels_0
     21300002: SPR_UILabels_1
     21300004: SPR_UILabels_2
+    21300006: SPR_UILabels_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -60,9 +61,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 480
+        y: 741
         width: 1280
-        height: 240
+        height: 195
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -73,12 +74,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 6
-        y: 267
+        y: 497
         width: 950
-        height: 210
+        height: 220
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 1, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
@@ -86,9 +87,22 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 264
+        width: 1034
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SPR_UILabels_3
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 0
-        width: 1280
-        height: 254
+        width: 720
+        height: 218
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
