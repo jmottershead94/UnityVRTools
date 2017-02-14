@@ -52,7 +52,7 @@ public class SCR_GridView : SCR_BaseUIElement
 				}
 				
 				currentGridPosition.x = startingGridPosition.x;
-				currentGridPosition.y -= (row * cellSize);
+				currentGridPosition.y -= cellSize;
 			}
 		}
 
