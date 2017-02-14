@@ -187,7 +187,7 @@ public class SCR_SceneData : MonoBehaviour
 
 		}
 
-	
+		
 
 		/* Serializing the list of scene objects to a text file. */
 		tempBinary.Serialize(tempFile, tempSceneObjectData);

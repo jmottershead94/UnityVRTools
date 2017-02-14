@@ -36,7 +36,7 @@ public class SCR_PrefabButton : SCR_3DButton
 				if(tempPrefab != null)
 				{
 					GameObject tempGameObject = Instantiate(tempPrefab, spawner.position, Quaternion.identity) as GameObject;
-					tempGameObject.transform.SetParent(sceneEditor.transform);
+					tempGameObject.transform.SetParent(sceneEditor.transform.FindChild("GO"));
 				}
 			}
 		}

@@ -52,12 +52,10 @@ public class SCR_LightButton : SCR_3DButton
 	{
 
 		/* Spawns in a primitive game object at the spawn point. */
-		GameObject gameObject = new GameObject(lightName);
-		gameObject.transform.position = spawner.position;
-		gameObject.transform.SetParent(sceneEditor.transform);
-		Light lightComponent = gameObject.AddComponent<Light>();
-		SCR_PersistentObject saveObjectComponent = gameObject.AddComponent<SCR_PersistentObject>();
-
+		GameObject tempGameObject = new GameObject(lightName);
+		tempGameObject.transform.position = spawner.position;
+		tempGameObject.transform.SetParent(sceneEditor.transform.FindChild("GO"));
+		Light lightComponent = tempGameObject.AddComponent<Light>();
 
 		switch(type)
 		{
@@ -70,7 +68,7 @@ public class SCR_LightButton : SCR_3DButton
 			case LightType.Spot:
 			{
 				lightComponent.type = UnityEngine.LightType.Spot;
-				gameObject.transform.Rotate(90.0f, 0.0f, 0.0f);
+				lightComponent.transform.Rotate(90.0f, 0.0f, 0.0f);
 				lightComponent.intensity = 8.0f;
 				break;
 			}
