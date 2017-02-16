@@ -16,7 +16,6 @@ public class SCR_GridView : SCR_BaseUIElement
 	new protected void Awake () 
 	{
 		base.Awake();
-
 		gridObjects = new List<GameObject>();
 		gridPositions = new List<Vector3>();
 	}

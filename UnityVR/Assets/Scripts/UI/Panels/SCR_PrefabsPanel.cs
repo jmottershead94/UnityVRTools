@@ -35,13 +35,11 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 	*
 	*	Overview
 	*	--------
-	*	This will be called before initialisation.
+	*	This will be called for initialisation.
 	*
 	*/
-	new protected void Awake()
+	protected void Start()
 	{
-		base.Awake();
-
 		prefabs = new List<GameObject>();
 		prefabPreviews = new List<Texture2D>();
 		gridView = GetComponent<SCR_GridView>();
