@@ -36,6 +36,8 @@ public class SCR_SceneData : MonoBehaviour
 	private SCR_SceneEditor scene;											/* Accessing the current scene. */
 	private static SCR_SceneData sceneDataInstance;							/* The current instance of scene data for a singleton design and to allow access between scenes. */
 	private string filePath = "";
+	private SaveLoadMenu sceneDataControls = null;
+	private string sceneName = "";
 
 	/* Methods. */
 	/*
@@ -78,13 +80,8 @@ public class SCR_SceneData : MonoBehaviour
 		}
 
 		filePath = Application.dataPath + sceneDataFilename;
-
-	}
-
-	private void SaveTransformData(GameObject savingGameObject, GameObject referenceGameObject)
-	{
-
-		
+		sceneName = SceneManager.GetActiveScene().name;
+		sceneDataControls = GetComponent<SaveLoadMenu>();
 
 	}
 
@@ -187,32 +184,13 @@ public class SCR_SceneData : MonoBehaviour
 
 		}
 
-		
-
 		/* Serializing the list of scene objects to a text file. */
 		tempBinary.Serialize(tempFile, tempSceneObjectData);
 
 		/* Close the text file. */
 		tempFile.Close();
 
-//		/* Store the name of the scene. */
-//		string sceneName = "SCN_RenameMe_" + sceneDataFilename;
-//
-//		/* If the scene does not already exist. */
-//		if(!SceneManager.GetSceneByName(sceneName).IsValid())
-//		{
-//			/* Create the scene. */
-//			SceneManager.CreateScene(sceneName);
-//
-//			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
-//
-//		}
-//		else
-//		{
-//
-//			//AddObjectsToScene(SceneManager.GetSceneByName(sceneName));
-//
-//		}
+		sceneDataControls.SaveGame(sceneName);
 
 	}
 
@@ -289,8 +267,10 @@ public class SCR_SceneData : MonoBehaviour
 		loadingPersistentObject.ObjectType 				= referencePersistentObject.ObjectType;
 		loadingPersistentObject.ID 						= referencePersistentObject.ID;
 
-		Color loadedColour = new Color(referencePersistentObject.Red, referencePersistentObject.Green, referencePersistentObject.Blue);
+		if(loadingPersistentObject.tag != "DontDestroy")
+			loadingPersistentObject.tag = "DontDestroy";
 
+		Color loadedColour = new Color(referencePersistentObject.Red, referencePersistentObject.Green, referencePersistentObject.Blue);
 		LoadMaterials(ref loadingPersistentObject, loadedColour);
 	}
 
@@ -303,6 +283,7 @@ public class SCR_SceneData : MonoBehaviour
 	*/
 	public void Load()
 	{
+		sceneDataControls.LoadGame(sceneName);
 
 		if(filePath == "")
 		{

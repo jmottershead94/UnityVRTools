@@ -21,7 +21,19 @@ public class SaveLoadMenu : MonoBehaviour {
 		}
 
 		prefabDictionary = new Dictionary<string, GameObject>();
-		GameObject[] prefabs = Resources.LoadAll<GameObject>("");
+
+		StartCoroutine(LoadDelay());
+	}
+
+	IEnumerator LoadDelay()
+	{
+		yield return new WaitForSeconds(0.5f);
+
+		List<GameObject> prefabs = GameObject.Find("Prefabs Panel").GetComponent<SCR_PrefabsPanel>().Prefabs;
+
+		if(prefabs.Count > 0)
+			Debug.Log("THERE ARE THINGS.");
+
 		foreach(GameObject loadedPrefab in prefabs) {
 			if(loadedPrefab.GetComponent<ObjectIdentifier>()) {
 				prefabDictionary.Add (loadedPrefab.name,loadedPrefab);
@@ -199,10 +211,11 @@ public class SaveLoadMenu : MonoBehaviour {
 
 			//if the GO is tagged with DontDestroy, ignore it. (Cameras, Managers, etc. which should survive loading)
 			//these kind of GO's shouldn't have an ObjectIdentifier component!
-			if(go.CompareTag("DontDestroy")) {
+			if(go.CompareTag("DontDestroy") || go.tag == "MainCamera") {
 				Debug.Log("Keeping GameObject in the scene: " + go.name);
 				continue;
 			}
+
 			Destroy(go);
 		}
 	}

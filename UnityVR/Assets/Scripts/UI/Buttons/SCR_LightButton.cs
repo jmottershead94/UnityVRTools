@@ -55,6 +55,7 @@ public class SCR_LightButton : SCR_3DButton
 		GameObject tempGameObject = new GameObject(lightName);
 		tempGameObject.transform.position = spawner.position;
 		tempGameObject.transform.SetParent(sceneEditor.transform.FindChild("GO"));
+		tempGameObject.tag = "DontDestroy";
 		Light lightComponent = tempGameObject.AddComponent<Light>();
 
 		switch(type)

@@ -14,6 +14,7 @@ public class SCR_PrefabButton : SCR_3DButton
 
 		base.Start();
 		prefabPanel = parentPanel.GetComponent<SCR_PrefabsPanel>();
+		tag = "DontDestroy";
 
 	}
 
@@ -36,7 +37,14 @@ public class SCR_PrefabButton : SCR_3DButton
 				if(tempPrefab != null)
 				{
 					GameObject tempGameObject = Instantiate(tempPrefab, spawner.position, Quaternion.identity) as GameObject;
+					tempGameObject.name = tempPrefab.name;
 					tempGameObject.transform.SetParent(sceneEditor.transform.FindChild("GO"));
+
+					ObjectIdentifier tempObjectIdentifier = tempGameObject.AddComponent<ObjectIdentifier>();
+					tempObjectIdentifier.name = tempPrefab.name;
+					tempObjectIdentifier.prefabName = tempPrefab.name;
+					//tempObjectIdentifier.idParent;
+					tempObjectIdentifier.dontSave = false;
 				}
 			}
 		}

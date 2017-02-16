@@ -84,6 +84,7 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		/* Creating a temporary instance of a cube game object. */
         GameObject tempGameObject = GameObject.CreatePrimitive(primitiveType);
+        tempGameObject.tag = "DontDestroy";
 
 		/* Creating a temporary instance of a persistent object and adding it onto the temporary game object. */
 		SCR_PersistentObject tempPersistentObject = tempGameObject.AddComponent<SCR_PersistentObject>();
