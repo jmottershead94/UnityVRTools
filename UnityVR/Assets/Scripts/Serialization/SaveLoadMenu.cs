@@ -212,11 +212,15 @@ public class SaveLoadMenu : MonoBehaviour {
 			//if the GO is tagged with DontDestroy, ignore it. (Cameras, Managers, etc. which should survive loading)
 			//these kind of GO's shouldn't have an ObjectIdentifier component!
 			if(go.CompareTag("DontDestroy") || go.tag == "MainCamera") {
-				Debug.Log("Keeping GameObject in the scene: " + go.name);
+				//Debug.Log("Keeping GameObject in the scene: " + go.name);
 				continue;
 			}
 
+#if UNITY_EDITOR
+			DestroyImmediate(go);
+#else
 			Destroy(go);
+#endif
 		}
 	}
 	

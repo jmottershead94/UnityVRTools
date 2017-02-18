@@ -46,7 +46,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 		AddPrefabs(filePathToAssets);
 	}
 
-	private void AddPrefabs(string filePath)
+	public void AddPrefabs(string filePath)
 	{
 
 		/* Loading prefabs from the standard file path. */

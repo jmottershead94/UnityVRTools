@@ -28,7 +28,7 @@ public class SCR_SceneData : MonoBehaviour
 {
 
 	/* Attributes. */
-	private const string sceneDataFilename = "/SceneData.dat";				/* The file name of the scene that we are saving. */
+	private string sceneDataFilename = "";				/* The file name of the scene that we are saving. */
 	private string format = "dd mm yyyy  hh:mm";							/* The format to be used for the data. */
 	private string loadDate;												/* The current load date of the data. */
 	private string saveDate;												/* The current save date of the data. */
@@ -79,8 +79,9 @@ public class SCR_SceneData : MonoBehaviour
 
 		}
 
-		filePath = Application.dataPath + sceneDataFilename;
 		sceneName = SceneManager.GetActiveScene().name;
+		sceneDataFilename = "/" + sceneName + ".dat";
+		filePath = Application.dataPath + sceneDataFilename;
 		sceneDataControls = GetComponent<SaveLoadMenu>();
 
 	}
@@ -257,7 +258,7 @@ public class SCR_SceneData : MonoBehaviour
 	{
 
 		/* Loading the transform of the persistent object using the float values stored in the text file. */
-		/* Because Vector3s are only Serializable by Unity, currently, we have to store each float value into it's own function. */
+		/* Because Vector3s are not serializable by Unity, currently, we have to store each float value into it's own function. */
 		loadingPersistentObject.transform.position 		= new Vector3(referencePersistentObject.PositionX, referencePersistentObject.PositionY, referencePersistentObject.PositionZ);
 		loadingPersistentObject.transform.eulerAngles 	= new Vector3(referencePersistentObject.RotationX, referencePersistentObject.RotationY, referencePersistentObject.RotationZ);
 		loadingPersistentObject.transform.localScale 	= new Vector3(referencePersistentObject.ScaleX, referencePersistentObject.ScaleY, referencePersistentObject.ScaleZ);
@@ -281,14 +282,21 @@ public class SCR_SceneData : MonoBehaviour
 	*	Here we will load the current scene from a text file.
 	*
 	*/
-	public void Load()
+	public void Load(string fileName)
 	{
-		sceneDataControls.LoadGame(sceneName);
+		if(sceneDataControls == null)
+			sceneDataControls = GetComponent<SaveLoadMenu>();
 
+		sceneDataControls.LoadGame(fileName);
+
+#if UNITY_EDITOR
+		filePath = Application.dataPath + "/" + fileName + ".dat";
+#else
 		if(filePath == "")
 		{
-			filePath = Application.dataPath + sceneDataFilename;
+			filePath = Application.dataPath + "/" + sceneDataFilename + ".dat";
 		}
+#endif
 
 		/* Find the scene editor script in the current scene. */
 		/* Place this in to show that the scene saves correctly, and to allow the application to load using the editor. */
@@ -297,9 +305,14 @@ public class SCR_SceneData : MonoBehaviour
 		/* Record the load date. */
 		loadDate = (now.ToString(format));
 
+		//filePath = Application.dataPath + "/" + fileName + ".dat";
+		//Debug.Log("Loading?????" + filePath);
+
 		/* If the scene data file exists. */
 		if(File.Exists(filePath))
 		{
+
+			Debug.Log("Found file!");
 
 			/* Initialising local attributes. */
 			BinaryFormatter tempBinary = new BinaryFormatter();
