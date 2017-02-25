@@ -26,8 +26,12 @@ public class SCR_Camera : MonoBehaviour
 
 	/* Attributes. */
 	[SerializeField]	private Vector3 speed = Vector3.zero;	/* This will store how fast the camera will move. */
+	[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
+	[SerializeField]	private bool clampVertical = true;
 	private SCR_VRControllerInput leftController = null;		/* Provides access to the left hand controller (and will allow access to input on this controller). */
 	private SCR_VRControllerInput rightController = null;		/* Provides access to the right hand controller (and will allow access to input on this controller). */
+	private Vector3 movement = Vector3.zero;
+	private float rotationX = 0.0f;
 
 	/* Methods. */
 	/*
@@ -39,18 +43,6 @@ public class SCR_Camera : MonoBehaviour
 	*/
 	private void Awake()
 	{
-
-		/*
-
-			if(inUniversity)
-
-				Assign the steam VR controller manager attribute
-				leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRController>();
-				rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRController>();
-
-		*/
-
-		//steamVRControllerManager = GameObject.Find("[CameraRig]").GetComponent<SteamVR_ControllerManager>();
 		if(GameObject.Find("Controller (left)") != null)
 		{
 			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
@@ -60,7 +52,35 @@ public class SCR_Camera : MonoBehaviour
 		{
 			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
 		}
+	}
 
+	private void Movement()
+	{
+		movement.x = Input.GetAxis("Horizontal") * speed.x;
+		movement.y = Input.GetAxis("Vertical") * speed.y;
+		movement.z = Input.GetAxis("Depth") * speed.z;
+
+		Vector3 axis = movement;
+		axis = transform.TransformDirection(axis);
+		transform.Translate(axis);
+	}
+
+	private void Rotation()
+	{
+		Vector2 mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+
+		if(mouseMovement.x > 0.25f || mouseMovement.x < -0.25f)
+		{
+			Vector3 rotate = new Vector3(0.0f, mouseMovement.x * rotationSpeed.y, 0.0f);
+			transform.Rotate(rotate);
+		}
+
+		if(clampVertical)
+		{
+			rotationX += (mouseMovement.y * -rotationSpeed.x);
+			rotationX = Mathf.Clamp(rotationX, -40.0f, 40.0f);
+			transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, transform.localEulerAngles.z);
+		}
 	}
 
 	/*
@@ -72,72 +92,8 @@ public class SCR_Camera : MonoBehaviour
 	*/
 	private void PCControls()
 	{
-
-		/* Set the transform of the camera to look at the reference point of the user. */
-		/* transform.LookAt(referencePoint.position); */
-
-		/* If the W key has been pressed. */
-		/* VR Equivalent: If the user pushes up on the left touch pad? */
-		if(Input.GetKey(KeyCode.W))
-		{
-
-			/* Move the camera. */
-			transform.Translate(0.0f, 0.0f, speed.z);
-
-		}
-
-		/* If the A key has been pressed. */
-		/* VR Equivalent: If the user pushes left on the left touch pad? */
-		if(Input.GetKey(KeyCode.A))
-		{
-
-			/* Move the camera. */
-			transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
-
-		}
-
-		/* If the S key has been pressed. */
-		/* VR Equivalent: If the user pushes down on the left touch pad? */
-		if(Input.GetKey(KeyCode.S))
-		{
-
-			/* Move the camera. */
-			transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
-
-		}
-
-		/* If the D key has been pressed. */
-		/* VR Equivalent: If the user pushes right on the left touch pad? */
-		if(Input.GetKey(KeyCode.D))
-		{
-
-			/* Move the camera. */
-			transform.Translate(speed.x, 0.0f, 0.0f);
-
-		}
-
-		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking up and pressing up. */
-		/* If the E key has been pressed. */
-		/* VR Equivalent: If the user holds the left hand controller trigger and pushes up on the touch up. */
-		if(Input.GetKey(KeyCode.E))
-		{
-
-			/* Move the camera. */
-			transform.Translate(0.0f, speed.y, 0.0f);
-
-		}
-
-		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking down and pressing up. */
-		/* If the Q key has been pressed. */
-		/* VR Equivalent: If the user holds the left hand controller trigger and pushes down on the touch up. */
-		if(Input.GetKey(KeyCode.Q))
-		{
-
-			/* Move the camera. */
-			transform.Translate(0.0f, speed.y * -1.0f, 0.0f);
-
-		}
-
+		Movement();
+		Rotation();
 	}
 
 	private void VRControls()
@@ -153,74 +109,50 @@ public class SCR_Camera : MonoBehaviour
 		}
 		*/
 
-		if (GameObject.Find ("Controller (right)") != null) {
+		if(GameObject.Find("Controller (right)") == null)
+			return;
 
-			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput> ();
+		rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput> ();
 
-			/* VR Equivalent: If the user pushes up on the left touch pad? */
-			if(rightController.UpPressed())
-			{
+		/* VR Equivalent: If the user pushes up on the left touch pad? */
+		if(rightController.UpPressed())
+		{
 
-				/* Move the camera. */
-				//transform.Translate(0.0f, 0.0f, speed.z);
-				transform.position += new Vector3 (0.0f, 0.0f, speed.z);
+			/* Move the camera. */
+			//transform.Translate(0.0f, 0.0f, speed.z);
+			transform.position += new Vector3 (0.0f, 0.0f, speed.z);
 
-			}
-
-			/* VR Equivalent: If the user pushes left on the left touch pad? */
-			if(rightController.LeftPressed())
-			{
-
-				/* Move the camera. */
-				//transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
-				transform.position += new Vector3 (speed.x * -1.0f, 0.0f, 0.0f);
-
-			}
-
-			/* VR Equivalent: If the user pushes down on the left touch pad? */
-			if(rightController.DownPressed())
-			{
-
-				/* Move the camera. */
-				//transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
-				transform.position += new Vector3 (0.0f, 0.0f, speed.z * -1.0f);
-
-			}
-
-			/* VR Equivalent: If the user pushes right on the left touch pad? */
-			if(rightController.RightPressed())
-			{
-
-				/* Move the camera. */
-				//transform.Translate(speed.x, 0.0f, 0.0f);
-				transform.position += new Vector3 (speed.x, 0.0f, 0.0f);
-
-			}
 		}
 
-		/* Hopefully shouldn't need these for VR. */
-		/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking up and pressing up. */
-		/* VR Equivalent: If the user holds the left hand controller trigger and pushes up on the touch up. */
-		/*
-			if(Input.GetKey(KeyCode.E))
-			{
+		/* VR Equivalent: If the user pushes left on the left touch pad? */
+		if(rightController.LeftPressed())
+		{
 
-				/* Move the camera. 
-				transform.Translate(0.0f, speed.y, 0.0f);
+			/* Move the camera. */
+			//transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
+			transform.position += new Vector3 (speed.x * -1.0f, 0.0f, 0.0f);
 
-			}
+		}
 
-			/* If the look at works as expected, the z and x axis values should allow the user to navigate by looking down and pressing up. 
-			/* If the Q key has been pressed. 
-			/* VR Equivalent: If the user holds the left hand controller trigger and pushes down on the touch up. 
-			if(Input.GetKey(KeyCode.Q))
-			{
+		/* VR Equivalent: If the user pushes down on the left touch pad? */
+		if(rightController.DownPressed())
+		{
 
-				/* Move the camera. 
-				transform.Translate(0.0f, speed.y * -1.0f, 0.0f);
+			/* Move the camera. */
+			//transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
+			transform.position += new Vector3 (0.0f, 0.0f, speed.z * -1.0f);
 
-			}
-		*/	
+		}
+
+		/* VR Equivalent: If the user pushes right on the left touch pad? */
+		if(rightController.RightPressed())
+		{
+
+			/* Move the camera. */
+			//transform.Translate(speed.x, 0.0f, 0.0f);
+			transform.position += new Vector3 (speed.x, 0.0f, 0.0f);
+
+		}
 
 	}
 	

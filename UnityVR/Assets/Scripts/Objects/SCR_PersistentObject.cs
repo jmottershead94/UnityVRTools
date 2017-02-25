@@ -133,18 +133,17 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			isInFocus = true;
 
 		}
-
 	}
 
 	private void HoldingObject()
 	{
-		//transform.SetParent(Camera.main.transform);
 		if(!InFocus)
 		{
 			InFocus = true;
 			holding = true;
 		}
 
+		//if()
 		screenPoint = Camera.main.WorldToScreenPoint(transform.position);
 		offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
@@ -159,6 +158,10 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		{
 			InFocus = false;
 			holding = false;
+
+			if(transform.parent != previousTransform)
+				transform.SetParent(previousTransform);
+
 			Debug.Log("Dropped Object");
 		}
 	}
@@ -232,7 +235,6 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			OutOfFocus();
 
 		}
-
 	}
 
 	/*

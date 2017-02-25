@@ -89,7 +89,7 @@ public class SCR_BaseUIElement : MonoBehaviour
 	}
 
 	// You may need to pass in a bool for the holding parameter.
-	protected void VRTriggerHeldResponse(UIResponseDelegate holdMethod, UIResponseDelegate dropMethod)
+	protected void VRTriggerHeldResponse(UIResponseDelegate holdMethod, UIResponseDelegate releaseMethod)
 	{
 		if(GameObject.Find ("Controller (right)") == null)
 			return;
@@ -101,7 +101,7 @@ public class SCR_BaseUIElement : MonoBehaviour
 			if(rightController.TriggerHeld())
 				holdMethod();
 			else
-				dropMethod();
+				releaseMethod();
 		}
 	}
 
