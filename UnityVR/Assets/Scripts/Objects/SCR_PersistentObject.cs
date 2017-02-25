@@ -143,6 +143,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			holding = true;
 		}
 
+
+
 		Debug.Log("Holding Object");
 	}
 
@@ -241,7 +243,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		// Move this object around with the cursor.
 		if(isMouseOver)
 		{
-			if(Input.GetMouseButtonDown(0))
+			if(Input.GetMouseButton(0))
 				HoldingObject();
 			else if(Input.GetMouseButtonUp(0) && holding)
 				DropObject();
