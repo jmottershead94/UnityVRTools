@@ -74,7 +74,7 @@ public class SCR_BaseUIElement : MonoBehaviour
 	*	This method will provide checks for user input through VR.
 	*
 	*/
-	protected void VRTriggerResponse(UIResponseDelegate method)
+	protected void VRTriggerResponse(UIResponseDelegate pressMethod)
 	{
 		if(GameObject.Find ("Controller (right)") == null)
 			return;
@@ -84,11 +84,12 @@ public class SCR_BaseUIElement : MonoBehaviour
 		if(ControllerAimingAtSomething(rightController))
 		{
 			if (rightController.TriggerPressed ()) 
-				method();
+				pressMethod();
 		}
 	}
 
-	protected void VRTriggerHeldResponse(UIResponseDelegate method)
+	// You may need to pass in a bool for the holding parameter.
+	protected void VRTriggerHeldResponse(UIResponseDelegate holdMethod, UIResponseDelegate dropMethod)
 	{
 		if(GameObject.Find ("Controller (right)") == null)
 			return;
@@ -98,7 +99,9 @@ public class SCR_BaseUIElement : MonoBehaviour
 		if(ControllerAimingAtSomething(rightController))
 		{
 			if(rightController.TriggerHeld())
-				method();
+				holdMethod();
+			else
+				dropMethod();
 		}
 	}
 

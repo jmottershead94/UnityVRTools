@@ -31,6 +31,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	private Material glowingMaterial = null;				/* Stores the material used to indicate that the game object has been highlighted. */
 	private Material defaultMaterial = null;				/* Stores the default material used originally for the game object. */
 	private Material changingMaterial = null;
+	private bool isMouseOver = false;
+	private bool holding = false;
 
 	/* Methods. */
 	/* Virtual. */
@@ -134,7 +136,25 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void HoldingObject()
 	{
-		
+		//transform.SetParent(Camera.main.transform);
+		if(!InFocus)
+		{
+			InFocus = true;
+			holding = true;
+		}
+
+		Debug.Log("Holding Object");
+	}
+
+	private void DropObject()
+	{
+		//transform.SetParent(GameObject.Find("Scene Editor").transform);
+		if(InFocus)
+		{
+			InFocus = false;
+			holding = false;
+			Debug.Log("Dropped Object");
+		}
 	}
 
 	/* This function will need a VR equivalent. */
@@ -155,10 +175,15 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	/* VR Equivalent: Right controller aiming at this and the trigger is held. */
 	private void OnMouseOver()
 	{
-		if(Input.GetMouseButtonDown(0))
-		{
-			HoldingObject();
-		}
+		isMouseOver = true;
+	}
+
+	private void OnMouseExit()
+	{
+		isMouseOver = false;
+
+		if(InFocus && holding)
+			DropObject();
 	}
 
 	/*
@@ -206,13 +231,21 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	protected void Update()
 	{
-
 		VRTriggerResponse(FocusSwitch);
-		VRTriggerHeldResponse(HoldingObject);
+		VRTriggerHeldResponse(HoldingObject, DropObject);
 
 		/* Handles any game object focus updates. */
 		CheckFocus();
 
+		// IF the user is holding down the left mouse button.
+		// Move this object around with the cursor.
+		if(isMouseOver)
+		{
+			if(Input.GetMouseButtonDown(0))
+				HoldingObject();
+			else if(Input.GetMouseButtonUp(0) && holding)
+				DropObject();
+		}
 	}
 
 	/* Getters/Setters. */
