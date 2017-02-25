@@ -33,6 +33,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	private Material changingMaterial = null;
 	private bool isMouseOver = false;
 	private bool holding = false;
+	private Vector3 screenPoint;
+	private Vector3 offset;
 
 	/* Methods. */
 	/* Virtual. */
@@ -143,14 +145,16 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			holding = true;
 		}
 
-
+		screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+		offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
 		Debug.Log("Holding Object");
 	}
 
 	private void DropObject()
 	{
-		//transform.SetParent(GameObject.Find("Scene Editor").transform);
+		Transform previousTransform = GameObject.Find("Scene Editor").transform;
+
 		if(InFocus)
 		{
 			InFocus = false;
@@ -178,6 +182,13 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	private void OnMouseOver()
 	{
 		isMouseOver = true;
+	}
+
+	private void OnMouseDrag()
+	{
+		Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+		Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
+		transform.position = cursorPosition;
 	}
 
 	private void OnMouseExit()
@@ -236,9 +247,6 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		VRTriggerResponse(FocusSwitch);
 		VRTriggerHeldResponse(HoldingObject, DropObject);
 
-		/* Handles any game object focus updates. */
-		CheckFocus();
-
 		// IF the user is holding down the left mouse button.
 		// Move this object around with the cursor.
 		if(isMouseOver)
@@ -248,6 +256,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			else if(Input.GetMouseButtonUp(0) && holding)
 				DropObject();
 		}
+
+		/* Handles any game object focus updates. */
+		CheckFocus();
 	}
 
 	/* Getters/Setters. */
