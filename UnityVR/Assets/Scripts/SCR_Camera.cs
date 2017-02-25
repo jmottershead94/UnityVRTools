@@ -54,11 +54,11 @@ public class SCR_Camera : MonoBehaviour
 		}
 	}
 
-	private void Movement()
+	public static void MoveInRelationToCam(Transform goTransform, Vector3 translation)
 	{
-		Vector3 axis = movement;
-		axis = transform.TransformDirection(axis);
-		transform.Translate(axis);
+		Vector3 axis = translation;
+		axis = Camera.main.transform.TransformDirection(axis);
+		goTransform.Translate(axis);
 	}
 
 	private void Rotation()
@@ -80,20 +80,23 @@ public class SCR_Camera : MonoBehaviour
 	}
 
 	/*
-	*
-	*	Overview
-	*	--------
-	*	This method will check user input to provide camera movement.
-	*
-	*/
+	 *
+	 *	Overview
+	 *	--------
+	 *	This method will check user input to provide camera movement.
+	 *
+	 */
 	private void PCControls()
 	{
 		movement.x = Input.GetAxis("Horizontal") * speed.x;
 		movement.y = Input.GetAxis("Vertical") * speed.y;
 		movement.z = Input.GetAxis("Depth") * speed.z;
 
-		Movement();
+		MoveInRelationToCam(transform, movement);
 		Rotation();
+
+		if(Input.GetMouseButtonDown(1))
+			transform.localEulerAngles = new Vector3(0.0f, transform.localEulerAngles.y, 0.0f);
 	}
 
 	private void VRControls()
@@ -119,7 +122,7 @@ public class SCR_Camera : MonoBehaviour
 		if(rightController.RightPressed())
 			movement.x += speed.x;
 
-		Movement();
+		MoveInRelationToCam(transform, movement);
 	}
 	
 	/*
