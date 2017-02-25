@@ -56,10 +56,6 @@ public class SCR_Camera : MonoBehaviour
 
 	private void Movement()
 	{
-		movement.x = Input.GetAxis("Horizontal") * speed.x;
-		movement.y = Input.GetAxis("Vertical") * speed.y;
-		movement.z = Input.GetAxis("Depth") * speed.z;
-
 		Vector3 axis = movement;
 		axis = transform.TransformDirection(axis);
 		transform.Translate(axis);
@@ -92,6 +88,10 @@ public class SCR_Camera : MonoBehaviour
 	*/
 	private void PCControls()
 	{
+		movement.x = Input.GetAxis("Horizontal") * speed.x;
+		movement.y = Input.GetAxis("Vertical") * speed.y;
+		movement.z = Input.GetAxis("Depth") * speed.z;
+
 		Movement();
 		Rotation();
 	}
@@ -99,61 +99,27 @@ public class SCR_Camera : MonoBehaviour
 	private void VRControls()
 	{
 
-		/* Need to test this for y axis movement. */
-		/*
-		if(GameObject.Find ("Camera (eye)") != null)
-		{
-
-			transform.forward = GameObject.Find ("Camera (eye)").transform.forward;
-
-		}
-		*/
-
 		if(GameObject.Find("Controller (right)") == null)
 			return;
 
 		rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput> ();
 
-		/* VR Equivalent: If the user pushes up on the left touch pad? */
+		// This needs testing out!!
+		movement = Vector3.zero;
+
 		if(rightController.UpPressed())
-		{
+			movement.z += speed.z;
 
-			/* Move the camera. */
-			//transform.Translate(0.0f, 0.0f, speed.z);
-			transform.position += new Vector3 (0.0f, 0.0f, speed.z);
-
-		}
-
-		/* VR Equivalent: If the user pushes left on the left touch pad? */
-		if(rightController.LeftPressed())
-		{
-
-			/* Move the camera. */
-			//transform.Translate(speed.x * -1.0f, 0.0f, 0.0f);
-			transform.position += new Vector3 (speed.x * -1.0f, 0.0f, 0.0f);
-
-		}
-
-		/* VR Equivalent: If the user pushes down on the left touch pad? */
 		if(rightController.DownPressed())
-		{
+			movement.z += (speed.z * -1.0f);
 
-			/* Move the camera. */
-			//transform.Translate(0.0f, 0.0f, speed.z * -1.0f);
-			transform.position += new Vector3 (0.0f, 0.0f, speed.z * -1.0f);
+		if(rightController.LeftPressed())
+			movement.x += (speed.x * -1.0f);
 
-		}
-
-		/* VR Equivalent: If the user pushes right on the left touch pad? */
 		if(rightController.RightPressed())
-		{
+			movement.x += speed.x;
 
-			/* Move the camera. */
-			//transform.Translate(speed.x, 0.0f, 0.0f);
-			transform.position += new Vector3 (speed.x, 0.0f, 0.0f);
-
-		}
-
+		Movement();
 	}
 	
 	/*
@@ -165,25 +131,7 @@ public class SCR_Camera : MonoBehaviour
 	*/
 	private void Update () 
 	{
-
-		/*
-
-			if(inUniversity)
-
-				VRControls();
-
-			else
-
-				PCControls();
-
-		*/
-
-		/* Handles user input for camera control. */
 		PCControls();
-
-		/* Comment this in for University. */
 		VRControls();
-
 	}
-
 }
