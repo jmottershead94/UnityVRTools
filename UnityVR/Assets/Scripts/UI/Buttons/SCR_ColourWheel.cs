@@ -75,14 +75,14 @@ public class SCR_ColourWheel : SCR_3DButton
 
 		Debug.Log("RGB: " + colourSelected.r.ToString("F2") + " " + colourSelected.g.ToString("F2") + " " + colourSelected.b.ToString("F2") + " ");
 
-		for(int i = 0; i < sceneEditor.Objects.Count; i++)
+		for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
 		{
 
-			if(sceneEditor.Objects[i].InFocus)
+			if(SCR_SceneEditor.Objects[i].InFocus)
 			{
 				
-				sceneEditor.Objects[i].gameObject.GetComponent<Renderer>().material.color = colourSelected;
-				sceneEditor.Objects[i].DefaultMaterial.color = colourSelected;
+				SCR_SceneEditor.Objects[i].gameObject.GetComponent<Renderer>().material.color = colourSelected;
+				SCR_SceneEditor.Objects[i].DefaultMaterial.color = colourSelected;
 
 			}
 

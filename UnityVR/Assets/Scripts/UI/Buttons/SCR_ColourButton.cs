@@ -23,12 +23,12 @@ public class SCR_ColourButton : SCR_3DButton
 	override public void ButtonPressResponse()
 	{
 
-		for(int i = 0; i < sceneEditor.Objects.Count; i++)
+		for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
 		{
-			if(sceneEditor.Objects[i].InFocus)
+			if(SCR_SceneEditor.Objects[i].InFocus)
 			{
-				sceneEditor.Objects[i].gameObject.GetComponent<Renderer>().material.color = colour;
-				sceneEditor.Objects[i].DefaultMaterial.color = colour;
+				SCR_SceneEditor.Objects[i].gameObject.GetComponent<Renderer>().material.color = colour;
+				SCR_SceneEditor.Objects[i].DefaultMaterial.color = colour;
 			}
 		}
 

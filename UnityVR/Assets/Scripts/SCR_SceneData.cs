@@ -140,11 +140,11 @@ public class SCR_SceneData : MonoBehaviour
 	{
 
 		/* Looping through the amount of objects there are in the current scene. */
-		for(int i = 0; i < scene.Objects.Count; i++)
+		for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
 		{
 
 			/* Set the game objects from the current scene to the new scene. */
-			newScene.GetRootGameObjects().SetValue(scene.Objects[i], i);
+			newScene.GetRootGameObjects().SetValue(SCR_SceneEditor.Objects[i], i);
 
 		}
 
@@ -171,14 +171,14 @@ public class SCR_SceneData : MonoBehaviour
 		FileStream tempFile = File.Create(filePath);
 		
 		/* Looping through the amount of objects there are in the current scene. */
-		for(int i = 0; i < scene.Objects.Count; i++)
+		for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
 		{
 
 			/* Initialising a temporary instance of the persistent object data. */
 			PersistentObjectData tempObjectData = new PersistentObjectData();
 
 			/* Saving the current persistent object data from the scene. */
-			SavePersistentObjectData(ref tempObjectData, scene.Objects[i]);
+			SavePersistentObjectData(ref tempObjectData, SCR_SceneEditor.Objects[i]);
 
 			/* Adding the object data into our persistent object data list. */
 			tempSceneObjectData.Add(tempObjectData);
@@ -327,14 +327,14 @@ public class SCR_SceneData : MonoBehaviour
 			/* Close the text file. */
 			tempFile.Close();
 
-			if(scene.Objects != null)
+			if(SCR_SceneEditor.Objects != null)
 			{
 				/* If we currently have objects in our scene. */
-				if(scene.Objects.Count > 0)
+				if(SCR_SceneEditor.Objects.Count > 0)
 				{
 
 					/* Loop through each object in the current scene. */
-					for(int i = 0; i < scene.Objects.Count; i++)
+					for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
 					{
 
 						/* If the application is currently playing. */
@@ -342,7 +342,7 @@ public class SCR_SceneData : MonoBehaviour
 						{
 
 							/* Destroy the current game object. */
-							Destroy(scene.Objects[i].gameObject);
+							Destroy(SCR_SceneEditor.Objects[i].gameObject);
 
 						}
 						/* Otherwise, the application is being used in the editor. */
@@ -350,14 +350,14 @@ public class SCR_SceneData : MonoBehaviour
 						{
 
 							/* Destroy the current game object. */
-							DestroyImmediate(scene.Objects[i].gameObject);
+							DestroyImmediate(SCR_SceneEditor.Objects[i].gameObject);
 
 						}
 
 					}
 
 					/* Clear the current scene, because we are about to load and don't want duplicates. */
-					scene.Objects.Clear();
+					SCR_SceneEditor.Objects.Clear();
 					
 				}
 			}
@@ -376,7 +376,7 @@ public class SCR_SceneData : MonoBehaviour
 				LoadPersistentObjectData(ref tempPersistentObject, tempSceneObjectData[i]);
 
 				/* Adding in the persistent object into our current scene. */
-				scene.Objects.Add(tempPersistentObject);
+				SCR_SceneEditor.Objects.Add(tempPersistentObject);
 
 			}
 

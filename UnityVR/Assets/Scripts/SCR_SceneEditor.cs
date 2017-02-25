@@ -24,7 +24,7 @@ public class SCR_SceneEditor : MonoBehaviour
 {
 #region Attributes
 	/* Attributes. */
-	[SerializeField]	private List<SCR_PersistentObject> sceneObjects = null;		/* The current list of scene objects. */
+	[SerializeField]	private static List<SCR_PersistentObject> sceneObjects = null;		/* The current list of scene objects. */
 
 	[Header ("Object Manipulation")]
 	[SerializeField]	private Vector3 translationSpeed = Vector3.zero; 			/* Used to determine how fast objects will move for translations in each axis. */
@@ -910,6 +910,12 @@ public class SCR_SceneEditor : MonoBehaviour
 	}
 #endregion
 
+	public static void DeselectAllObjects()
+	{
+		foreach(SCR_PersistentObject obj in sceneObjects)
+			obj.InFocus = false;
+	}
+
 #region Update
 	/*
 	*
@@ -933,7 +939,7 @@ public class SCR_SceneEditor : MonoBehaviour
 #region Getters / Setters
 	/* Getters. */
 	/* This will allow us to get/set the current list of persistent objects in the scene. */
-	public List<SCR_PersistentObject> Objects
+	public static List<SCR_PersistentObject> Objects
 	{
 		get { return sceneObjects; }
 		set { sceneObjects = value; }

@@ -132,6 +132,11 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	}
 
+	private void HoldingObject()
+	{
+		
+	}
+
 	/* This function will need a VR equivalent. */
 	/* VR Equivalent: If the user is aiming at this game object with the right hand controller and they have pressed the right hand controller trigger. */
 	/*
@@ -144,9 +149,16 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	private void OnMouseDown()
 	{
-
 		FocusSwitch();
+	}
 
+	/* VR Equivalent: Right controller aiming at this and the trigger is held. */
+	private void OnMouseOver()
+	{
+		if(Input.GetMouseButtonDown(0))
+		{
+			HoldingObject();
+		}
 	}
 
 	/*
@@ -196,6 +208,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	{
 
 		VRTriggerResponse(FocusSwitch);
+		VRTriggerHeldResponse(HoldingObject);
 
 		/* Handles any game object focus updates. */
 		CheckFocus();
