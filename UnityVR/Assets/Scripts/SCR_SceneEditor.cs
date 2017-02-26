@@ -151,79 +151,27 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckScale(SCR_PersistentObject persistentObject)
 	{
+		currentScale = persistentObject.transform.localScale;
 
-		/* Initialising local attributes. */
-		Vector3 tempScale = persistentObject.transform.localScale;
-
-		/* If the I key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.I))
-		{
+			currentScale.Set(currentScale.x, currentScale.y, currentScale.z + scaleIncrement.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x, tempScale.y, tempScale.z + scaleIncrement.z);
-
-		}
-
-		/* If the J key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.J))
-		{
+			currentScale.Set(currentScale.x - scaleIncrement.x, currentScale.y, currentScale.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x - scaleIncrement.x, tempScale.y, tempScale.z);
-
-		}
-
-		/* If the K key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.K))
-		{
+			currentScale.Set(currentScale.x, currentScale.y, currentScale.z - scaleIncrement.z);
 
-			/* Set the value of the temporary scale attribute. */
-			tempScale.Set(tempScale.x, tempScale.y, tempScale.z - scaleIncrement.z);
-
-		}
-
-		/* If the L key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.L))
-		{
+			currentScale.Set(currentScale.x + scaleIncrement.x, currentScale.y, currentScale.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x + scaleIncrement.x, tempScale.y, tempScale.z);
-
-		}
-
-		/* If the U key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.U))
-		{
+			currentScale.Set(currentScale.x, currentScale.y - scaleIncrement.y, currentScale.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x, tempScale.y - scaleIncrement.y, tempScale.z);
-
-		}
-
-		/* If the O key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.O))
-		{
-
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x, tempScale.y + scaleIncrement.y, tempScale.z);
-
-		}
-
-		/* Set the new scale of the object. */ 
-		persistentObject.transform.localScale = tempScale;
-
+			currentScale.Set(currentScale.x, currentScale.y + scaleIncrement.y, currentScale.z);
+		
+		persistentObject.transform.localScale = currentScale;
 	}
 #endregion
 
@@ -336,128 +284,36 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckScaleVR(SCR_PersistentObject persistentObject)
 	{
+		if(GameObject.Find("Controller (left)") == null && GameObject.Find("Controller (right)") == null)
+			return;
+		
+		leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+		rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
 
-		/* Initialising local attributes. */
-		Vector3 tempScale = persistentObject.transform.localScale;
-
-		if(GameObject.Find("Controller (left)") != null)
+		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
+			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 
-			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+			if(anchorDistance.z > controllerDistanceForManipulation)
+				currentScale.Set(currentScale.x, currentScale.y, currentScale.z + (scaleIncrement.z));
 
+			if(anchorDistance.z < (controllerDistanceForManipulation * -1.0f))
+				currentScale.Set(currentScale.x, currentScale.y, currentScale.z - (scaleIncrement.z));
+
+			if(anchorDistance.x > controllerDistanceForManipulation)
+				currentScale.Set(currentScale.x + (scaleIncrement.x), currentScale.y, currentScale.z);
+
+			if(anchorDistance.x < (controllerDistanceForManipulation * -1.0f))
+				currentScale.Set(currentScale.x - (scaleIncrement.x), currentScale.y, currentScale.z);
+
+			if(anchorDistance.y > controllerDistanceForManipulation)
+				currentScale.Set(currentScale.x, currentScale.y + (scaleIncrement.y), currentScale.z);
+
+			if(anchorDistance.y < (controllerDistanceForManipulation * -1.0f))
+				currentScale.Set(currentScale.x, currentScale.y - (scaleIncrement.y), currentScale.z);
 		}
 
-		if(GameObject.Find("Controller (right)") != null)
-		{
-
-			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
-
-		}
-
-		//SCR_VRUtilities.AssignControllers(leftController, 0);
-		//SCR_VRUtilities.AssignControllers(rightController, 1);
-
-		if(leftController != null && rightController != null)
-		{
-
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y, tempScale.z + (scaleIncrement.z));
-
-				}
-
-			}
-
-			/* If the J key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x - (scaleIncrement.x), tempScale.y, tempScale.z);
-
-				}
-
-			}
-
-			/* If the K key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */
-					tempScale.Set(tempScale.x, tempScale.y, tempScale.z - (scaleIncrement.z));
-
-				}
-
-			}
-
-			/* If the L key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x + (scaleIncrement.x), tempScale.y, tempScale.z);
-
-				}
-
-			}
-
-			/* If the U key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y - (scaleIncrement.y), tempScale.z);
-
-				}
-			}
-
-			/* If the O key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y + (scaleIncrement.y), tempScale.z);
-
-				}
-			}
-
-			/* Set the new scale of the object. */ 
-			persistentObject.transform.localScale = tempScale;
-
-		}
-
+		persistentObject.transform.localScale = currentScale;
 	}
 #endregion
 
