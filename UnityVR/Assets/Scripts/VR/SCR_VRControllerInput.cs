@@ -34,6 +34,8 @@ public class SCR_VRControllerInput : MonoBehaviour
 	private RaycastHit raycastTarget;
 	private Ray ray;
 	private LineRenderer lineRenderer = null;									
+	private Vector3 distanceToCamera = Vector3.zero;
+	private SCR_Camera mainCamera = null;
 
 	/* Methods. */
 	/*
@@ -45,11 +47,9 @@ public class SCR_VRControllerInput : MonoBehaviour
 	*/
 	private void Awake()
 	{
-
-		/* Initialising our attributes. */
 		trackedObject = GetComponent<SteamVR_TrackedObject>();
 		lineRenderer = GetComponent<LineRenderer> ();
-
+		mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SCR_Camera>();
 	}
 
 	/*
@@ -102,6 +102,11 @@ public class SCR_VRControllerInput : MonoBehaviour
 		}
 
 	}
+
+//	public void CalculateDistanceToCamera()
+//	{
+//		distanceToCamera = ();
+//	}
 
 	/*
 	*
@@ -218,4 +223,8 @@ public class SCR_VRControllerInput : MonoBehaviour
 		get { return raycastTarget; }
 	}
 
+	public Vector3 DistanceToCamera
+	{
+		get { return distanceToCamera; }
+	}
 }

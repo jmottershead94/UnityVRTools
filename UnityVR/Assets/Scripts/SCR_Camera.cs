@@ -54,11 +54,26 @@ public class SCR_Camera : MonoBehaviour
 		}
 	}
 
+	public static Vector3 PositionInRelationToCam(Vector3 position)
+	{
+		Vector3 result = Vector3.zero;
+		result = Camera.main.transform.InverseTransformDirection(position - Camera.main.transform.position);
+		return result;
+	}
+
 	public static void MoveInRelationToCam(Transform goTransform, Vector3 translation)
 	{
 		Vector3 axis = translation;
 		axis = Camera.main.transform.TransformDirection(axis);
 		goTransform.Translate(axis);
+	}
+
+	public static void RotateInRelationToCam(Transform goTransform, Vector3 rotation)
+	{
+		Vector3 rot = rotation;
+		goTransform.RotateAround(goTransform.position, Camera.main.transform.right, rot.x);
+		goTransform.RotateAround(goTransform.position, Camera.main.transform.up, rot.y);
+		goTransform.RotateAround(goTransform.position, Camera.main.transform.forward, rot.z);
 	}
 
 	private void Rotation()
