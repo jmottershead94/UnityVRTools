@@ -289,29 +289,30 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
+			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 			currentRotation = Vector3.zero;
 
-			if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
+			if(anchorDistance.z > controllerDistanceForManipulation)
 				currentRotation.x += rotationIncrement.x;
 				//persistentObject.transform.Rotate (0.0f, 0.0f, rotationIncrement.x);
 
-			if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
+			if(anchorDistance.z < (controllerDistanceForManipulation * -1.0f))
 				currentRotation.x += (rotationIncrement.x * -1.0f);
 				//persistentObject.transform.Rotate (0.0f, 0.0f, -rotationIncrement.x);
 
-			if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
+			if(anchorDistance.x < (controllerDistanceForManipulation * -1.0f))
 				currentRotation.y += rotationIncrement.y;
 				//persistentObject.transform.Rotate (0.0f, rotationIncrement.y, 0.0f);
 
-			if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
+			if(anchorDistance.x > controllerDistanceForManipulation)
 				currentRotation.y += (rotationIncrement.y * -1.0f);
 				//persistentObject.transform.Rotate (0.0f, -rotationIncrement.y, 0.0f);
 						
-			if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
+			if(anchorDistance.y > controllerDistanceForManipulation)
 				currentRotation.z += rotationIncrement.z;
 				//persistentObject.transform.Rotate (rotationIncrement.z, 0.0f, 0.0f);
 
-			if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
+			if(anchorDistance.y < (controllerDistanceForManipulation * -1.0f))
 				currentRotation.z += (rotationIncrement.z * -1.0f);
 				//persistentObject.transform.Rotate (-rotationIncrement.z, 0.0f, 0.0f);
 
@@ -484,12 +485,7 @@ public class SCR_SceneEditor : MonoBehaviour
 		// THIS NEEDS TESTING.
 		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
-			Vector3 anchorDistance = Vector3.zero;
-			Vector3 leftControllerPositionToCam = SCR_Camera.PositionInRelationToCam(leftController.transform.position);
-			Vector3 rightControllerPositionToCam = SCR_Camera.PositionInRelationToCam(rightController.transform.position);
-			anchorDistance.x = (leftController.transform.position.x - rightController.transform.position.x);
-			anchorDistance.y = (leftController.transform.position.y - rightController.transform.position.y);
-			anchorDistance.z = (leftController.transform.position.z - rightController.transform.position.z);
+			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 			currentTranslation = Vector3.zero;
 
 			if(anchorDistance.z > controllerDistanceForManipulation)

@@ -223,8 +223,8 @@ public class SCR_VRControllerInput : MonoBehaviour
 		get { return raycastTarget; }
 	}
 
-	public Vector3 DistanceToCamera
+	public Vector3 PositionToCamera
 	{
-		get { return distanceToCamera; }
+		get { return SCR_Camera.PositionInRelationToCam(transform.position); }
 	}
 }
