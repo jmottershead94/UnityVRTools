@@ -143,10 +143,6 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			holding = true;
 		}
 
-		//if()
-		screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-		offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-
 		Debug.Log("Holding Object");
 	}
 
@@ -164,6 +160,19 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 			Debug.Log("Dropped Object");
 		}
+	}
+
+	private void PCHolding()
+	{
+		HoldingObject();
+		screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+		offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+	}
+
+	private void VRHolding()
+	{
+		HoldingObject();
+		transform.SetParent(rightController.transform);
 	}
 
 	/* This function will need a VR equivalent. */
@@ -247,14 +256,14 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	protected void Update()
 	{
 		VRTriggerResponse(FocusSwitch);
-		VRTriggerHeldResponse(HoldingObject, DropObject);
+		VRTriggerHeldResponse(VRHolding, DropObject);
 
 		// IF the user is holding down the left mouse button.
 		// Move this object around with the cursor.
 		if(isMouseOver)
 		{
 			if(Input.GetMouseButton(0))
-				HoldingObject();
+				PCHolding();
 			else if(Input.GetMouseButtonUp(0) && holding)
 				DropObject();
 		}

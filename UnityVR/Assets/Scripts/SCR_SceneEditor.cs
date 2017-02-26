@@ -172,6 +172,7 @@ public class SCR_SceneEditor : MonoBehaviour
 			currentScale.Set(currentScale.x, currentScale.y + scaleIncrement.y, currentScale.z);
 		
 		persistentObject.transform.localScale = currentScale;
+		//SCR_Camera.ScaleInRelationToCam(persistentObject.transform, currentScale);
 	}
 #endregion
 

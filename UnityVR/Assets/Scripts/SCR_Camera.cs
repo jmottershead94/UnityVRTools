@@ -76,6 +76,13 @@ public class SCR_Camera : MonoBehaviour
 		goTransform.RotateAround(goTransform.position, Camera.main.transform.forward, rot.z);
 	}
 
+//	public static void ScaleInRelationToCam(Transform goTransform, Vector3 scale)
+//	{
+//		Vector3 axis = scale;
+//		axis = Camera.main.transform.TransformVector(axis);
+//		goTransform.localScale = axis;
+//	}
+
 	private void Rotation()
 	{
 		Vector2 mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
