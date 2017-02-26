@@ -65,7 +65,7 @@ public class SCR_Camera : MonoBehaviour
 	{
 		Vector3 axis = translation;
 		axis = Camera.main.transform.TransformDirection(axis);
-		goTransform.Translate(axis);
+		goTransform.position += axis;
 	}
 
 	public static void RotateInRelationToCam(Transform goTransform, Vector3 rotation)
