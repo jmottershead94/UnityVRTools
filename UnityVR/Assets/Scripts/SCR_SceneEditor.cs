@@ -22,9 +22,9 @@ using System.Collections.Generic;
 /* Scene editor IS A game object, therefore inherits from it. */
 public class SCR_SceneEditor : MonoBehaviour 
 {
-
+#region Attributes
 	/* Attributes. */
-	[SerializeField]	private List<SCR_PersistentObject> sceneObjects = null;		/* The current list of scene objects. */
+	[SerializeField]	private static List<SCR_PersistentObject> sceneObjects = null;		/* The current list of scene objects. */
 
 	[Header ("Object Manipulation")]
 	[SerializeField]	private Vector3 translationSpeed = Vector3.zero; 			/* Used to determine how fast objects will move for translations in each axis. */
@@ -39,10 +39,14 @@ public class SCR_SceneEditor : MonoBehaviour
 		scale 			/* The user is scaling an object. */
 	};
 	private TransformState currentTransformState = TransformState.translation;	 	/* Used to determine what transform state the user is currently in for object manipulation. */
-
 	private SCR_VRControllerInput leftController = null;
 	private SCR_VRControllerInput rightController = null;
+	private Vector3 currentRotation = Vector3.zero;
+	private Vector3 currentScale = Vector3.zero;
+	private Vector3 currentTranslation = Vector3.zero;
+#endregion
 
+#region Awake
 	/* Methods. */
 	/*
 	*
@@ -53,12 +57,12 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void Awake()
 	{
-
 		/* Initialising our attributes. */
 		sceneObjects = new List<SCR_PersistentObject>();
-
 	}
+#endregion
 
+#region Spawn Primitive
 	/*
 	*
 	*	Overview
@@ -77,9 +81,9 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	public void SpawnPrimitive(PrimitiveType primitiveType, Vector3 spawnPosition)
 	{
-
 		/* Creating a temporary instance of a cube game object. */
         GameObject tempGameObject = GameObject.CreatePrimitive(primitiveType);
+        tempGameObject.tag = "DontDestroy";
 
 		/* Creating a temporary instance of a persistent object and adding it onto the temporary game object. */
 		SCR_PersistentObject tempPersistentObject = tempGameObject.AddComponent<SCR_PersistentObject>();
@@ -90,9 +94,10 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		/* Add the cube into the list of game objects. */
         sceneObjects.Add(tempPersistentObject);
-
 	}
+#endregion
 
+#region Rotation
 	/*
 	*
 	*	Overview
@@ -106,8 +111,32 @@ public class SCR_SceneEditor : MonoBehaviour
 	*
 	*/
 	private void CheckRotation(SCR_PersistentObject persistentObject)
-	{}
+	{
+		currentRotation = Vector3.zero;
 
+		if(Input.GetKey(KeyCode.I))
+			currentRotation.x += rotationIncrement.x;
+
+		if(Input.GetKey(KeyCode.K))
+			currentRotation.x += (rotationIncrement.x * -1.0f);
+
+		if(Input.GetKey(KeyCode.J))
+			currentRotation.y += rotationIncrement.y;
+
+		if(Input.GetKey(KeyCode.L))
+			currentRotation.y += (rotationIncrement.y * -1.0f);
+
+		if(Input.GetKey(KeyCode.U))
+			currentRotation.z += rotationIncrement.z;
+
+		if(Input.GetKey(KeyCode.O))
+			currentRotation.z += (rotationIncrement.z * -1.0f);
+
+		SCR_Camera.RotateInRelationToCam(persistentObject.transform, currentRotation);
+	}
+#endregion
+
+#region Scale
 	/*
 	*
 	*	Overview
@@ -122,81 +151,32 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckScale(SCR_PersistentObject persistentObject)
 	{
+		currentScale = persistentObject.transform.localScale;
 
-		/* Initialising local attributes. */
-		Vector3 tempScale = persistentObject.transform.localScale;
-
-		/* If the I key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.I))
-		{
+			currentScale.Set(currentScale.x, currentScale.y, currentScale.z + scaleIncrement.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x, tempScale.y, tempScale.z + scaleIncrement.z);
-
-		}
-
-		/* If the J key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.J))
-		{
+			currentScale.Set(currentScale.x - scaleIncrement.x, currentScale.y, currentScale.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x - scaleIncrement.x, tempScale.y, tempScale.z);
-
-		}
-
-		/* If the K key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.K))
-		{
+			currentScale.Set(currentScale.x, currentScale.y, currentScale.z - scaleIncrement.z);
 
-			/* Set the value of the temporary scale attribute. */
-			tempScale.Set(tempScale.x, tempScale.y, tempScale.z - scaleIncrement.z);
-
-		}
-
-		/* If the L key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.L))
-		{
+			currentScale.Set(currentScale.x + scaleIncrement.x, currentScale.y, currentScale.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x + scaleIncrement.x, tempScale.y, tempScale.z);
-
-		}
-
-		/* If the U key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.U))
-		{
+			currentScale.Set(currentScale.x, currentScale.y - scaleIncrement.y, currentScale.z);
 
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x, tempScale.y - scaleIncrement.y, tempScale.z);
-
-		}
-
-		/* If the O key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the scale increment attribute. */
 		if(Input.GetKey(KeyCode.O))
-		{
-
-			/* Set the value of the temporary scale attribute. */ 
-			tempScale.Set(tempScale.x, tempScale.y + scaleIncrement.y, tempScale.z);
-
-		}
-
-		/* Set the new scale of the object. */ 
-		persistentObject.transform.localScale = tempScale;
-
+			currentScale.Set(currentScale.x, currentScale.y + scaleIncrement.y, currentScale.z);
+		
+		persistentObject.transform.localScale = currentScale;
+		//SCR_Camera.ScaleInRelationToCam(persistentObject.transform, currentScale);
 	}
+#endregion
 
+#region Translations
 	/*
 	*
 	*	Overview
@@ -211,75 +191,31 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckTranslations(SCR_PersistentObject persistentObject)
 	{
+		currentTranslation = Vector3.zero;
 
-		/* If the I key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the translation increment attribute. */
 		if(Input.GetKey(KeyCode.I))
-		{
+			currentTranslation.z += (translationSpeed.z);
 
-			/* Set the new position of the object. */ 
-			persistentObject.transform.Translate(0.0f, 0.0f, translationSpeed.z);
-
-		}
-
-		/* If the J key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-		if(Input.GetKey(KeyCode.J))
-		{
-
-			/* Set the new position of the object. */ 
-			persistentObject.transform.Translate(-translationSpeed.x, 0.0f, 0.0f);
-
-		}
-
-		/* If the K key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
 		if(Input.GetKey(KeyCode.K))
-		{
-
-			/* Set the new position of the object. */ 
-			persistentObject.transform.Translate(0.0f, 0.0f, -translationSpeed.z);
-
-		}
-
-		/* If the L key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
+			currentTranslation.z += (translationSpeed.z * -1.0f);
+		
 		if(Input.GetKey(KeyCode.L))
-		{
+			currentTranslation.x += (translationSpeed.x);
 
-			/* Set the new position of the object. */ 
-			persistentObject.transform.Translate(translationSpeed.x, 0.0f, 0.0f);
+		if(Input.GetKey(KeyCode.J))
+			currentTranslation.x += (translationSpeed.x * -1.0f);
 
-		}
-
-		/* If the U key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-		if(Input.GetKey(KeyCode.U))
-		{
-
-			/* Set the new position of the object. */ 
-			persistentObject.transform.Translate(0.0f, -translationSpeed.y, 0.0f);
-
-		}
-
-		/* If the O key has been pressed. */
-		/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
-		/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the translation increment attribute. */
 		if(Input.GetKey(KeyCode.O))
-		{
+			currentTranslation.y += (translationSpeed.y);
 
-			/* Set the new position of the object. */ 
-			persistentObject.transform.Translate(0.0f, translationSpeed.y, 0.0f);
+		if(Input.GetKey(KeyCode.U))
+			currentTranslation.y += (translationSpeed.y * -1.0f);
 
-		}
-
+		SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation);
 	}
+#endregion
 
+#region VR Rotation
 	/*
 	*
 	*	Overview
@@ -294,125 +230,47 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckRotationVR(SCR_PersistentObject persistentObject)
 	{
+		if(GameObject.Find("Controller (left)") == null && GameObject.Find("Controller (right)") == null)
+			return;
 
-		if(GameObject.Find("Controller (left)") != null)
+		leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+		rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
+
+		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
+			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
+			currentRotation = Vector3.zero;
 
-			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+			if(anchorDistance.z > controllerDistanceForManipulation)
+				currentRotation.x += rotationIncrement.x;
+				//persistentObject.transform.Rotate (0.0f, 0.0f, rotationIncrement.x);
 
+			if(anchorDistance.z < (controllerDistanceForManipulation * -1.0f))
+				currentRotation.x += (rotationIncrement.x * -1.0f);
+				//persistentObject.transform.Rotate (0.0f, 0.0f, -rotationIncrement.x);
+
+			if(anchorDistance.x < (controllerDistanceForManipulation * -1.0f))
+				currentRotation.y += rotationIncrement.y;
+				//persistentObject.transform.Rotate (0.0f, rotationIncrement.y, 0.0f);
+
+			if(anchorDistance.x > controllerDistanceForManipulation)
+				currentRotation.y += (rotationIncrement.y * -1.0f);
+				//persistentObject.transform.Rotate (0.0f, -rotationIncrement.y, 0.0f);
+						
+			if(anchorDistance.y > controllerDistanceForManipulation)
+				currentRotation.z += rotationIncrement.z;
+				//persistentObject.transform.Rotate (rotationIncrement.z, 0.0f, 0.0f);
+
+			if(anchorDistance.y < (controllerDistanceForManipulation * -1.0f))
+				currentRotation.z += (rotationIncrement.z * -1.0f);
+				//persistentObject.transform.Rotate (-rotationIncrement.z, 0.0f, 0.0f);
+
+			SCR_Camera.RotateInRelationToCam(persistentObject.transform, currentRotation);
 		}
-
-		if(GameObject.Find("Controller (right)") != null)
-		{
-
-			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
-
-		}
-
-		//SCR_VRUtilities.AssignControllers(leftController, 0);
-		//SCR_VRUtilities.AssignControllers(rightController, 1);
-
-		if(leftController != null && rightController != null)
-		{
-
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */
-					persistentObject.transform.Rotate (0.0f, 0.0f, rotationIncrement.x);
-
-				}
-
-			}
-
-			/* If the J key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (0.0f, rotationIncrement.y, 0.0f);
-
-				}
-
-			}
-
-			/* If the K key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */
-					persistentObject.transform.Rotate (0.0f, 0.0f, -rotationIncrement.x);
-
-				}
-
-			}
-
-			/* If the L key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (0.0f, -rotationIncrement.y, 0.0f);
-
-				}
-
-			}
-
-			/* If the U key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (-rotationIncrement.z, 0.0f, 0.0f);
-
-				}
-			}
-
-			/* If the O key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					persistentObject.transform.Rotate (rotationIncrement.z, 0.0f, 0.0f);
-
-				}
-
-			}
-
-		}
-
 	}
+#endregion
 
+#region VR Scale
 	/*
 	*
 	*	Overview
@@ -427,130 +285,40 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckScaleVR(SCR_PersistentObject persistentObject)
 	{
+		if(GameObject.Find("Controller (left)") == null && GameObject.Find("Controller (right)") == null)
+			return;
+		
+		leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+		rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
 
-		/* Initialising local attributes. */
-		Vector3 tempScale = persistentObject.transform.localScale;
-
-		if(GameObject.Find("Controller (left)") != null)
+		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
+			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 
-			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+			if(anchorDistance.z > controllerDistanceForManipulation)
+				currentScale.Set(currentScale.x, currentScale.y, currentScale.z + (scaleIncrement.z));
 
+			if(anchorDistance.z < (controllerDistanceForManipulation * -1.0f))
+				currentScale.Set(currentScale.x, currentScale.y, currentScale.z - (scaleIncrement.z));
+
+			if(anchorDistance.x > controllerDistanceForManipulation)
+				currentScale.Set(currentScale.x + (scaleIncrement.x), currentScale.y, currentScale.z);
+
+			if(anchorDistance.x < (controllerDistanceForManipulation * -1.0f))
+				currentScale.Set(currentScale.x - (scaleIncrement.x), currentScale.y, currentScale.z);
+
+			if(anchorDistance.y > controllerDistanceForManipulation)
+				currentScale.Set(currentScale.x, currentScale.y + (scaleIncrement.y), currentScale.z);
+
+			if(anchorDistance.y < (controllerDistanceForManipulation * -1.0f))
+				currentScale.Set(currentScale.x, currentScale.y - (scaleIncrement.y), currentScale.z);
 		}
 
-		if(GameObject.Find("Controller (right)") != null)
-		{
-
-			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
-
-		}
-
-		//SCR_VRUtilities.AssignControllers(leftController, 0);
-		//SCR_VRUtilities.AssignControllers(rightController, 1);
-
-		if(leftController != null && rightController != null)
-		{
-
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y, tempScale.z + (scaleIncrement.z));
-
-				}
-
-			}
-
-			/* If the J key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x - (scaleIncrement.x), tempScale.y, tempScale.z);
-
-				}
-
-			}
-
-			/* If the K key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */
-					tempScale.Set(tempScale.x, tempScale.y, tempScale.z - (scaleIncrement.z));
-
-				}
-
-			}
-
-			/* If the L key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x + (scaleIncrement.x), tempScale.y, tempScale.z);
-
-				}
-
-			}
-
-			/* If the U key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y - (scaleIncrement.y), tempScale.z);
-
-				}
-			}
-
-			/* If the O key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the scale increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
-				{
-
-					/* Set the value of the temporary scale attribute. */ 
-					tempScale.Set(tempScale.x, tempScale.y + (scaleIncrement.y), tempScale.z);
-
-				}
-			}
-
-			/* Set the new scale of the object. */ 
-			persistentObject.transform.localScale = tempScale;
-
-		}
-
+		persistentObject.transform.localScale = currentScale;
 	}
+#endregion
 
+#region VR Translations
 	/*
 	*
 	*	Overview
@@ -565,126 +333,48 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckTranslationsVR(SCR_PersistentObject persistentObject)
 	{
+		if(GameObject.Find("Controller (left)") == null && GameObject.Find("Controller (right)") == null)
+			return;
 
-		if(GameObject.Find("Controller (left)") != null)
+		leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+		rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
+
+		// THIS NEEDS TESTING.
+		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
+			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
+			currentTranslation = Vector3.zero;
 
-			leftController = GameObject.Find("Controller (left)").GetComponent<SCR_VRControllerInput>();
+			if(anchorDistance.z > controllerDistanceForManipulation)
+				currentTranslation.z += (translationSpeed.z);
+				//persistentObject.transform.Translate (0.0f, 0.0f, (translationSpeed.z));
 
+			if(anchorDistance.z < (controllerDistanceForManipulation * -1.0f))
+				currentTranslation.z += (translationSpeed.z * -1.0f);
+				//persistentObject.transform.Translate (0.0f, 0.0f, (-translationSpeed.z));
+
+			if(anchorDistance.x > controllerDistanceForManipulation)
+				currentTranslation.x += (translationSpeed.x);
+				//persistentObject.transform.Translate((translationSpeed.x), 0.0f, 0.0f);
+
+			if(anchorDistance.x < (controllerDistanceForManipulation * -1.0f))
+				currentTranslation.x += (translationSpeed.x * -1.0f);
+				//persistentObject.transform.Translate((-translationSpeed.x), 0.0f, 0.0f);
+
+			if(anchorDistance.y > controllerDistanceForManipulation)
+				currentTranslation.y += (translationSpeed.y);
+				//persistentObject.transform.Translate(0.0f, (translationSpeed.y), 0.0f);
+
+			if(anchorDistance.y < (controllerDistanceForManipulation * -1.0f))
+				currentTranslation.y += (translationSpeed.y * -1.0f);
+				//persistentObject.transform.Translate(0.0f, (-translationSpeed.y), 0.0f);
+
+			SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation);
 		}
-
-		if(GameObject.Find("Controller (right)") != null)
-		{
-
-			rightController = GameObject.Find("Controller (right)").GetComponent<SCR_VRControllerInput>();
-
-		}
-
-		//SCR_VRUtilities.AssignControllers(leftController, 0);
-		//SCR_VRUtilities.AssignControllers(rightController, 1);
-
-		if(leftController != null && rightController != null)
-		{
-			/* If the I key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller in front of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller in front of the left past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
-				{
-					
-					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate (0.0f, 0.0f, (translationSpeed.z));
-
-				}
-
-			}
-
-			/* If the J key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the left of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the left of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
-				{
-
-					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate((-translationSpeed.x), 0.0f, 0.0f);
-
-				}
-
-			}
-
-			/* If the K key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller behind the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller behind of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
-				{
-					
-					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate (0.0f, 0.0f, (-translationSpeed.z));
-
-				}
-
-			}
-
-			/* If the L key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller to the right of the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller to the right of the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
-				{
-
-					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate((translationSpeed.x), 0.0f, 0.0f);
-
-				}
-
-			}
-
-			/* If the U key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller below the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller below the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
-				{
-
-					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, (-translationSpeed.y), 0.0f);
-
-				}
-
-			}
-
-			/* If the O key has been pressed. */
-			/* VR Equivalent: Holding the left hand controller trigger and right hand controller trigger and moving one controller above the other above a threshold distance. */
-			/* For example, holding both triggers, and holding the right controller above the left hand controller past Xcm will constantly increment by the translation increment attribute. */
-			if(leftController.TriggerHeld() && rightController.TriggerHeld())
-			{
-
-				if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
-				{
-
-					/* Set the new position of the object. */ 
-					persistentObject.transform.Translate(0.0f, (translationSpeed.y), 0.0f);
-
-				}
-
-			}
-
-		}
-
 	}
-		
+#endregion
+
+#region Object Manipulation	
 	/*
 	*
 	*	Overview
@@ -699,38 +389,25 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void ManipulateObject(SCR_PersistentObject persistentObject)
 	{
-
-		/* If user is currently manipulating the position of the object. */
 		if(currentTransformState == TransformState.translation)
 		{
-
-			/* Check any input for translation manipulation. */
 			CheckTranslations(persistentObject);
 			CheckTranslationsVR (persistentObject);
-
 		}
-		/* Otherwise, the user is currently manipulating the rotation of the object. */
 		else if(currentTransformState == TransformState.rotation)
 		{
-
-			/* Check any input for rotation manipulation. */
 			CheckRotation(persistentObject);	
 			CheckRotationVR (persistentObject);
-
 		}
-		/* Otherwise, the user is currently manipulating the scale of the object. */
 		else if(currentTransformState == TransformState.scale)
 		{
-
-			/* Check any input for scale manipulation. */
 			CheckScale(persistentObject);
 			CheckScaleVR (persistentObject);
-
 		}
-
-
 	}
+#endregion
 
+#region Highlighted Object Check
 	/*
 	*
 	*	Overview
@@ -758,7 +435,9 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
+#endregion
 
+#region Transform State Check
 	/*
 	*
 	*	Overview
@@ -781,7 +460,6 @@ public class SCR_SceneEditor : MonoBehaviour
 			{
 
 				/* Set the current transform state to translation. */
-				print("Translating.");
 				currentTransformState = TransformState.translation;
 
 			}
@@ -797,7 +475,6 @@ public class SCR_SceneEditor : MonoBehaviour
 			{
 
 				/* Set the current transform state to rotation. */
-				print("Rotating.");
 				currentTransformState = TransformState.rotation;
 
 			}
@@ -813,7 +490,6 @@ public class SCR_SceneEditor : MonoBehaviour
 			{
 
 				/* Set the current transform state to scale. */
-				print("Scaling.");
 				currentTransformState = TransformState.scale;
 
 			}
@@ -821,7 +497,15 @@ public class SCR_SceneEditor : MonoBehaviour
 		}
 
 	}
+#endregion
 
+	public static void DeselectAllObjects()
+	{
+		foreach(SCR_PersistentObject obj in sceneObjects)
+			obj.InFocus = false;
+	}
+
+#region Update
 	/*
 	*
 	*	Overview
@@ -839,10 +523,12 @@ public class SCR_SceneEditor : MonoBehaviour
 		CheckForHighlightedObjects();
 
 	}
+#endregion
 
+#region Getters / Setters
 	/* Getters. */
 	/* This will allow us to get/set the current list of persistent objects in the scene. */
-	public List<SCR_PersistentObject> Objects
+	public static List<SCR_PersistentObject> Objects
 	{
 		get { return sceneObjects; }
 		set { sceneObjects = value; }
@@ -853,5 +539,6 @@ public class SCR_SceneEditor : MonoBehaviour
 		get { return currentTransformState; }
 		set { currentTransformState = value; }
 	}
+#endregion
 
 }

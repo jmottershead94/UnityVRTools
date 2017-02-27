@@ -30,6 +30,11 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	private Material currentMaterial = null;				/* The current material attached to the game object, will be used to update the current material of the mesh renderer. */
 	private Material glowingMaterial = null;				/* Stores the material used to indicate that the game object has been highlighted. */
 	private Material defaultMaterial = null;				/* Stores the default material used originally for the game object. */
+	private Material changingMaterial = null;
+	private bool isMouseOver = false;
+	private bool holding = false;
+	private Vector3 screenPoint;
+	private Vector3 offset;
 
 	/* Methods. */
 	/* Virtual. */
@@ -55,6 +60,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		currentMaterial = GetComponent<MeshRenderer>().materials[0];
 		defaultMaterial = currentMaterial;
 		glowingMaterial = Resources.Load("Materials/MAT_ObjectSelected") as Material;
+		changingMaterial = Resources.Load("Materials/MAT_ChangingColour") as Material;
 
 	}
 
@@ -127,7 +133,46 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			isInFocus = true;
 
 		}
+	}
 
+	private void HoldingObject()
+	{
+		if(!InFocus)
+		{
+			InFocus = true;
+			holding = true;
+		}
+
+		Debug.Log("Holding Object");
+	}
+
+	private void DropObject()
+	{
+		Transform previousTransform = GameObject.Find("Scene Editor").transform;
+
+		if(InFocus)
+		{
+			InFocus = false;
+			holding = false;
+
+			if(transform.parent != previousTransform)
+				transform.SetParent(previousTransform);
+
+			Debug.Log("Dropped Object");
+		}
+	}
+
+	private void PCHolding()
+	{
+		HoldingObject();
+		screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+		offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+	}
+
+	private void VRHolding()
+	{
+		HoldingObject();
+		transform.SetParent(rightController.transform);
 	}
 
 	/* This function will need a VR equivalent. */
@@ -142,9 +187,28 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	private void OnMouseDown()
 	{
-
 		FocusSwitch();
+	}
 
+	/* VR Equivalent: Right controller aiming at this and the trigger is held. */
+	private void OnMouseOver()
+	{
+		isMouseOver = true;
+	}
+
+	private void OnMouseDrag()
+	{
+		Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+		Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
+		transform.position = cursorPosition;
+	}
+
+	private void OnMouseExit()
+	{
+		isMouseOver = false;
+
+		if(InFocus && holding)
+			DropObject();
 	}
 
 	/*
@@ -180,7 +244,6 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			OutOfFocus();
 
 		}
-
 	}
 
 	/*
@@ -192,12 +255,21 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	protected void Update()
 	{
-
 		VRTriggerResponse(FocusSwitch);
+		VRTriggerHeldResponse(VRHolding, DropObject);
+
+		// IF the user is holding down the left mouse button.
+		// Move this object around with the cursor.
+		if(isMouseOver)
+		{
+			if(Input.GetMouseButton(0))
+				PCHolding();
+			else if(Input.GetMouseButtonUp(0) && holding)
+				DropObject();
+		}
 
 		/* Handles any game object focus updates. */
 		CheckFocus();
-
 	}
 
 	/* Getters/Setters. */
@@ -213,6 +285,31 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	{
 		get { return id; }
 		set { id = value; }
+	}
+
+	public Material DefaultMaterial
+	{
+		get { return defaultMaterial; }
+		set { defaultMaterial = value; }
+	}
+
+	public Material CurrentMaterial
+	{
+		get { return currentMaterial; }
+		set { currentMaterial = value; }
+	}
+
+	public Material HighLightedMaterial
+	{
+		get { return glowingMaterial; }
+		set { glowingMaterial = value; }
+	}
+
+
+	public Material ChangingMaterial
+	{
+		get { return changingMaterial; }
+		set { changingMaterial = value; }
 	}
 
 }

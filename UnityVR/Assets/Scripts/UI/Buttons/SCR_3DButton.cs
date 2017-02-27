@@ -38,6 +38,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 	private bool isInteractable = true;								/* Used to indicate if this button is interactable or not. */
 	protected SCR_3DMenu menu = null;
 	protected SCR_Panel parentPanel = null;							/* Accessing the panel that this button belongs to. */
+	protected Transform spawner = null;
 
 	/* Methods. */
 	/* Virtual. */
@@ -49,17 +50,48 @@ public class SCR_3DButton : SCR_BaseUIElement
 
 	protected virtual void VRControls(){}
 
-	/*
-	*
-	*	Overview
-	*	--------
-	*	This will be called before initialisation.
-	*
-	*/
-	new protected void Awake()
-	{
+//	/*
+//	*
+//	*	Overview
+//	*	--------
+//	*	This will be called before initialisation.
+//	*
+//	*/
+//	new protected void Awake()
+//	{
+//
+//		base.Awake();
+//
+//		/* Initialising our attributes. */
+//		if (GameObject.Find ("PRE_3DMenu") != null) 
+//		{
+//			menu = GameObject.Find ("PRE_3DMenu").transform.FindChild ("Menu").GetComponent<SCR_3DMenu> ();
+//		}
+//
+//		sceneEditor = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
+//		originalPosition = transform.position;
+//		originalScale = transform.localScale;
+//		destination = new Vector3(originalPosition.x, originalPosition.y, originalPosition.z - 0.2f);
+//		destinationScale = new Vector3(originalScale.x * scaleUpFactor, originalScale.y * scaleUpFactor, originalScale.z * scaleUpFactor);
+//		parentPanel = transform.parent.GetComponent<SCR_Panel>();
+//
+//		if (leftController != null) 
+//		{
+//
+//			originalDistanceDifference = leftController.transform.position - transform.position;
+//
+//		}
+//		else
+//		{
+//
+//			originalDistanceDifference = Camera.main.transform.position - transform.position;
+//
+//		}
+//
+//	}
 
-		base.Awake();
+	protected void Start()
+	{
 
 		/* Initialising our attributes. */
 		if (GameObject.Find ("PRE_3DMenu") != null) 
@@ -73,6 +105,7 @@ public class SCR_3DButton : SCR_BaseUIElement
 		destination = new Vector3(originalPosition.x, originalPosition.y, originalPosition.z - 0.2f);
 		destinationScale = new Vector3(originalScale.x * scaleUpFactor, originalScale.y * scaleUpFactor, originalScale.z * scaleUpFactor);
 		parentPanel = transform.parent.GetComponent<SCR_Panel>();
+		spawner = GameObject.FindGameObjectWithTag("MainCamera").transform.FindChild("Object Spawner");
 
 		if (leftController != null) 
 		{

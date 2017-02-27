@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class SCR_LoadButton : SCR_3DButton 
@@ -15,9 +16,8 @@ public class SCR_LoadButton : SCR_3DButton
 	override public void ButtonPressResponse()
 	{
 		
-		/* Sets the new transform state. */
-		SCR_SceneData.Instance.Load();
-
+		SCR_SceneData.Instance.Load(SceneManager.GetActiveScene().name);
+		
 	}
 
 }
