@@ -27,7 +27,7 @@ public class SaveLoadMenu : MonoBehaviour {
 
 	IEnumerator LoadDelay()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(1.0f);
 
 		List<GameObject> prefabs = GameObject.Find("Prefabs Panel").GetComponent<SCR_PrefabsPanel>().Prefabs;
 

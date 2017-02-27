@@ -33,6 +33,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	private Material changingMaterial = null;
 	private bool isMouseOver = false;
 	private bool holding = false;
+	private SCR_GrabButton grabButton = null;
 	private Vector3 screenPoint;
 	private Vector3 offset;
 
@@ -61,7 +62,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		defaultMaterial = currentMaterial;
 		glowingMaterial = Resources.Load("Materials/MAT_ObjectSelected") as Material;
 		changingMaterial = Resources.Load("Materials/MAT_ChangingColour") as Material;
-
+		grabButton = GameObject.Find ("GrabModeButton").GetComponent<SCR_GrabButton> ();
 	}
 
 	/*
@@ -255,8 +256,10 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	protected void Update()
 	{
-		VRTriggerResponse(FocusSwitch);
-		VRTriggerHeldResponse(VRHolding, DropObject);
+		if(grabButton.TransformType == SCR_GrabButton.VRTransformType.freeForm)
+			VRTriggerResponse(FocusSwitch);
+		else
+			VRTriggerHeldResponse(VRHolding, DropObject, holding);
 
 		// IF the user is holding down the left mouse button.
 		// Move this object around with the cursor.

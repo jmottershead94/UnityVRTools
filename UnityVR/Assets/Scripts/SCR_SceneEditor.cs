@@ -238,7 +238,11 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
-			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
+			float x = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.x, rightController.transform.position.x);
+			float y = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.y, rightController.transform.position.y);
+			float z = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.z, rightController.transform.position.z);
+			Vector3 anchorDistance = new Vector3 (x, y, z);
+			//Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 			currentRotation = Vector3.zero;
 
 			if(anchorDistance.z > controllerDistanceForManipulation)
@@ -293,7 +297,11 @@ public class SCR_SceneEditor : MonoBehaviour
 
 		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
-			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
+			float x = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.x, rightController.transform.position.x);
+			float y = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.y, rightController.transform.position.y);
+			float z = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.z, rightController.transform.position.z);
+			Vector3 anchorDistance = new Vector3 (x, y, z);
+			//Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 
 			if(anchorDistance.z > controllerDistanceForManipulation)
 				currentScale.Set(currentScale.x, currentScale.y, currentScale.z + (scaleIncrement.z));
@@ -342,7 +350,12 @@ public class SCR_SceneEditor : MonoBehaviour
 		// THIS NEEDS TESTING.
 		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
-			Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
+			float x = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.x, rightController.transform.position.x);
+			float y = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.y, rightController.transform.position.y);
+			float z = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.z, rightController.transform.position.z);
+			Vector3 anchorDistance = new Vector3 (x, y, z);
+
+			//Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 			currentTranslation = Vector3.zero;
 
 			if(anchorDistance.z > controllerDistanceForManipulation)
