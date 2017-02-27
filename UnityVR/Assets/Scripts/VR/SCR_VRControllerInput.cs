@@ -108,6 +108,16 @@ public class SCR_VRControllerInput : MonoBehaviour
 //		distanceToCamera = ();
 //	}
 
+	public Vector3 CalculateEuclideanDistance(Vector3 pointOne)
+	{
+		Vector3 distance= Vector3.zero;
+		float x = SCR_MathUtilities.EuclideanDistance(transform.position.x, pointOne.x);
+		float y = SCR_MathUtilities.EuclideanDistance(transform.position.y, pointOne.y);
+		float z = SCR_MathUtilities.EuclideanDistance(transform.position.z, pointOne.z);
+		distance = new Vector3 (x, y, z);
+		return distance;
+	}
+
 	/*
 	*
 	*	Overview
