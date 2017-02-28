@@ -138,13 +138,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void HoldingObject()
 	{
-		if(!InFocus)
-		{
-			InFocus = true;
-			holding = true;
-		}
-
-		Debug.Log("Holding Object");
+		InFocus = true;
+		holding = true;
+		SCR_VRUtilities.Holding = true;
 	}
 
 	private void DropObject()
@@ -156,10 +152,11 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 			InFocus = false;
 			holding = false;
 
+			if(SCR_VRUtilities.Holding)
+				SCR_VRUtilities.Holding = false;
+
 			if(transform.parent != previousTransform)
 				transform.SetParent(previousTransform);
-
-			Debug.Log("Dropped Object");
 		}
 	}
 
@@ -172,8 +169,11 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void VRHolding()
 	{
-		HoldingObject();
-		transform.SetParent(rightController.transform);
+		if (!SCR_VRUtilities.Holding) 
+		{
+			HoldingObject ();
+			transform.SetParent (rightController.transform);
+		}
 	}
 
 	/* This function will need a VR equivalent. */

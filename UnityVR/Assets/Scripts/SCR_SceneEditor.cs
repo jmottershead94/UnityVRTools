@@ -348,6 +348,8 @@ public class SCR_SceneEditor : MonoBehaviour
 	*/
 	private void CheckTranslationsVR(SCR_PersistentObject persistentObject)
 	{
+		
+
 		if(GameObject.Find("Controller (left)") == null && GameObject.Find("Controller (right)") == null)
 			return;
 
@@ -397,24 +399,19 @@ public class SCR_SceneEditor : MonoBehaviour
 			if(rightControllerDistance.z > leftControllerDistance.z + controllerDistanceForManipulation)
 				currentTranslation.z += (translationSpeed.z);
 				//persistentObject.transform.Translate (0.0f, 0.0f, (translationSpeed.z));
-
-			if(rightControllerDistance.z < leftControllerDistance.z - controllerDistanceForManipulation)
+			else if(rightControllerDistance.z < leftControllerDistance.z - controllerDistanceForManipulation)
 				currentTranslation.z += (translationSpeed.z * -1.0f);
 				//persistentObject.transform.Translate (0.0f, 0.0f, (-translationSpeed.z));
-
-			if(rightControllerDistance.x > leftControllerDistance.x + controllerDistanceForManipulation)
+			else if(rightControllerDistance.x > leftControllerDistance.x + controllerDistanceForManipulation)
 				currentTranslation.x += (translationSpeed.x);
 				//persistentObject.transform.Translate((translationSpeed.x), 0.0f, 0.0f);
-
-			if(rightControllerDistance.x < leftControllerDistance.x - controllerDistanceForManipulation)
+			else if(rightControllerDistance.x < leftControllerDistance.x - controllerDistanceForManipulation)
 				currentTranslation.x += (translationSpeed.x * -1.0f);
 				//persistentObject.transform.Translate((-translationSpeed.x), 0.0f, 0.0f);
-
-			if(rightControllerDistance.y > leftControllerDistance.y + controllerDistanceForManipulation)
+			else if(rightControllerDistance.y > leftControllerDistance.y + controllerDistanceForManipulation)
 				currentTranslation.y += (translationSpeed.y);
 				//persistentObject.transform.Translate(0.0f, (translationSpeed.y), 0.0f);
-
-			if(rightControllerDistance.y < leftControllerDistance.y - controllerDistanceForManipulation)
+			else if(rightControllerDistance.y < leftControllerDistance.y - controllerDistanceForManipulation)
 				currentTranslation.y += (translationSpeed.y * -1.0f);
 				//persistentObject.transform.Translate(0.0f, (-translationSpeed.y), 0.0f);
 
@@ -441,17 +438,23 @@ public class SCR_SceneEditor : MonoBehaviour
 		if(currentTransformState == TransformState.translation)
 		{
 			CheckTranslations(persistentObject);
-			CheckTranslationsVR (persistentObject);
+
+			if(!SCR_VRUtilities.Holding)
+				CheckTranslationsVR (persistentObject);
 		}
 		else if(currentTransformState == TransformState.rotation)
 		{
 			CheckRotation(persistentObject);	
-			CheckRotationVR (persistentObject);
+
+			if(!SCR_VRUtilities.Holding)
+				CheckRotationVR (persistentObject);
 		}
 		else if(currentTransformState == TransformState.scale)
 		{
 			CheckScale(persistentObject);
-			CheckScaleVR (persistentObject);
+
+			if(!SCR_VRUtilities.Holding)
+				CheckScaleVR (persistentObject);
 		}
 	}
 #endregion

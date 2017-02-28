@@ -101,10 +101,7 @@ public class SCR_BaseUIElement : MonoBehaviour
 			if (rightController.TriggerHeld ())
 				holdMethod ();
 			else if (!rightController.TriggerPressed ()) 
-			{
-				Debug.Log ("Should release...");
 				releaseMethod ();
-			}
 		}
 	}
 
