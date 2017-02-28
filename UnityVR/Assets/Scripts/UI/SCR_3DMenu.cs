@@ -101,7 +101,6 @@ public class SCR_3DMenu : SCR_BaseUIElement
 
 				if(transform.position != originalPosition)
 				{
-					transform.up = leftController.transform.up;
 					transform.position = originalPosition;
 					//transform.position = new Vector3(leftController.transform.position.x, leftController.transform.position.y, leftController.transform.position.z + 0.5f);
 					//transform.rotation = leftController.transform.rotation;

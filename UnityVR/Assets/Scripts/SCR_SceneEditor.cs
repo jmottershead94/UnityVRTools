@@ -310,22 +310,22 @@ public class SCR_SceneEditor : MonoBehaviour
 //			Vector3 anchorDistance = new Vector3 (x, y, z);
 			//Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 
-			if(rightControllerDistance.z > leftControllerDistance.z + controllerDistanceForManipulation)
+			if(rightController.transform.position.z > leftController.transform.position.z + controllerDistanceForManipulation)
 				currentScale.Set(currentScale.x, currentScale.y, currentScale.z + (scaleIncrement.z));
 
-			if(rightControllerDistance.z < leftControllerDistance.z - controllerDistanceForManipulation)
+			if(rightController.transform.position.z < leftController.transform.position.z - controllerDistanceForManipulation)
 				currentScale.Set(currentScale.x, currentScale.y, currentScale.z - (scaleIncrement.z));
 
-			if(rightControllerDistance.x > leftControllerDistance.x + controllerDistanceForManipulation)
+			if(rightController.transform.position.x > leftController.transform.position.x + controllerDistanceForManipulation)
 				currentScale.Set(currentScale.x + (scaleIncrement.x), currentScale.y, currentScale.z);
 
-			if(rightControllerDistance.x < leftControllerDistance.x - controllerDistanceForManipulation)
+			if(rightController.transform.position.x < leftController.transform.position.x - controllerDistanceForManipulation)
 				currentScale.Set(currentScale.x - (scaleIncrement.x), currentScale.y, currentScale.z);
 
-			if(rightControllerDistance.y > leftControllerDistance.y + controllerDistanceForManipulation)
+			if(rightController.transform.position.y > leftController.transform.position.y + controllerDistanceForManipulation)
 				currentScale.Set(currentScale.x, currentScale.y + (scaleIncrement.y), currentScale.z);
 
-			if(rightControllerDistance.y < leftControllerDistance.y - controllerDistanceForManipulation)
+			if(rightController.transform.position.y < leftController.transform.position.y - controllerDistanceForManipulation)
 				currentScale.Set(currentScale.x, currentScale.y - (scaleIncrement.y), currentScale.z);
 		}
 
@@ -431,7 +431,7 @@ public class SCR_SceneEditor : MonoBehaviour
 		{
 			CheckScale(persistentObject);
 
-			if(!SCR_VRUtilities.Holding)
+			//if(!SCR_VRUtilities.Holding)
 				CheckScaleVR (persistentObject);
 		}
 	}
