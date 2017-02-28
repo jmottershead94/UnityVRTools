@@ -28,6 +28,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 	/* Attributes. */
 	[HideInInspector] 	[SerializeField]	private List<GameObject> prefabs = null;
 	[HideInInspector]	[SerializeField]	private List<Texture2D> prefabPreviews = null;
+	[SerializeField]	private bool inVR = false;
 	private SCR_GridView gridView = null;
 
 	/* Methods. */
@@ -100,6 +101,12 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 
 		if(gridView != null)
 		{
+			if (inVR) 
+			{
+				startingPosition.x -= 0.00125f;
+				startingPosition.z += 0.25f;
+			}
+
 			// Align the grid elements.
 			gridView.AlignGridElements(startingPosition);
 		}

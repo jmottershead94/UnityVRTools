@@ -67,12 +67,6 @@ public class SCR_Camera : MonoBehaviour
 
 		if (invertHeadTilt)
 			axis = Camera.main.transform.TransformDirection (axis);
-		else 
-		{
-			Vector3 invertedHeadTilt = translation;
-			invertedHeadTilt = Camera.main.transform.TransformDirection (invertedHeadTilt);
-			axis = new Vector3 (-invertedHeadTilt.x, -invertedHeadTilt.y, invertedHeadTilt.z);
-		}
 		
 		goTransform.position += axis;
 	}
