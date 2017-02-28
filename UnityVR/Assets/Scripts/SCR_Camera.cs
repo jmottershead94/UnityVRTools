@@ -61,10 +61,19 @@ public class SCR_Camera : MonoBehaviour
 		return result;
 	}
 
-	public static void MoveInRelationToCam(Transform goTransform, Vector3 translation)
+	public static void MoveInRelationToCam(Transform goTransform, Vector3 translation, bool invertHeadTilt)
 	{
 		Vector3 axis = translation;
-		axis = Camera.main.transform.TransformDirection(axis);
+
+		if (invertHeadTilt)
+			axis = Camera.main.transform.TransformDirection (axis);
+		else 
+		{
+			Vector3 invertedHeadTilt = translation;
+			invertedHeadTilt = Camera.main.transform.TransformDirection (invertedHeadTilt);
+			axis = new Vector3 (-invertedHeadTilt.x, -invertedHeadTilt.y, invertedHeadTilt.z);
+		}
+		
 		goTransform.position += axis;
 	}
 
@@ -114,7 +123,7 @@ public class SCR_Camera : MonoBehaviour
 		movement.y = Input.GetAxis("Vertical") * speed.y;
 		movement.z = Input.GetAxis("Depth") * speed.z;
 
-		MoveInRelationToCam(transform, movement);
+		MoveInRelationToCam(transform, movement, true);
 		Rotation();
 
 		if(Input.GetMouseButtonDown(1))
@@ -144,7 +153,7 @@ public class SCR_Camera : MonoBehaviour
 		if(rightController.RightPressed())
 			movement.x += speed.x;
 
-		MoveInRelationToCam(transform, movement);
+		MoveInRelationToCam(transform, movement, true);
 	}
 	
 	/*

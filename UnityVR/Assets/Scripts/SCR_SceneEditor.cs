@@ -211,7 +211,7 @@ public class SCR_SceneEditor : MonoBehaviour
 		if(Input.GetKey(KeyCode.U))
 			currentTranslation.y += (translationSpeed.y * -1.0f);
 
-		SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation);
+		SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation, true);
 	}
 #endregion
 
@@ -359,10 +359,6 @@ public class SCR_SceneEditor : MonoBehaviour
 		// THIS NEEDS TESTING.
 		if(leftController.TriggerHeld() && rightController.TriggerHeld())
 		{
-//			float x = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.x, rightController.transform.position.x);
-//			float y = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.y, rightController.transform.position.y);
-//			float z = SCR_MathUtilities.EuclideanDistance (leftController.transform.position.z, rightController.transform.position.z);
-//			Vector3 anchorDistance = new Vector3 (x, y, z);
 			Vector3 leftControllerDistance = leftController.CalculateEuclideanDistance (Camera.main.transform.position);
 			Vector3 rightControllerDistance = rightController.CalculateEuclideanDistance (Camera.main.transform.position);
 
@@ -372,50 +368,24 @@ public class SCR_SceneEditor : MonoBehaviour
 			//Vector3 anchorDistance = leftController.PositionToCamera - rightController.PositionToCamera;
 			currentTranslation = Vector3.zero;
 
-//			if(rightControllerDistance.z > leftControllerDistance.z + controllerDistanceForManipulation)
-//				currentRotation.x += rotationIncrement.x;
-//			//persistentObject.transform.Rotate (0.0f, 0.0f, rotationIncrement.x);
-//
-//			if(rightControllerDistance.z < leftControllerDistance.z - controllerDistanceForManipulation)
-//				currentRotation.x += (rotationIncrement.x * -1.0f);
-//			//persistentObject.transform.Rotate (0.0f, 0.0f, -rotationIncrement.x);
-//
-//			if(rightControllerDistance.x < leftControllerDistance.x - controllerDistanceForManipulation)
-//				currentRotation.y += rotationIncrement.y;
-//			//persistentObject.transform.Rotate (0.0f, rotationIncrement.y, 0.0f);
-//
-//			if(rightControllerDistance.x > leftControllerDistance.x + controllerDistanceForManipulation)
-//				currentRotation.y += (rotationIncrement.y * -1.0f);
-//			//persistentObject.transform.Rotate (0.0f, -rotationIncrement.y, 0.0f);
-//
-//			if(rightControllerDistance.y > leftControllerDistance.y + controllerDistanceForManipulation)
-//				currentRotation.z += rotationIncrement.z;
-//			//persistentObject.transform.Rotate (rotationIncrement.z, 0.0f, 0.0f);
-//
-//			if(rightControllerDistance.y < leftControllerDistance.y - controllerDistanceForManipulation)
-//				currentRotation.z += (rotationIncrement.z * -1.0f);
-//			//persistentObject.transform.Rotate (-rotationIncrement.z, 0.0f, 0.0f);
-
-			if(rightControllerDistance.z > leftControllerDistance.z + controllerDistanceForManipulation)
+			if (rightControllerDistance.z > leftControllerDistance.z + controllerDistanceForManipulation) 
+			{
 				currentTranslation.z += (translationSpeed.z);
-				//persistentObject.transform.Translate (0.0f, 0.0f, (translationSpeed.z));
-			else if(rightControllerDistance.z < leftControllerDistance.z - controllerDistanceForManipulation)
+				SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation, true);
+			}
+			if (rightControllerDistance.z < leftControllerDistance.z - controllerDistanceForManipulation) 
+			{
 				currentTranslation.z += (translationSpeed.z * -1.0f);
-				//persistentObject.transform.Translate (0.0f, 0.0f, (-translationSpeed.z));
-			else if(rightControllerDistance.x > leftControllerDistance.x + controllerDistanceForManipulation)
-				currentTranslation.x += (translationSpeed.x);
-				//persistentObject.transform.Translate((translationSpeed.x), 0.0f, 0.0f);
-			else if(rightControllerDistance.x < leftControllerDistance.x - controllerDistanceForManipulation)
-				currentTranslation.x += (translationSpeed.x * -1.0f);
-				//persistentObject.transform.Translate((-translationSpeed.x), 0.0f, 0.0f);
-			else if(rightControllerDistance.y > leftControllerDistance.y + controllerDistanceForManipulation)
-				currentTranslation.y += (translationSpeed.y);
-				//persistentObject.transform.Translate(0.0f, (translationSpeed.y), 0.0f);
-			else if(rightControllerDistance.y < leftControllerDistance.y - controllerDistanceForManipulation)
-				currentTranslation.y += (translationSpeed.y * -1.0f);
-				//persistentObject.transform.Translate(0.0f, (-translationSpeed.y), 0.0f);
-
-			SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation);
+				SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation, false);
+			}
+//			else if(rightControllerDistance.x < leftControllerDistance.x - controllerDistanceForManipulation)		// This makes the object go to the right?
+//				currentTranslation.x += (translationSpeed.x);
+//			else if(rightControllerDistance.x > leftControllerDistance.x + controllerDistanceForManipulation)
+//				currentTranslation.x += (translationSpeed.x * -1.0f);
+//			else if(rightControllerDistance.y < leftControllerDistance.y - controllerDistanceForManipulation)		// Doesn't seem to work correctly.
+//				currentTranslation.y += (translationSpeed.y);
+//			else if(rightControllerDistance.y > leftControllerDistance.y + controllerDistanceForManipulation)		// Doesn't seem to work correctly.
+//				currentTranslation.y += (translationSpeed.y * -1.0f);
 		}
 	}
 #endregion
