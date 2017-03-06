@@ -14,7 +14,7 @@ public class SCR_VREditorWindow : EditorWindow
 	private SCR_SceneEditor sceneEditor = null;
 	private SaveLoadMenu prefabData = null;
 	[SerializeField]	private string sceneName = "";
-	[SerializeField]	private bool normalEditing = true;
+	[SerializeField]	private bool normalEditing = false;
 
 	/* Methods. */
 	[MenuItem("Window/VR Editor/Show")]
@@ -191,7 +191,7 @@ public class SCR_VREditorWindow : EditorWindow
 //
 //		}
 
-		if(GUI.Button(new Rect(new Vector2(0.0f, 150.0f), new Vector2(200.0f, 100.0f)), "Load Latest Scene"))
+		if(GUI.Button(new Rect(new Vector2(0.0f, 170.0f), new Vector2(200.0f, 100.0f)), "Load Latest Scene"))
 		{
 
 			LoadLatestVRScene();
@@ -219,9 +219,16 @@ public class SCR_VREditorWindow : EditorWindow
 		SerializedObject so = new SerializedObject(target);
 		SerializedProperty stringProperty = so.FindProperty("sceneName");
 		EditorGUILayout.PropertyField(stringProperty);
+		SerializedProperty boolProperty = so.FindProperty("normalEditing");
+		EditorGUILayout.PropertyField(boolProperty);
 		so.ApplyModifiedProperties();
 
 		WindowButtons();
+
+		if(normalEditing)
+		{
+			
+		}
 
 	}
 

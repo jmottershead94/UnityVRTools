@@ -291,6 +291,7 @@ public class SCR_SceneData : MonoBehaviour
 
 #if UNITY_EDITOR
 		filePath = Application.dataPath + "/" + fileName + ".dat";
+		SCR_SceneEditor.Objects = new List<SCR_PersistentObject>();
 #else
 		if(filePath == "")
 		{

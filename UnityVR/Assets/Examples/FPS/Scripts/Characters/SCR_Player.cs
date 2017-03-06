@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SCR_GameCamera : MonoBehaviour 
+public class SCR_Player : MonoBehaviour 
 {
+
 	[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
 	[SerializeField]	private bool clampVertical = true;
 	private float rotationX = 0.0f;
@@ -25,7 +26,7 @@ public class SCR_GameCamera : MonoBehaviour
 			transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, transform.localEulerAngles.z);
 		}
 	}
-
+	
 	private void PCControls()
 	{
 		if(Input.GetMouseButton(1))
