@@ -224,12 +224,5 @@ public class SCR_VREditorWindow : EditorWindow
 		so.ApplyModifiedProperties();
 
 		WindowButtons();
-
-		if(normalEditing)
-		{
-			
-		}
-
 	}
-
 }
