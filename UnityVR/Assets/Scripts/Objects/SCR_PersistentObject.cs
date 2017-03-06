@@ -256,14 +256,12 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	protected void Update()
 	{
-		if(grabButton.TransformType == SCR_GrabButton.VRTransformType.freeForm)
-			VRTriggerResponse(FocusSwitch);
-		else
-			VRTriggerHeldResponse(VRHolding, DropObject, holding);
+//		if(grabButton.TransformType == SCR_GrabButton.VRTransformType.freeForm)
+//			VRTriggerResponse(FocusSwitch);
+//		else
+//			VRTriggerHeldResponse(VRHolding, DropObject, holding);
 
-		// IF the user is holding down the left mouse button.
-		// Move this object around with the cursor.
-		if(isMouseOver)
+		if(isMouseOver && grabButton.TransformType == SCR_GrabButton.VRTransformType.grab)
 		{
 			if(Input.GetMouseButton(0))
 				PCHolding();

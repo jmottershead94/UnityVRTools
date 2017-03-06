@@ -27,6 +27,7 @@ public static class SCR_UIConstants
 	private static Vector2 RIGHT_OF_SCREEN = new Vector2(Screen.width * 0.75f, Screen.height * 0.5f);		/* Stores the location of the right side of the screen. */
 	private static Vector2 ON_SCREEN = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);				/* Stores the location of the centre of the screen. */
 	private static Vector2 OFF_SCREEN = new Vector2(Screen.width * 0.5f, Screen.height * 2.0f);				/* Stores the location for being off screen. */
+	private static bool SCROLLING_VIEW = false;
 
 	/* Methods. */
 	/* This will allow us to get the location of the left side of the screen. */
@@ -51,6 +52,12 @@ public static class SCR_UIConstants
 	public static Vector2 OffScreen
 	{
 		get { return OFF_SCREEN; }
+	}
+
+	public static bool Scrolling
+	{
+		get { return SCROLLING_VIEW; }
+		set { SCROLLING_VIEW = value; }
 	}
 
 }

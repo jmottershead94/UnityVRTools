@@ -90,7 +90,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 			prefabPreview = Instantiate(prefabPreview, transform.position, Quaternion.identity) as GameObject;
 			prefabPreview.name = prefabs[i].name;
 			prefabPreview.transform.localScale = GameObject.Find("PRE_3DMenu").GetComponent<Transform>().localScale;
-			prefabPreview.transform.SetParent(transform);
+			prefabPreview.transform.SetParent(transform.FindChild("Prefabs"));
 			prefabPreview.GetComponent<Renderer>().materials[0].mainTexture = (Texture)prefabPreviews[i];
 
 			if(gridView != null && gridView.GridObjects != null)

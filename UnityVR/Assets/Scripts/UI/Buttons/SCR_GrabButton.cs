@@ -9,7 +9,7 @@ public class SCR_GrabButton : SCR_3DButton
 		grab,
 		freeForm
 	};
-	private VRTransformType transformType = VRTransformType.freeForm;
+	private VRTransformType transformType = VRTransformType.grab;
 	private Material defaultMaterial = null;
 	private Material clickedMaterial = null;
 
@@ -28,6 +28,7 @@ public class SCR_GrabButton : SCR_3DButton
 
 		defaultMaterial = GetComponent<MeshRenderer>().materials[0];
 		clickedMaterial = Resources.Load("Materials/MAT_FadedBlack") as Material;
+		SCR_AppearenceChanger.ChangeMaterial (gameObject, clickedMaterial);
 
 	}
 

@@ -6,16 +6,28 @@ public class SCR_PrefabButton : SCR_3DButton
 
 	/* Attributes. */
 	private SCR_PrefabsPanel prefabPanel = null;
-
+	private bool visible = true;
 
 	/* Methods. */
 	new protected void Start()
 	{
-
 		base.Start();
-		prefabPanel = parentPanel.GetComponent<SCR_PrefabsPanel>();
+		prefabPanel = transform.parent.parent.GetComponent<SCR_PrefabsPanel>();
 		tag = "DontDestroy";
+	}
 
+	public void Enable()
+	{
+		GetComponent<MeshRenderer>().enabled = true;
+		GetComponent<BoxCollider>().enabled = true;
+		visible = true;
+	}
+
+	public void Disable()
+	{
+		GetComponent<MeshRenderer>().enabled = false;
+		GetComponent<BoxCollider>().enabled = false;
+		visible = false;
 	}
 
 	/*
@@ -48,7 +60,11 @@ public class SCR_PrefabButton : SCR_3DButton
 				}
 			}
 		}
-
 	}
-	
+
+	public bool Visible
+	{
+		get { return visible; }
+		set { visible = value; }
+	}
 }

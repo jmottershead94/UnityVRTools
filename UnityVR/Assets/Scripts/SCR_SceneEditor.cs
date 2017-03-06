@@ -59,6 +59,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	{
 		/* Initialising our attributes. */
 		sceneObjects = new List<SCR_PersistentObject>();
+		SCR_VRUtilities.Holding = false;
 	}
 #endregion
 

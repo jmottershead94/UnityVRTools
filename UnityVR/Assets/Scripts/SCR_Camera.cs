@@ -92,16 +92,28 @@ public class SCR_Camera : MonoBehaviour
 
 		if(mouseMovement.x > 0.25f || mouseMovement.x < -0.25f)
 		{
+			Cursor.lockState = CursorLockMode.Locked;
 			Vector3 rotate = new Vector3(0.0f, mouseMovement.x * rotationSpeed.y, 0.0f);
 			transform.Rotate(rotate);
+			Cursor.lockState = CursorLockMode.None;
 		}
 
 		if(clampVertical)
 		{
-			rotationX += (mouseMovement.y * -rotationSpeed.x);
-			rotationX = Mathf.Clamp(rotationX, -40.0f, 40.0f);
-			transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, transform.localEulerAngles.z);
+			if(mouseMovement.y != 0.0f)
+			{
+				Cursor.lockState = CursorLockMode.Locked;
+				rotationX += (mouseMovement.y * -rotationSpeed.x);
+				rotationX = Mathf.Clamp(rotationX, -40.0f, 40.0f);
+				transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, transform.localEulerAngles.z);
+				Cursor.lockState = CursorLockMode.None;
+			}
 		}
+	}
+
+	public static void LookForward()
+	{
+		Camera.main.transform.localEulerAngles = new Vector3(0.0f, Camera.main.transform.localEulerAngles.y, 0.0f);
 	}
 
 	/*
@@ -113,15 +125,19 @@ public class SCR_Camera : MonoBehaviour
 	 */
 	private void PCControls()
 	{
-		movement.x = Input.GetAxis("Horizontal") * speed.x;
-		movement.y = Input.GetAxis("Vertical") * speed.y;
-		movement.z = Input.GetAxis("Depth") * speed.z;
+		if(Input.GetMouseButton(1))
+		{
+			movement.x = Input.GetAxis("Horizontal") * speed.x;
+			movement.y = Input.GetAxis("Vertical") * speed.y;
+			movement.z = Input.GetAxis("Depth") * speed.z;
 
-		MoveInRelationToCam(transform, movement, true);
-		Rotation();
+			MoveInRelationToCam(transform, movement, true);
+			Rotation();
+		}
 
 		if(Input.GetMouseButtonDown(1))
-			transform.localEulerAngles = new Vector3(0.0f, transform.localEulerAngles.y, 0.0f);
+			LookForward();
+			//transform.localEulerAngles = new Vector3(0.0f, transform.localEulerAngles.y, 0.0f);
 	}
 
 	private void VRControls()
@@ -159,7 +175,10 @@ public class SCR_Camera : MonoBehaviour
 	*/
 	private void Update () 
 	{
-		PCControls();
-		VRControls();
+		//(!SCR_UIConstants.Scrolling)
+		//{
+			PCControls();
+			VRControls();
+		//}
 	}
 }
