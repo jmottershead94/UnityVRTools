@@ -8,10 +8,12 @@ namespace IndieJayVR
 		namespace SpeedsterGunslinger
 		{
 			/// <summary>
-			/// A class to store camera data and functionality.
+			/// A class to hold information about guns and their functionality.
 			/// </summary>
-			public class SCR_GameCamera : MonoBehaviour 
-			{}
+			public class SCR_Gun : MonoBehaviour 
+			{
+				
+			}
 		}
 	}
 }
