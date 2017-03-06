@@ -13,40 +13,22 @@ namespace IndieJayVR
 			public class SCR_Bullet : MonoBehaviour 
 			{
 				[Header ("Bullet Properties")]
-				[SerializeField]	private float speed = 10.0f;
+				[SerializeField]	private float speed = 50.0f;
 				[SerializeField]	private float lifeSpan = 100.0f;
 				private float currentLifeTime = 0.0f;
 				private int damage = 25;
 				private Vector3 direction = Vector3.zero;
 
 				/// <summary>
-				/// Initialise the specified gunDamage.
+				/// Initialise the specified gunDamage and dir.
 				/// </summary>
-				/// <param name="gunDamage">Gun damage.</param>
+				/// <param name="gunDamage">Gun damage, the damage this bullet should inflict.</param>
+				/// <param name="dir">Dir, the direction of the bullet.</param>
 				public void Initialise(int gunDamage, Vector3 dir)
 				{
 					damage = gunDamage;
 					currentLifeTime = 0.0f;
-
-					GameObject cursor = GameObject.Find("Cursor");
-
-					if(cursor != null)
-					{
-						SCR_Crosshair crosshair = cursor.GetComponent<SCR_Crosshair>();
-						//direction = transform.forward;
-//						if(crosshair.RayHitSomething)
-//							direction = crosshair.Raycast.point - transform.position;
-//						else
-//						{
-//							Vector3 crossHairEnd = new Vector3(crosshair.transform.position.x, crosshair.transform.position.y, crosshair.transform.position.z + crosshair.RayDistance);
-//							direction = crossHairEnd - transform.position;
-//						}
-//
-//						direction.Normalize();
-					}
-
 					direction = dir;
-
 				}
 
 				/// <summary>
@@ -65,6 +47,8 @@ namespace IndieJayVR
 				/// <param name="collision">Collision.</param>
 				void OnCollisionEnter(Collision collision)
 				{
+					Debug.Log("Hit something!");
+
 					SCR_Character character = collision.gameObject.GetComponent<SCR_Character>();
 
 					if(character != null)

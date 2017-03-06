@@ -56,9 +56,7 @@ namespace IndieJayVR
 				void PCControls()
 				{
 					if(Input.GetMouseButtonDown(0))
-					{
 						gun.Fire();
-					}
 
 					if(Input.GetMouseButton(1))
 					{

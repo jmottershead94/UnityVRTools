@@ -26,6 +26,7 @@ namespace IndieJayVR
 				{
 					sprite = GetComponent<SpriteRenderer>();
 					playerCamera = transform.parent.FindChild("Eye").GetComponent<Camera>();
+					Cursor.visible = false;
 				}
 
 				/// <summary>
@@ -42,16 +43,6 @@ namespace IndieJayVR
 				void FixedUpdate()
 				{
 					rayHitSomething = Physics.Raycast (transform.position, transform.forward, out hit, rayDistance);
-
-					if(rayHitSomething)
-					{
-						if(hit.collider.tag == "Enemy")
-							sprite.color = Color.red;
-						else
-							sprite.color = standardColour;
-					}
-					else
-						sprite.color = standardColour;
 				}
 
 				/// <summary>

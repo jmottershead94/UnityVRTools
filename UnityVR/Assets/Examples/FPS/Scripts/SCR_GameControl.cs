@@ -21,7 +21,6 @@ namespace IndieJayVR
 				public static void LockCursor()
 				{
 					Cursor.lockState = CursorLockMode.Locked;
-					Cursor.visible = false;
 				}
 
 				/// <summary>
@@ -30,7 +29,6 @@ namespace IndieJayVR
 				public static void UnlockCursor()
 				{
 					Cursor.lockState = CursorLockMode.None;
-					Cursor.visible = true;
 				}
 
 				/// <summary>
