@@ -14,6 +14,7 @@ public class SCR_VREditorWindow : EditorWindow
 	private SCR_SceneEditor sceneEditor = null;
 	private SaveLoadMenu prefabData = null;
 	[SerializeField]	private string sceneName = "";
+	[SerializeField]	private bool normalEditing = true;
 
 	/* Methods. */
 	[MenuItem("Window/VR Editor/Show")]
@@ -78,7 +79,9 @@ public class SCR_VREditorWindow : EditorWindow
 	{
 
 		titleContent.text = "VR Editor";
-		SetupAttributes();
+
+		if(!normalEditing)
+			SetupAttributes();
 
 	}
 
@@ -152,6 +155,16 @@ public class SCR_VREditorWindow : EditorWindow
 
 		if(!EditorApplication.isPlaying)
 		{
+			GameObject[] objectsInScene = GameObject.FindObjectsOfType<GameObject>();
+			string[] previousTags = new string[objectsInScene.Length];
+
+			// Obtain the previous tags and make sure these objects are not destroyed.
+			for(int i = 0; i < previousTags.Length; ++i)
+			{
+				previousTags[i] = objectsInScene[i].tag;
+				objectsInScene[i].tag = "DontDestroy";
+			}
+
 			SetupAttributes();
 
 			if(GameObject.Find("Scene Data") != null)
@@ -160,6 +173,9 @@ public class SCR_VREditorWindow : EditorWindow
 				LoadPrefabs(filePathToAssets);
 				sceneData.Load(sceneName);
 			}
+
+			for(int i = 0; i < objectsInScene.Length; ++i)
+				objectsInScene[i].tag = previousTags[i];
 
 		}
 

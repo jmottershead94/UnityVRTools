@@ -85,10 +85,8 @@ public class SCR_Camera : MonoBehaviour
 
 		if(mouseMovement.x > 0.25f || mouseMovement.x < -0.25f || mouseMovement.y != 0.0f)
 		{
-			Cursor.lockState = CursorLockMode.Locked;
 			Vector3 rotate = new Vector3(0.0f, mouseMovement.x * rotationSpeed.y, 0.0f);
 			transform.Rotate(rotate);
-			Cursor.lockState = CursorLockMode.None;
 		}
 	}
 
@@ -108,12 +106,16 @@ public class SCR_Camera : MonoBehaviour
 	{
 		if(Input.GetMouseButton(1))
 		{
+			Cursor.lockState = CursorLockMode.Locked;
+
 			movement.x = Input.GetAxis("Horizontal") * speed.x;
 			movement.y = Input.GetAxis("Vertical") * speed.y;
 			movement.z = Input.GetAxis("Depth") * speed.z;
 
 			MoveInRelationToCam(transform, movement, true);
 			Rotation();
+
+			Cursor.lockState = CursorLockMode.None;
 		}
 
 		if(Input.GetMouseButtonDown(1))
