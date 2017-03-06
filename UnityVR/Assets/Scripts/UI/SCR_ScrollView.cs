@@ -33,7 +33,7 @@ public class SCR_ScrollView : MonoBehaviour
 			return;
 
 		SCR_UIConstants.Scrolling = true;
-		offset = scrollView.position.y - inputPosition.y;
+		offset = (scrollView.position.y - inputPosition.y);
 	}
 
 	public void Drag(Vector3 inputPosition)
@@ -46,9 +46,11 @@ public class SCR_ScrollView : MonoBehaviour
 
 		float cursorPosition = inputPosition.y + offset;
 		Vector3 movement = new Vector3(0.0f, cursorPosition, 0.0f);
-		scrollView.position = new Vector3(scrollView.transform.position.x, cursorPosition, scrollView.position.z);
-		//Vector3 axis = prefabView.position + (transform.up * cursorPosition);
-		//prefabView.position = new Vector3(prefabView.transform.position.x, axis.y, prefabView.position.z);
+		scrollView.position = new Vector3(scrollView.transform.position.x, cursorPosition * scrollSpeed, scrollView.position.z);
+
+		Debug.Log("Offset = " + offset);
+		Debug.Log("Scroll View Y = " + scrollView.position.y);
+		Debug.Log("Input Y = " + movement.y);
 	}
 
 	public void StopScrolling()
@@ -61,7 +63,7 @@ public class SCR_ScrollView : MonoBehaviour
 
 	void OnMouseOver()
 	{
-		Vector3 mouseInput = new Vector3(0.0f, Input.mousePosition.y * scrollSpeed, 0.0f);
+		Vector3 mouseInput = new Vector3(0.0f, Input.mousePosition.y, 0.0f);
 		ScrollOffset(Camera.main.ScreenToWorldPoint(mouseInput));
 	}
 
