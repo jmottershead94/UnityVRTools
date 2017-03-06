@@ -79,35 +79,16 @@ public class SCR_Camera : MonoBehaviour
 		goTransform.RotateAround(goTransform.position, Camera.main.transform.forward, rot.z);
 	}
 
-//	public static void ScaleInRelationToCam(Transform goTransform, Vector3 scale)
-//	{
-//		Vector3 axis = scale;
-//		axis = Camera.main.transform.TransformVector(axis);
-//		goTransform.localScale = axis;
-//	}
-
 	private void Rotation()
 	{
 		Vector2 mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
-		if(mouseMovement.x > 0.25f || mouseMovement.x < -0.25f)
+		if(mouseMovement.x > 0.25f || mouseMovement.x < -0.25f || mouseMovement.y != 0.0f)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
 			Vector3 rotate = new Vector3(0.0f, mouseMovement.x * rotationSpeed.y, 0.0f);
 			transform.Rotate(rotate);
 			Cursor.lockState = CursorLockMode.None;
-		}
-
-		if(clampVertical)
-		{
-			if(mouseMovement.y != 0.0f)
-			{
-				Cursor.lockState = CursorLockMode.Locked;
-				rotationX += (mouseMovement.y * -rotationSpeed.x);
-				rotationX = Mathf.Clamp(rotationX, -40.0f, 40.0f);
-				transform.localEulerAngles = new Vector3(rotationX, transform.localEulerAngles.y, transform.localEulerAngles.z);
-				Cursor.lockState = CursorLockMode.None;
-			}
 		}
 	}
 
