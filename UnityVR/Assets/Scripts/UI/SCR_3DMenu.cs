@@ -81,7 +81,7 @@ public class SCR_3DMenu : SCR_BaseUIElement
 		if(leftController != null)
 		{
 
-			originalPosition = new Vector3 (leftController.transform.position.x - 0.1f, leftController.transform.position.y, leftController.transform.position.z + 0.25f);
+			originalPosition = new Vector3 (leftController.transform.position.x - 0.3f, leftController.transform.position.y, leftController.transform.position.z + 0.35f);
 			//transform.forward = leftController.transform.forward;
 			//transform.LookAt(leftController.transform);
 
@@ -101,7 +101,6 @@ public class SCR_3DMenu : SCR_BaseUIElement
 
 				if(transform.position != originalPosition)
 				{
-
 					transform.position = originalPosition;
 					//transform.position = new Vector3(leftController.transform.position.x, leftController.transform.position.y, leftController.transform.position.z + 0.5f);
 					//transform.rotation = leftController.transform.rotation;

@@ -27,6 +27,7 @@ public class SCR_BaseUIElement : MonoBehaviour
 	protected SCR_VRControllerInput leftController = null;
 	protected bool isInFocus = false;							/* Used to indicate if this game object is in focus or not. */
 
+
 	/* Methods. */
 	/* Delegates. */
 	public delegate void UIResponseDelegate();
@@ -50,6 +51,22 @@ public class SCR_BaseUIElement : MonoBehaviour
 
 	}
 
+	protected bool ControllerAimingAtSomething(SCR_VRControllerInput controller)
+	{
+		if(controller.IsAimingAtSomething)
+		{
+			if (controller.Target.transform.gameObject != null) 
+			{
+				if (controller.Target.transform.gameObject == gameObject) 
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	/*
 	*
 	*	Overview
@@ -57,38 +74,35 @@ public class SCR_BaseUIElement : MonoBehaviour
 	*	This method will provide checks for user input through VR.
 	*
 	*/
-	protected void VRTriggerResponse(UIResponseDelegate method)
+	protected void VRTriggerResponse(UIResponseDelegate pressMethod)
 	{
+		if(GameObject.Find ("Controller (right)") == null)
+			return;
 
-		if (GameObject.Find ("Controller (right)") != null) 
+		rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
+
+		if(ControllerAimingAtSomething(rightController))
 		{
-
-			rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
-
-			if(rightController.IsAimingAtSomething)
-			{
-
-				if (rightController.Target.transform.gameObject != null) 
-				{
-
-					if (rightController.Target.transform.gameObject == gameObject) 
-					{
-
-						if (rightController.TriggerPressed ()) 
-						{
-
-							method();
-
-						}
-
-					}
-
-				}
-
-			}
-
+			if (rightController.TriggerPressed ()) 
+				pressMethod();
 		}
+	}
 
+	// You may need to pass in a bool for the holding parameter.
+	protected void VRTriggerHeldResponse(UIResponseDelegate holdMethod, UIResponseDelegate releaseMethod, bool holding)
+	{
+		if(GameObject.Find ("Controller (right)") == null)
+			return;
+
+		rightController = GameObject.Find ("Controller (right)").GetComponent<SCR_VRControllerInput>();
+
+		if(ControllerAimingAtSomething(rightController))
+		{
+			if (rightController.TriggerHeld ())
+				holdMethod ();
+			else if (!rightController.TriggerPressed ()) 
+				releaseMethod ();
+		}
 	}
 
 	/* Getters/Setters. */

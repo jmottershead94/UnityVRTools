@@ -16,6 +16,7 @@
 
 /* Unity includes here.*/
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Collections;
@@ -27,13 +28,16 @@ public class SCR_SceneData : MonoBehaviour
 {
 
 	/* Attributes. */
-	private const string sceneDataFilename = "/SceneData.dat";	/* The file name of the scene that we are saving. */
-	private string format = "dd mm yyyy  hh:mm";				/* The format to be used for the data. */
-	private string loadDate;									/* The current load date of the data. */
-	private string saveDate;									/* The current save date of the data. */
-	private DateTime now = DateTime.Now;						/* What date/time it is now. */
-	private SCR_SceneEditor scene;								/* Accessing the current scene. */
-	private static SCR_SceneData sceneDataInstance;				/* The current instance of scene data for a singleton design and to allow access between scenes. */
+	private string sceneDataFilename = "";				/* The file name of the scene that we are saving. */
+	private string format = "dd mm yyyy  hh:mm";							/* The format to be used for the data. */
+	private string loadDate;												/* The current load date of the data. */
+	private string saveDate;												/* The current save date of the data. */
+	private DateTime now = DateTime.Now;									/* What date/time it is now. */
+	private SCR_SceneEditor scene;											/* Accessing the current scene. */
+	private static SCR_SceneData sceneDataInstance;							/* The current instance of scene data for a singleton design and to allow access between scenes. */
+	private string filePath = "";
+	private SaveLoadMenu sceneDataControls = null;
+	private string sceneName = "";
 
 	/* Methods. */
 	/*
@@ -74,6 +78,11 @@ public class SCR_SceneData : MonoBehaviour
 			Destroy(gameObject);
 
 		}
+
+		sceneName = SceneManager.GetActiveScene().name;
+		sceneDataFilename = "/" + sceneName + ".dat";
+		filePath = Application.dataPath + sceneDataFilename;
+		sceneDataControls = GetComponent<SaveLoadMenu>();
 
 	}
 
@@ -120,6 +129,24 @@ public class SCR_SceneData : MonoBehaviour
 		/* Saving the current persistent object data (Primitive Type and Object ID). */
 		savingPersistentObject.ObjectType 	= referencePersistentObject.ObjectType;
 		savingPersistentObject.ID 			= referencePersistentObject.ID;
+		savingPersistentObject.Red			= referencePersistentObject.DefaultMaterial.color.r;
+		savingPersistentObject.Green		= referencePersistentObject.DefaultMaterial.color.g;
+		savingPersistentObject.Blue			= referencePersistentObject.DefaultMaterial.color.b;
+		savingPersistentObject.Name			= referencePersistentObject.name;
+
+	}
+
+	private void AddObjectsToScene(Scene newScene)
+	{
+
+		/* Looping through the amount of objects there are in the current scene. */
+		for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
+		{
+
+			/* Set the game objects from the current scene to the new scene. */
+			newScene.GetRootGameObjects().SetValue(SCR_SceneEditor.Objects[i], i);
+
+		}
 
 	}
 
@@ -141,17 +168,17 @@ public class SCR_SceneData : MonoBehaviour
 		List<PersistentObjectData> tempSceneObjectData = new List<PersistentObjectData>();
 
 		/* Creating a file to save the local scene data. */
-		FileStream tempFile = File.Create(Application.persistentDataPath + sceneDataFilename);
-	
+		FileStream tempFile = File.Create(filePath);
+		
 		/* Looping through the amount of objects there are in the current scene. */
-		for(int i = 0; i < scene.Objects.Count; i++)
+		for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
 		{
 
 			/* Initialising a temporary instance of the persistent object data. */
 			PersistentObjectData tempObjectData = new PersistentObjectData();
 
 			/* Saving the current persistent object data from the scene. */
-			SavePersistentObjectData(ref tempObjectData, scene.Objects[i]);
+			SavePersistentObjectData(ref tempObjectData, SCR_SceneEditor.Objects[i]);
 
 			/* Adding the object data into our persistent object data list. */
 			tempSceneObjectData.Add(tempObjectData);
@@ -163,6 +190,46 @@ public class SCR_SceneData : MonoBehaviour
 
 		/* Close the text file. */
 		tempFile.Close();
+
+		sceneDataControls.SaveGame(sceneName);
+
+	}
+
+	private void LoadMaterials(ref SCR_PersistentObject loadingPersistentObject, Color colour)
+	{
+
+		Renderer renderer = loadingPersistentObject.GetComponent<Renderer>();
+		Material tempMaterial = new Material(renderer.sharedMaterial);
+		tempMaterial.color = colour;
+
+		if(loadingPersistentObject.CurrentMaterial != null)
+		{
+
+			loadingPersistentObject.CurrentMaterial.color = colour;
+
+		}
+		else
+		{
+			
+			renderer.sharedMaterial = tempMaterial;
+			loadingPersistentObject.CurrentMaterial = tempMaterial;
+			loadingPersistentObject.CurrentMaterial.color = tempMaterial.color;
+
+		}
+
+		if(loadingPersistentObject.DefaultMaterial != null)
+		{
+
+			loadingPersistentObject.DefaultMaterial.color = colour;
+
+		}
+		else
+		{
+
+			loadingPersistentObject.DefaultMaterial = tempMaterial;
+			loadingPersistentObject.DefaultMaterial.color = tempMaterial.color;
+
+		}
 
 	}
 
@@ -191,16 +258,21 @@ public class SCR_SceneData : MonoBehaviour
 	{
 
 		/* Loading the transform of the persistent object using the float values stored in the text file. */
-		/* Because Vector3s are only Serializable by Unity, currently, we have to store each float value into it's own function. */
+		/* Because Vector3s are not serializable by Unity, currently, we have to store each float value into it's own function. */
 		loadingPersistentObject.transform.position 		= new Vector3(referencePersistentObject.PositionX, referencePersistentObject.PositionY, referencePersistentObject.PositionZ);
 		loadingPersistentObject.transform.eulerAngles 	= new Vector3(referencePersistentObject.RotationX, referencePersistentObject.RotationY, referencePersistentObject.RotationZ);
 		loadingPersistentObject.transform.localScale 	= new Vector3(referencePersistentObject.ScaleX, referencePersistentObject.ScaleY, referencePersistentObject.ScaleZ);
 		loadingPersistentObject.transform.parent 		= scene.transform;
 
 		/* Loading the current persistent object data (Primitive Type and Object ID). */
-		loadingPersistentObject.ObjectType 	= referencePersistentObject.ObjectType;
-		loadingPersistentObject.ID 			= referencePersistentObject.ID;
+		loadingPersistentObject.ObjectType 				= referencePersistentObject.ObjectType;
+		loadingPersistentObject.ID 						= referencePersistentObject.ID;
 
+		if(loadingPersistentObject.tag != "DontDestroy")
+			loadingPersistentObject.tag = "DontDestroy";
+
+		Color loadedColour = new Color(referencePersistentObject.Red, referencePersistentObject.Green, referencePersistentObject.Blue);
+		LoadMaterials(ref loadingPersistentObject, loadedColour);
 	}
 
 	/*
@@ -210,25 +282,43 @@ public class SCR_SceneData : MonoBehaviour
 	*	Here we will load the current scene from a text file.
 	*
 	*/
-	public void Load()
+	public void Load(string fileName)
 	{
+		if(sceneDataControls == null)
+			sceneDataControls = GetComponent<SaveLoadMenu>();
+
+		sceneDataControls.LoadGame(fileName);
+
+#if UNITY_EDITOR
+		filePath = Application.dataPath + "/" + fileName + ".dat";
+#else
+		if(filePath == "")
+		{
+			filePath = Application.dataPath + "/" + sceneDataFilename + ".dat";
+		}
+#endif
 
 		/* Find the scene editor script in the current scene. */
 		/* Place this in to show that the scene saves correctly, and to allow the application to load using the editor. */
-		/* scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>(); */
+		scene = GameObject.Find("Scene Editor").GetComponent<SCR_SceneEditor>();
 
 		/* Record the load date. */
 		loadDate = (now.ToString(format));
 
+		//filePath = Application.dataPath + "/" + fileName + ".dat";
+		//Debug.Log("Loading?????" + filePath);
+
 		/* If the scene data file exists. */
-		if(File.Exists(Application.persistentDataPath + sceneDataFilename))
+		if(File.Exists(filePath))
 		{
+
+			Debug.Log("Found file!");
 
 			/* Initialising local attributes. */
 			BinaryFormatter tempBinary = new BinaryFormatter();
 
 			/* Opening the file to the current scene being edited. */
-			FileStream tempFile = File.Open(Application.persistentDataPath + sceneDataFilename, FileMode.Open);
+			FileStream tempFile = File.Open(filePath, FileMode.Open);
 
 			/* Deserializing the data from the text file, and casting it to a list data structure of persistent object data. */
 			/* Basically gaining access to any scene object data we saved previously. */
@@ -237,36 +327,39 @@ public class SCR_SceneData : MonoBehaviour
 			/* Close the text file. */
 			tempFile.Close();
 
-			/* If we currently have objects in our scene. */
-			if(scene.Objects.Count > 0)
+			if(SCR_SceneEditor.Objects != null)
 			{
-
-				/* Loop through each object in the current scene. */
-				for(int i = 0; i < scene.Objects.Count; i++)
+				/* If we currently have objects in our scene. */
+				if(SCR_SceneEditor.Objects.Count > 0)
 				{
 
-					/* If the application is currently playing. */
-					if(Application.isPlaying)
+					/* Loop through each object in the current scene. */
+					for(int i = 0; i < SCR_SceneEditor.Objects.Count; i++)
 					{
 
-						/* Destroy the current game object. */
-						Destroy(scene.Objects[i].gameObject);
+						/* If the application is currently playing. */
+						if(Application.isPlaying)
+						{
+
+							/* Destroy the current game object. */
+							Destroy(SCR_SceneEditor.Objects[i].gameObject);
+
+						}
+						/* Otherwise, the application is being used in the editor. */
+						else
+						{
+
+							/* Destroy the current game object. */
+							DestroyImmediate(SCR_SceneEditor.Objects[i].gameObject);
+
+						}
 
 					}
-					/* Otherwise, the application is being used in the editor. */
-					else
-					{
 
-						/* Destroy the current game object. */
-						DestroyImmediate(scene.Objects[i].gameObject);
-
-					}
-
+					/* Clear the current scene, because we are about to load and don't want duplicates. */
+					SCR_SceneEditor.Objects.Clear();
+					
 				}
-
-				/* Clear the current scene, because we are about to load and don't want duplicates. */
-				scene.Objects.Clear();
-				
 			}
 
 			/* Loop through each of the objects from the text file. */
@@ -283,7 +376,7 @@ public class SCR_SceneData : MonoBehaviour
 				LoadPersistentObjectData(ref tempPersistentObject, tempSceneObjectData[i]);
 
 				/* Adding in the persistent object into our current scene. */
-				scene.Objects.Add(tempPersistentObject);
+				SCR_SceneEditor.Objects.Add(tempPersistentObject);
 
 			}
 
@@ -314,6 +407,8 @@ class PersistentObjectData
 	private float scaleX, scaleY, scaleZ;			/* Used for storing the current scale. */
 	private PrimitiveType primitiveType;			/* Used to store the current primitive type of the object. */
 	private int id;									/* Used to store the current ID of the object. */
+	private float red, green, blue;					/* Used to store the current colour of the object material. */
+	private string name;							
 
 	/* Methods. */
 	/* Getters/Setters. */
@@ -386,6 +481,30 @@ class PersistentObjectData
 	{
 		get { return id; }
 		set { id = value; }
+	}
+
+	public float Red
+	{
+		get { return red; }
+		set { red = value; }
+	}
+
+	public float Green
+	{
+		get { return green; }
+		set { green = value; }
+	}
+
+	public float Blue
+	{
+		get { return blue; }
+		set { blue = value; }
+	}
+
+	public string Name
+	{
+		get { return name; }
+		set { name = value; }
 	}
 
 }

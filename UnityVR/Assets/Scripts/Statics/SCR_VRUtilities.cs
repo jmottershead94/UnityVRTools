@@ -4,6 +4,8 @@ using System.Collections;
 public class SCR_VRUtilities : MonoBehaviour 
 {
 
+	private static bool isHolding = false;
+
 	/* Methods. */
 	public static void AssignControllers(SCR_VRControllerInput vrController, int index)
 	{
@@ -33,4 +35,9 @@ public class SCR_VRUtilities : MonoBehaviour
 
 	}
 
+	public static bool Holding
+	{
+		get { return isHolding; }
+		set { isHolding = value; }
+	}
 }

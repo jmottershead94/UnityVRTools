@@ -37,8 +37,8 @@ public class SCR_SpawningPrimitiveButton : SCR_3DButton
 	override public void ButtonPressResponse()
 	{
 
-		/* Spawns in a primitive game object at the origin. */
-		sceneEditor.SpawnPrimitive(primitiveType, Vector3.zero);
+		/* Spawns in a primitive game object at the spawn point. */
+		sceneEditor.SpawnPrimitive(primitiveType, spawner.position);
 		
 	}
 
