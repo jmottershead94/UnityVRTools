@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-using IndieJayVR.Examples.SpeedsterGunslinger;
 
 namespace IndieJayVR
 {
 	namespace Examples
 	{
-		namespace SpeedsterGunslinger
+		namespace FPS
 		{
 			/// <summary>
 			/// Class to store player data and functionality.
@@ -15,6 +14,19 @@ namespace IndieJayVR
 			{
 				[Header ("Player Properties")]
 				[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
+				private SCR_Crosshair crosshair = null;
+
+				/// <summary>
+				/// Awake this instance.
+				/// </summary>
+				new protected void Awake()
+				{
+					base.Awake();
+
+					GameObject cursor = transform.FindChild("Cursor").gameObject;
+					if(cursor != null)
+						crosshair = cursor.GetComponent<SCR_Crosshair>();
+				}
 
 				/// <summary>
 				/// What happens when this character dies.
@@ -43,12 +55,22 @@ namespace IndieJayVR
 				/// </summary>
 				void PCControls()
 				{
+					if(Input.GetMouseButtonDown(0))
+					{
+						gun.Fire();
+					}
+
 					if(Input.GetMouseButton(1))
 					{
 						SCR_GameControl.LockCursor();
 						Rotation();
 						SCR_GameControl.UnlockCursor();
 					}
+
+					if(Input.GetKeyDown(KeyCode.R))
+						StartCoroutine(gun.ReloadDelay());
+
+					gun.transform.LookAt(crosshair.transform.position);
 				}
 
 				/// <summary>

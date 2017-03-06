@@ -5,7 +5,7 @@ namespace IndieJayVR
 {
 	namespace Examples
 	{
-		namespace SpeedsterGunslinger
+		namespace FPS
 		{
 			/// <summary>
 			/// A class to store camera data and functionality.

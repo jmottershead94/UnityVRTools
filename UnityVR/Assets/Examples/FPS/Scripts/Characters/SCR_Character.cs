@@ -3,11 +3,6 @@ using System.Collections;
 
 // Characters can:
 	// Fire their gun.
-		// Gun Information:
-			// Damage.
-			// Fire Rate.
-			// Bullets.
-			// If it is empty or not.
 	// Die.
 		// Health.
 
@@ -15,7 +10,7 @@ namespace IndieJayVR
 {
 	namespace Examples
 	{
-		namespace SpeedsterGunslinger
+		namespace FPS
 		{
 			/// <summary>
 			/// A class to store base character data and functionality.
@@ -26,11 +21,23 @@ namespace IndieJayVR
 				[SerializeField]						protected int health = 100;
 				[SerializeField] [Range(0.0f, 5.0f)]	protected float deathTimer = 2.0f;
 				protected bool dead = false;
+				protected SCR_Gun gun = null;
 
 				/// <summary>
-				/// Virtual methods for inheriting classes to override.
+				/// What happens when this character dies.
 				/// </summary>
 				protected virtual void onDead(){}
+
+				/// <summary>
+				/// Awake this instance.
+				/// </summary>
+				protected void Awake()
+				{
+					Transform gunTransform = transform.FindChild("PRE_Gun");
+
+					if(gunTransform.gameObject != null)
+						gun = transform.FindChild("PRE_Gun").GetComponent<SCR_Gun>();
+				}
 
 				/// <summary>
 				/// Update this instance.
