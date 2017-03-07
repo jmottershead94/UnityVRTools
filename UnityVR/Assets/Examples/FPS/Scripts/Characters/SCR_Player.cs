@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 namespace IndieJayVR
@@ -16,6 +17,9 @@ namespace IndieJayVR
 				[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
 				[SerializeField]	private float speedFactor = 0.15f;
 				private bool timeStop = false;
+				private float segment = 0.0f;
+				private Text ammoDisplay = null;
+				private Image ammoBar = null;
 				private SCR_Crosshair crosshair = null;
 
 				/// <summary>
@@ -30,6 +34,9 @@ namespace IndieJayVR
 						crosshair = cursor.GetComponent<SCR_Crosshair>();
 
 					Time.timeScale = speedFactor;
+					ammoDisplay = GameObject.Find("Ammo Display").GetComponent<Text>();
+					ammoBar = GameObject.Find("Ammo Bar").GetComponent<Image>();
+
 				}
 
 				/// <summary>
@@ -92,6 +99,18 @@ namespace IndieJayVR
 						SCR_GameControl.UnlockCursor();
 					}
 
+					ammoDisplay.text = "Ammo x" + gun.Ammo;
+
+					if(gun.Ammo > 0)
+					{
+						segment = (1.0f / 6.0f) * gun.Ammo;
+						ammoBar.transform.localScale = new Vector3(segment, ammoBar.transform.localScale.y, 1.0f);
+					}
+					else
+					{
+						ammoBar.transform.localScale = new Vector3(0.0f, ammoBar.transform.localScale.y, 1.0f);
+					}
+
 					if(SCR_GameControl.IsPaused)
 						return;
 
@@ -122,6 +141,7 @@ namespace IndieJayVR
 
 					base.Update();
 					PCControls();
+
 				}
 			}
 		}
