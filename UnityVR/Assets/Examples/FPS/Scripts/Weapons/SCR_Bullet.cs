@@ -55,7 +55,7 @@ namespace IndieJayVR
 
 					if(character != null)
 					{
-						if(parentTransform != character.transform)
+						if(character.transform != parentTransform)
 						{
 							character.Health -= damage; 
 							Destroy(gameObject);

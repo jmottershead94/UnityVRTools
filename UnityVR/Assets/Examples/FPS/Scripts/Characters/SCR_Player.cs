@@ -15,7 +15,10 @@ namespace IndieJayVR
 			{
 				[Header ("Player Properties")]
 				[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
-				[SerializeField]	private float speedFactor = 0.15f;
+				[SerializeField]	private float speedFactor = 0.05f;
+				[SerializeField]	private float crouch = 3.0f;
+				private float crouchHeight = 0.0f;
+				private float originalHeight = 3.0f;
 				private bool timeStop = false;
 				private float segment = 0.0f;
 				private Text ammoDisplay = null;
@@ -37,6 +40,8 @@ namespace IndieJayVR
 					ammoDisplay = GameObject.Find("Ammo Display").GetComponent<Text>();
 					ammoBar = GameObject.Find("Ammo Bar").GetComponent<Image>();
 
+					originalHeight = transform.position.y;
+					crouchHeight = transform.position.y - crouch;
 				}
 
 				/// <summary>
@@ -129,6 +134,11 @@ namespace IndieJayVR
 						else
 							StopTime();
 					}
+
+					if(Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.DownArrow))
+						transform.position = new Vector3(transform.position.x, crouchHeight, transform.position.z);
+					else
+						transform.position = new Vector3(transform.position.x, originalHeight, transform.position.z);
 				}
 
 				/// <summary>
@@ -141,7 +151,15 @@ namespace IndieJayVR
 
 					base.Update();
 					PCControls();
+				}
 
+				/// <summary>
+				/// Gets a value indicating whether this instance has stopped time.
+				/// </summary>
+				/// <value><c>true</c> if this instance has stopped time; otherwise, <c>false</c>.</value>
+				public bool HasStoppedTime
+				{
+					get { return timeStop; }
 				}
 			}
 		}

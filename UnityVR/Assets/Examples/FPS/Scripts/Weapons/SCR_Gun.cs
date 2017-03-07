@@ -25,6 +25,7 @@ namespace IndieJayVR
 				[SerializeField]	protected int ammo = 6;
 				[SerializeField]	protected GameObject bulletPrefab = null;
 				protected bool empty = false;
+				protected bool infiniteBullets = false;
 
 				/// <summary>
 				/// Awake this instance.
@@ -80,7 +81,18 @@ namespace IndieJayVR
 					GameObject bulletGameObject = Instantiate(bulletPrefab, transform.position, transform.rotation) as GameObject;
 					SCR_Bullet bullet = bulletGameObject.GetComponent<SCR_Bullet>();
 					bullet.Initialise(this, damage, transform.forward);
-					ammo--;
+
+					if(!infiniteBullets)
+						ammo--;
+				}
+
+				/// <summary>
+				/// Gets the fire rate.
+				/// </summary>
+				/// <value>The fire rate.</value>
+				public float FireRate
+				{
+					get { return fireRate; }
 				}
 
 				/// <summary>
@@ -101,6 +113,16 @@ namespace IndieJayVR
 				{
 					get { return empty; }
 					set { empty = value; }
+				}
+
+				/// <summary>
+				/// Gets or sets a value indicating whether this gun has infinite bullets.
+				/// </summary>
+				/// <value><c>true</c> if this gun has infinite bullets; otherwise, <c>false</c>.</value>
+				public bool InfiniteBullets
+				{
+					get { return infiniteBullets; }
+					set { infiniteBullets = value; }
 				}
 			}
 		}
