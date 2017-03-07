@@ -27,6 +27,14 @@ namespace IndieJayVR
 				protected bool empty = false;
 
 				/// <summary>
+				/// Awake this instance.
+				/// </summary>
+				void Start()
+				{
+					reloadTime *= Time.timeScale;
+				}
+
+				/// <summary>
 				/// Delays the reload for this gun.
 				/// </summary>
 				/// <returns>The delay.</returns>

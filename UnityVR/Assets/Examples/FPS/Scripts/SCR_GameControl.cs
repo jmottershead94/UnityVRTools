@@ -32,6 +32,25 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
+				/// Pause this instance.
+				/// </summary>
+				public static void Pause()
+				{
+					paused = true;
+					Time.timeScale = 0.0f;
+				}
+
+				/// <summary>
+				/// Unpauses the game.
+				/// </summary>
+				/// <param name="originalTimeScale">Original time scale.</param>
+				public static void UnPause(float originalTimeScale)
+				{
+					paused = false;
+					Time.timeScale = originalTimeScale;
+				}
+
+				/// <summary>
 				/// Follows the mouse.
 				/// </summary>
 				/// <param name="transform">Transform to follow the mouse.</param>

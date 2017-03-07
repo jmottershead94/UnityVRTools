@@ -15,6 +15,7 @@ namespace IndieJayVR
 				[Header ("Player Properties")]
 				[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
 				[SerializeField]	private float speedFactor = 0.15f;
+				private bool timeStop = false;
 				private SCR_Crosshair crosshair = null;
 
 				/// <summary>
@@ -54,12 +55,35 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
+				/// Stops the time.
+				/// </summary>
+				void StopTime()
+				{
+					Time.timeScale = 0.0f;
+					timeStop = true;
+				}
+
+				/// <summary>
+				/// Resumes the time.
+				/// </summary>
+				void ResumeTime()
+				{
+					Time.timeScale = speedFactor;
+					timeStop = false;
+				}
+
+				/// <summary>
 				/// Controls used for PC (so this won't apply to VR controls).
 				/// </summary>
 				void PCControls()
 				{
-					if(Input.GetMouseButtonDown(0))
-						gun.Fire();
+					if(Input.GetKeyDown(KeyCode.Escape))
+					{
+						if(!SCR_GameControl.IsPaused)
+							SCR_GameControl.Pause();
+						else
+							SCR_GameControl.UnPause(speedFactor);
+					}
 
 					if(Input.GetMouseButton(1))
 					{
@@ -68,10 +92,24 @@ namespace IndieJayVR
 						SCR_GameControl.UnlockCursor();
 					}
 
+					if(SCR_GameControl.IsPaused)
+						return;
+
+					gun.transform.LookAt(crosshair.transform.position);
+
+					if(Input.GetMouseButtonDown(0))
+						gun.Fire();
+
 					if(Input.GetKeyDown(KeyCode.R))
 						StartCoroutine(gun.ReloadDelay());
 
-					gun.transform.LookAt(crosshair.transform.position);
+					if(Input.GetKeyDown(KeyCode.P))
+					{
+						if(timeStop)
+							ResumeTime();
+						else
+							StopTime();
+					}
 				}
 
 				/// <summary>
