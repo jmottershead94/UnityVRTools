@@ -25,6 +25,8 @@ namespace IndieJayVR
 				private Image ammoBar = null;
 				private Image healthBar = null;
 				private SCR_Crosshair crosshair = null;
+				private SCR_VRController rightController = null;
+				private SCR_VRController leftController = null;
 
 				/// <summary>
 				/// Awake this instance.
@@ -146,6 +148,49 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
+				/// Controls used for VR.
+				/// </summary>
+				void VRControls()
+				{
+					GameObject leftControllerObject = GameObject.Find("Controller (left)");
+					GameObject rightControllerObject = GameObject.Find("Controller (right)");
+
+					if(leftControllerObject == null || rightControllerObject == null)
+						return;
+
+					leftController = leftControllerObject.GetComponent<SCR_VRController>();
+					rightController = rightControllerObject.GetComponent<SCR_VRController>();
+
+					// Pausing the game.
+					if(leftController.TriggerPressed())
+					{
+						if(!SCR_GameControl.IsPaused)
+							SCR_GameControl.Pause();
+						else
+							SCR_GameControl.UnPause(speedFactor);
+					}
+
+					if(SCR_GameControl.IsPaused)
+						return;
+
+					gun.transform.LookAt(crosshair.transform.position);
+
+					if(rightController.TriggerPressed())
+						gun.Fire();
+
+					if(rightController.UpPressed())
+						StartCoroutine(gun.ReloadDelay());
+
+					if(rightController.RightPressed())
+					{
+						if(timeStop)
+							ResumeTime();
+						else
+							StopTime();
+					}
+				}
+
+				/// <summary>
 				/// Update this instance.
 				/// </summary>
 				new protected void Update () 
@@ -156,6 +201,7 @@ namespace IndieJayVR
 					base.Update();
 					UIUpdates();
 					PCControls();
+					VRControls();
 				}
 
 				/// <summary>
