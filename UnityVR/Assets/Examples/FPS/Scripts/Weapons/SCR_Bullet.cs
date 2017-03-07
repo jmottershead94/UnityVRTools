@@ -23,6 +23,7 @@ namespace IndieJayVR
 				/// <summary>
 				/// Initialise the specified gunDamage and dir.
 				/// </summary>
+				/// <param name="owningGun">Owning gun, the gun that this bullet has been fired from.</param>
 				/// <param name="gunDamage">Gun damage, the damage this bullet should inflict.</param>
 				/// <param name="dir">Dir, the direction of the bullet.</param>
 				public void Initialise(SCR_Gun owningGun, int gunDamage, Vector3 dir)

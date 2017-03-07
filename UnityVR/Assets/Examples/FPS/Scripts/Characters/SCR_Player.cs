@@ -14,6 +14,7 @@ namespace IndieJayVR
 			{
 				[Header ("Player Properties")]
 				[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
+				[SerializeField]	private float speedFactor = 0.15f;
 				private SCR_Crosshair crosshair = null;
 
 				/// <summary>
@@ -26,6 +27,8 @@ namespace IndieJayVR
 					GameObject cursor = transform.FindChild("Cursor").gameObject;
 					if(cursor != null)
 						crosshair = cursor.GetComponent<SCR_Crosshair>();
+
+					Time.timeScale = speedFactor;
 				}
 
 				/// <summary>
