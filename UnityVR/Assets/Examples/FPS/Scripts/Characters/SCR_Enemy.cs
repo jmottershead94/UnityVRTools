@@ -24,7 +24,7 @@ namespace IndieJayVR
 				{
 					gun = transform.FindChild ("PRE_Gun").GetComponent<SCR_Gun> ();
 					gun.InfiniteBullets = true;
-					gun.FireRate = Random.Range(1.0f, 3.0f);
+					gun.FireRate = Random.Range(1.0f, 6.0f);
 					InvokeRepeating("FireAtPlayer", SCR_GameControl.StartDelayTime, gun.FireRate * SCR_GameControl.SpeedFactor);
 				}
 

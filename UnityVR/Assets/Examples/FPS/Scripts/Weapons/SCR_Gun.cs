@@ -119,6 +119,16 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
+				/// Gets or sets the reload time.
+				/// </summary>
+				/// <value>The reload time.</value>
+				public float ReloadTime
+				{
+					get { return reloadTime; }
+					set { reloadTime = value; }
+				}
+
+				/// <summary>
 				/// Gets the maximum ammo.
 				/// </summary>
 				/// <value>The maximum ammo.</value>

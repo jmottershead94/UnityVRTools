@@ -85,6 +85,8 @@ namespace IndieJayVR
 
 					start = true;
 					Time.timeScale = speedFactor;
+					gun.FireRate *= speedFactor;
+					//gun.
 				}
 
 				/// <summary>
@@ -97,7 +99,7 @@ namespace IndieJayVR
 
 					yield return new WaitForSeconds(deathTimer);
 
-					Time.timeScale = speedFactor;
+					//Time.timeScale = speedFactor;
 					SCR_GameControl.IsGameOver = false;
 					SCR_GameControl.IsPaused = false;
 					timeStop = false;
