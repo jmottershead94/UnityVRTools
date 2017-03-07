@@ -13,6 +13,7 @@ namespace IndieJayVR
 			public class SCR_Enemy : SCR_Character 
 			{
 				private SCR_Player player = null;
+				private bool resetRepeating = false;
 
 				/// <summary>
 				/// Start this instance.
@@ -49,8 +50,17 @@ namespace IndieJayVR
 				{
 					if(SCR_GameControl.IsGameOver || SCR_GameControl.IsPaused || player.HasStoppedTime)
 					{
+						resetRepeating = true;
 						CancelInvoke();
 						return;
+					}
+					else if(!player.HasStoppedTime)
+					{
+						if(resetRepeating)
+						{
+							InvokeRepeating("FireAtPlayer", 1.0f, gun.FireRate);
+							resetRepeating = false;
+						}
 					}
 
 					base.Update();

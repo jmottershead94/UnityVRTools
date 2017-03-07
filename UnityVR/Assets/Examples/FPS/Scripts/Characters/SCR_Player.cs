@@ -127,12 +127,15 @@ namespace IndieJayVR
 				/// </summary>
 				void PCControls()
 				{
-					if(Input.GetKeyDown(KeyCode.Escape))
+					if(!timeStop)
 					{
-						if(!SCR_GameControl.IsPaused)
-							SCR_GameControl.Pause();
-						else
-							SCR_GameControl.UnPause(speedFactor);
+						if(Input.GetKeyDown(KeyCode.Escape))
+						{
+							if(!SCR_GameControl.IsPaused)
+								SCR_GameControl.Pause();
+							else
+								SCR_GameControl.UnPause(speedFactor);
+						}
 					}
 
 					if(Input.GetMouseButton(1))
