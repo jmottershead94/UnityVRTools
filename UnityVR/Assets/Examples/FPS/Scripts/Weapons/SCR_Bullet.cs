@@ -53,11 +53,13 @@ namespace IndieJayVR
 					SCR_Character character = collider.gameObject.GetComponent<SCR_Character>();
 					Transform parentTransform = gun.transform.parent;
 
-					if(character != null && parentTransform != character.transform)
+					if(character != null)
 					{
-						Debug.Log("Hit a character!");
-						character.Health -= damage; 
-						Destroy(gameObject);
+						if(parentTransform != character.transform)
+						{
+							character.Health -= damage; 
+							Destroy(gameObject);
+						}
 					}
 				}
 
