@@ -71,7 +71,7 @@ namespace IndieJayVR
 
 					GameObject bulletGameObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
 					SCR_Bullet bullet = bulletGameObject.GetComponent<SCR_Bullet>();
-					bullet.Initialise(damage, transform.forward);
+					bullet.Initialise(this, damage, transform.forward);
 					ammo--;
 				}
 

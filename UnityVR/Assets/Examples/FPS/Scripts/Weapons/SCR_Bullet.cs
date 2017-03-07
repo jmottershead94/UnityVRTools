@@ -15,6 +15,7 @@ namespace IndieJayVR
 				[Header ("Bullet Properties")]
 				[SerializeField]	private float speed = 50.0f;
 				[SerializeField]	private float lifeSpan = 100.0f;
+				private SCR_Gun gun = null;
 				private float currentLifeTime = 0.0f;
 				private int damage = 25;
 				private Vector3 direction = Vector3.zero;
@@ -24,8 +25,9 @@ namespace IndieJayVR
 				/// </summary>
 				/// <param name="gunDamage">Gun damage, the damage this bullet should inflict.</param>
 				/// <param name="dir">Dir, the direction of the bullet.</param>
-				public void Initialise(int gunDamage, Vector3 dir)
+				public void Initialise(SCR_Gun owningGun, int gunDamage, Vector3 dir)
 				{
+					gun = owningGun;
 					damage = gunDamage;
 					currentLifeTime = 0.0f;
 					direction = dir;
@@ -42,21 +44,19 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
-				/// Raises the collision enter event.
+				/// Raises the trigger enter event.
 				/// </summary>
-				/// <param name="collision">Collision.</param>
-				void OnCollisionEnter(Collision collision)
+				/// <param name="collider">Collider.</param>
+				void OnTriggerEnter(Collider collider)
 				{
-					Debug.Log("Hit something!");
+					SCR_Character character = collider.gameObject.GetComponent<SCR_Character>();
+					Transform parentTransform = gun.transform.parent;
 
-					SCR_Character character = collision.gameObject.GetComponent<SCR_Character>();
-
-					if(character != null)
+					if(character != null && parentTransform != character.transform)
 					{
 						Debug.Log("Hit a character!");
-
-						Destroy(gameObject);
 						character.Health -= damage; 
+						Destroy(gameObject);
 					}
 				}
 
