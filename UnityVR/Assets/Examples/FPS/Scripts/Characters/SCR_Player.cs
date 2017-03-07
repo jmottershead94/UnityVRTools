@@ -87,7 +87,7 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
-				/// User interfaces the updates.
+				/// Updates for the player UI.
 				/// </summary>
 				void UIUpdates()
 				{
