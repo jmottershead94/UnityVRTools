@@ -50,16 +50,18 @@ namespace IndieJayVR
 				/// <param name="collider">Collider.</param>
 				void OnTriggerEnter(Collider collider)
 				{
-					SCR_Character character = collider.gameObject.GetComponent<SCR_Character>();
 					Transform parentTransform = transform;
 
 					// If the gun still exists (i.e. the character is still alive).
+					// Otherwise, the transform will be set to itself.
 					if(gun != null)
 						parentTransform = gun.transform.parent;
 
 					// If this bullet has hit a character.
-					if(character != null)
+					if(collider.tag == "Player" || collider.tag == "Enemy")
 					{
+						SCR_Character character = collider.gameObject.GetComponent<SCR_Character>();
+
 						// If the character is not itself OR if the character that fired this bullet is currently dead.
 						if(character.transform != parentTransform || parentTransform == transform)
 						{
