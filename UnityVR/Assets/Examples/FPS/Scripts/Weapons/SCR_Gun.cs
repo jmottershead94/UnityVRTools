@@ -24,16 +24,28 @@ namespace IndieJayVR
 				[SerializeField]	protected float reloadTime = 1.0f;
 				[SerializeField]	protected int maximumCapacity = 6;
 				[SerializeField]	protected GameObject bulletPrefab = null;
+				[SerializeField]	protected AudioClip firingSound = null;
+				[SerializeField]	protected AudioClip reloadingSound = null;
 				protected int ammo = 6;
 				protected bool empty = false;
 				protected bool infiniteBullets = false;
+				protected AudioSource audioSource = null;
+
+				/// <summary>
+				/// Awake this instance.
+				/// </summary>
+				void Awake()
+				{
+					ammo = maximumCapacity;
+					audioSource = GetComponent<AudioSource>();
+					audioSource.clip = firingSound;
+				}
 
 				/// <summary>
 				/// Awake this instance.
 				/// </summary>
 				void Start()
 				{
-					ammo = maximumCapacity;
 					reloadTime *= Time.timeScale;
 				}
 
@@ -43,8 +55,13 @@ namespace IndieJayVR
 				/// <returns>The delay.</returns>
 				public IEnumerator ReloadDelay()
 				{
+					audioSource.clip = reloadingSound;
+					audioSource.Play();
+
 					yield return new WaitForSeconds(reloadTime);
+
 					Reload();
+					audioSource.clip = firingSound;
 				}
 
 				/// <summary>
@@ -84,17 +101,21 @@ namespace IndieJayVR
 					SCR_Bullet bullet = bulletGameObject.GetComponent<SCR_Bullet>();
 					bullet.Initialise(this, damage, transform.forward);
 
+					//if(!audioSource.isPlaying)
+					audioSource.Play();
+
 					if(!infiniteBullets)
 						ammo--;
 				}
 
 				/// <summary>
-				/// Gets the fire rate.
+				/// Gets or sets the fire rate.
 				/// </summary>
 				/// <value>The fire rate.</value>
 				public float FireRate
 				{
 					get { return fireRate; }
+					set { fireRate = value; }
 				}
 
 				/// <summary>

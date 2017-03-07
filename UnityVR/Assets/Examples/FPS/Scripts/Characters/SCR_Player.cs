@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -49,11 +50,30 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
+				/// Delays the game restart.
+				/// </summary>
+				/// <returns>The delay.</returns>
+				IEnumerator RestartDelay()
+				{
+					Time.timeScale = 1.0f;
+
+					yield return new WaitForSeconds(deathTimer);
+
+					Time.timeScale = speedFactor;
+					SCR_GameControl.IsGameOver = false;
+					SCR_GameControl.IsPaused = false;
+					timeStop = false;
+
+					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				}
+
+				/// <summary>
 				/// What happens when this character dies.
 				/// </summary>
 				override protected void onDead()
 				{
 					SCR_GameControl.IsGameOver = true;
+					StartCoroutine(RestartDelay());
 				}
 
 				/// <summary>

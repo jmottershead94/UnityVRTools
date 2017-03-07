@@ -21,6 +21,7 @@ namespace IndieJayVR
 				{
 					player = GameObject.FindGameObjectWithTag("Player").GetComponent<SCR_Player>();
 					gun.InfiniteBullets = true;
+					gun.FireRate = Random.Range(1.0f, 3.0f);
 					InvokeRepeating("FireAtPlayer", 1.0f, gun.FireRate);
 				}
 
@@ -47,7 +48,10 @@ namespace IndieJayVR
 				new protected void Update()
 				{
 					if(SCR_GameControl.IsGameOver || SCR_GameControl.IsPaused || player.HasStoppedTime)
+					{
+						CancelInvoke();
 						return;
+					}
 
 					base.Update();
 					gun.transform.LookAt(player.transform.position);
