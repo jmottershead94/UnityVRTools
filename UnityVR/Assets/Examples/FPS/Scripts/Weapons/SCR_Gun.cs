@@ -22,8 +22,9 @@ namespace IndieJayVR
 				[SerializeField]	protected int damage = 25;
 				[SerializeField]	protected float fireRate = 2.0f;
 				[SerializeField]	protected float reloadTime = 1.0f;
-				[SerializeField]	protected int ammo = 6;
+				[SerializeField]	protected int maximumCapacity = 6;
 				[SerializeField]	protected GameObject bulletPrefab = null;
+				protected int ammo = 6;
 				protected bool empty = false;
 				protected bool infiniteBullets = false;
 
@@ -32,6 +33,7 @@ namespace IndieJayVR
 				/// </summary>
 				void Start()
 				{
+					ammo = maximumCapacity;
 					reloadTime *= Time.timeScale;
 				}
 
@@ -50,7 +52,7 @@ namespace IndieJayVR
 				/// </summary>
 				void Reload()
 				{
-					ammo = 6;
+					ammo = maximumCapacity;
 
 					if(empty)
 						empty = false;
@@ -96,23 +98,21 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
-				/// Gets or sets the ammo.
+				/// Gets the maximum ammo.
+				/// </summary>
+				/// <value>The maximum ammo.</value>
+				public int MaximumAmmo
+				{
+					get { return maximumCapacity; }
+				}
+
+				/// <summary>
+				/// Gets the ammo.
 				/// </summary>
 				/// <value>The ammo.</value>
 				public int Ammo
 				{
 					get { return ammo; }
-					set { ammo = value; }
-				}
-
-				/// <summary>
-				/// Gets or sets a value indicating whether this gun has any ammo in its' clip.
-				/// </summary>
-				/// <value><c>true</c> if this gun's clip is empty; otherwise, <c>false</c>.</value>
-				public bool IsClipEmpty
-				{
-					get { return empty; }
-					set { empty = value; }
 				}
 
 				/// <summary>

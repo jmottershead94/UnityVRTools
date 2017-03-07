@@ -20,9 +20,10 @@ namespace IndieJayVR
 				private float crouchHeight = 0.0f;
 				private float originalHeight = 3.0f;
 				private bool timeStop = false;
-				private float segment = 0.0f;
+				private float ammoSegment = 0.0f, healthSegment = 0.0f;
 				private Text ammoDisplay = null;
 				private Image ammoBar = null;
+				private Image healthBar = null;
 				private SCR_Crosshair crosshair = null;
 
 				/// <summary>
@@ -39,6 +40,7 @@ namespace IndieJayVR
 					Time.timeScale = speedFactor;
 					ammoDisplay = GameObject.Find("Ammo Display").GetComponent<Text>();
 					ammoBar = GameObject.Find("Ammo Bar").GetComponent<Image>();
+					healthBar = GameObject.Find("Health Bar").GetComponent<Image>();
 
 					originalHeight = transform.position.y;
 					crouchHeight = transform.position.y - crouch;
@@ -85,6 +87,20 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
+				/// User interfaces the updates.
+				/// </summary>
+				void UIUpdates()
+				{
+					ammoDisplay.text = "Ammo x" + gun.Ammo;
+
+					ammoSegment = (1.0f / gun.MaximumAmmo) * gun.Ammo;
+					ammoBar.transform.localScale = new Vector3(ammoSegment, ammoBar.transform.localScale.y, 1.0f);
+
+					healthSegment = (1.0f / maximumHealth) * health;
+					healthBar.transform.localScale = new Vector3(healthSegment, healthBar.transform.localScale.y, 1.0f);
+				}
+
+				/// <summary>
 				/// Controls used for PC (so this won't apply to VR controls).
 				/// </summary>
 				void PCControls()
@@ -102,18 +118,6 @@ namespace IndieJayVR
 						SCR_GameControl.LockCursor();
 						Rotation();
 						SCR_GameControl.UnlockCursor();
-					}
-
-					ammoDisplay.text = "Ammo x" + gun.Ammo;
-
-					if(gun.Ammo > 0)
-					{
-						segment = (1.0f / 6.0f) * gun.Ammo;
-						ammoBar.transform.localScale = new Vector3(segment, ammoBar.transform.localScale.y, 1.0f);
-					}
-					else
-					{
-						ammoBar.transform.localScale = new Vector3(0.0f, ammoBar.transform.localScale.y, 1.0f);
 					}
 
 					if(SCR_GameControl.IsPaused)
@@ -150,6 +154,7 @@ namespace IndieJayVR
 						return;
 
 					base.Update();
+					UIUpdates();
 					PCControls();
 				}
 

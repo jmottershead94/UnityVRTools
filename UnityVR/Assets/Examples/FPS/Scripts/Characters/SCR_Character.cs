@@ -18,8 +18,9 @@ namespace IndieJayVR
 			public class SCR_Character : MonoBehaviour 
 			{
 				[Header ("Character Properties")]
-				[SerializeField]						protected int health = 100;
+				[SerializeField]						protected int maximumHealth = 100;
 				[SerializeField] [Range(0.0f, 5.0f)]	protected float deathTimer = 2.0f;
+				protected int health = 100;
 				protected bool dead = false;
 				protected SCR_Gun gun = null;
 
@@ -33,8 +34,9 @@ namespace IndieJayVR
 				/// </summary>
 				protected void Awake()
 				{
-					Transform gunTransform = transform.FindChild("PRE_Gun");
+					health = maximumHealth;
 
+					Transform gunTransform = transform.FindChild("PRE_Gun");
 					if(gunTransform.gameObject != null)
 						gun = transform.FindChild("PRE_Gun").GetComponent<SCR_Gun>();
 				}

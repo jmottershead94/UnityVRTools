@@ -51,11 +51,17 @@ namespace IndieJayVR
 				void OnTriggerEnter(Collider collider)
 				{
 					SCR_Character character = collider.gameObject.GetComponent<SCR_Character>();
-					Transform parentTransform = gun.transform.parent;
+					Transform parentTransform = transform;
 
+					// If the gun still exists (i.e. the character is still alive).
+					if(gun != null)
+						parentTransform = gun.transform.parent;
+
+					// If this bullet has hit a character.
 					if(character != null)
 					{
-						if(character.transform != parentTransform)
+						// If the character is not itself OR if the character that fired this bullet is currently dead.
+						if(character.transform != parentTransform || parentTransform == transform)
 						{
 							character.Health -= damage; 
 							Destroy(gameObject);
