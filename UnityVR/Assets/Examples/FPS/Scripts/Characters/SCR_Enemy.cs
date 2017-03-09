@@ -78,7 +78,7 @@ namespace IndieJayVR
 							{
 								if(resetRepeating)
 								{
-									InvokeRepeating("FireAtPlayer", 1.0f, gun.FireRate * (1.0f / SCR_GameControl.SpeedFactor));
+									InvokeRepeating("FireAtPlayer", gun.FireRate, gun.FireRate * (1.0f / SCR_GameControl.SpeedFactor) * 2.0f);
 									resetRepeating = false;
 								}
 							}
