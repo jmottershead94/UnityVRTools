@@ -54,7 +54,6 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	new protected void Awake()
 	{
-
 		base.Awake();
 
 		/* Initialising our attributes. */
