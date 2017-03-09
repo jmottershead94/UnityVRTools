@@ -18,14 +18,17 @@ namespace IndieJayVR
 				[SerializeField]	private Vector3 rotationSpeed = Vector3.zero;
 				[SerializeField]	private float speedFactor = 0.05f;
 				[SerializeField]	private float crouch = 3.0f;
+				[SerializeField]	private float movementSpeed = 1.0f;
 				private float crouchHeight = 0.0f;
 				private float originalHeight = 3.0f;
 				private bool timeStop = false;
 				private float ammoSegment = 0.0f, healthSegment = 0.0f;
+				private Transform cam = null;
 				private Text timer = null;
 				private Text ammoDisplay = null;
 				private Image ammoBar = null;
 				private Image healthBar = null;
+				private Rigidbody rigidbody = null;
 				private SCR_Crosshair crosshair = null;
 				private SCR_VRController rightController = null;
 				private SCR_VRController leftController = null;
@@ -45,6 +48,7 @@ namespace IndieJayVR
 					timer = GameObject.Find ("Timer").GetComponent<Text> ();
 					originalHeight = transform.position.y;
 					crouchHeight = transform.position.y - crouch;
+					rigidbody = GetComponent<Rigidbody>();
 
 					start = false;
 					InvokeRepeating ("Timer", 1.0f, 1.0f);
@@ -76,17 +80,9 @@ namespace IndieJayVR
 					if(camera != null)
 						gun = camera.transform.FindChild("PRE_Gun").GetComponent<SCR_Gun> ();
 
-//					GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
-//					foreach (GameObject enemyObject in enemies) 
-//					{
-//						SCR_Enemy enemy = enemyObject.GetComponent<SCR_Enemy> ();
-//						enemy.Gun.FireRate *= speedFactor;
-//					}
-
+					cam = camera.transform;
 					start = true;
-					Time.timeScale = speedFactor;
-					gun.FireRate *= speedFactor;
-					//gun.
+					gun.FireRate = speedFactor;
 				}
 
 				/// <summary>
@@ -95,7 +91,7 @@ namespace IndieJayVR
 				/// <returns>The delay.</returns>
 				IEnumerator RestartDelay()
 				{
-					Time.timeScale = 1.0f;
+					//Time.timeScale = 1.0f;
 
 					yield return new WaitForSeconds(deathTimer);
 
@@ -211,6 +207,13 @@ namespace IndieJayVR
 						transform.position = new Vector3(transform.position.x, crouchHeight, transform.position.z);
 					else
 						transform.position = new Vector3(transform.position.x, originalHeight, transform.position.z);
+
+					float horizontal = Input.GetAxis("Horizontal");
+					float vertical = Input.GetAxis("Depth");
+
+					Vector3 axis = new Vector3(horizontal * movementSpeed, 0.0f, vertical * movementSpeed);
+					axis = cam.TransformDirection(axis);
+					rigidbody.velocity = axis;
 				}
 
 				bool AssignControllers()

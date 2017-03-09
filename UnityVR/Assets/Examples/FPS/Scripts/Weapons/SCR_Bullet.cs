@@ -14,7 +14,7 @@ namespace IndieJayVR
 			{
 				[Header ("Bullet Properties")]
 				[SerializeField]	private float speed = 50.0f;
-				[SerializeField]	private float lifeSpan = 100.0f;
+				[SerializeField]	private float lifeSpan = 20.0f;
 				private SCR_Gun gun = null;
 				private float currentLifeTime = 0.0f;
 				private int damage = 25;
@@ -32,6 +32,8 @@ namespace IndieJayVR
 					damage = gunDamage;
 					currentLifeTime = 0.0f;
 					direction = dir;
+
+					InvokeRepeating("LifeTimeCounter", 1.0f, 1.0f);
 				}
 
 				/// <summary>
@@ -80,11 +82,11 @@ namespace IndieJayVR
 						return;
 
 					// Move the bullet forward.
-					Vector3 velocity = (direction * speed) * Time.deltaTime;
+					Vector3 velocity = (direction * speed) * Mathf.Pow(SCR_GameControl.SpeedFactor, 3.0f);
 					transform.position += velocity;
 
 					// Keep the bullet life time counter going.
-					StartCoroutine(LifeTimeCounter());
+					//StartCoroutine(LifeTimeCounter());
 
 					// If the bullet has lived for too long, destroy it.
 					if(currentLifeTime >= lifeSpan)

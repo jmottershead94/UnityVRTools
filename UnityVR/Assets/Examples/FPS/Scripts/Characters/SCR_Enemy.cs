@@ -25,7 +25,7 @@ namespace IndieJayVR
 					gun = transform.FindChild ("PRE_Gun").GetComponent<SCR_Gun> ();
 					gun.InfiniteBullets = true;
 					gun.FireRate = Random.Range(1.0f, 6.0f);
-					InvokeRepeating("FireAtPlayer", SCR_GameControl.StartDelayTime, gun.FireRate * SCR_GameControl.SpeedFactor);
+					InvokeRepeating("FireAtPlayer", SCR_GameControl.StartDelayTime, gun.FireRate * (1.0f / SCR_GameControl.SpeedFactor));
 				}
 
 				/// <summary>
@@ -57,6 +57,9 @@ namespace IndieJayVR
 					else if (SCR_Player.IsReady) 
 						player = playerObject.GetComponent<SCR_Player> ();
 
+					base.Update();
+					gun.transform.LookAt(player.transform.position);
+
 					if(SCR_GameControl.IsGameOver || SCR_GameControl.IsPaused || player.HasStoppedTime)
 					{
 						resetRepeating = true;
@@ -72,8 +75,7 @@ namespace IndieJayVR
 						}
 					}
 
-					base.Update();
-					gun.transform.LookAt(player.transform.position);
+
 				}
 			}
 		}
