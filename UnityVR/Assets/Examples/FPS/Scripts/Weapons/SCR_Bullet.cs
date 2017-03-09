@@ -60,12 +60,12 @@ namespace IndieJayVR
 						parentTransform = gun.transform.parent;
 
 					// If this bullet has hit a character.
-					if(collider.tag == "Player" || collider.tag == "Enemy")
+					if(collider.tag == "MainCamera" || collider.tag == "Enemy")
 					{
 						SCR_Character character = collider.gameObject.GetComponent<SCR_Character>();
 
 						// If the character is not itself OR if the character that fired this bullet is currently dead.
-						if(character.transform != parentTransform || parentTransform == transform)
+						if(character.transform != parentTransform || transform == parentTransform)
 						{
 							character.Health -= damage; 
 							Destroy(gameObject);

@@ -50,7 +50,7 @@ namespace IndieJayVR
 				/// </summary>
 				new protected void Update()
 				{
-					GameObject playerObject = GameObject.FindGameObjectWithTag ("Player");
+					GameObject playerObject = GameObject.FindGameObjectWithTag ("MainCamera");
 
 					if (playerObject == null || !SCR_Player.IsReady)
 						return;

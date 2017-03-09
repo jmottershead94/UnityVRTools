@@ -28,7 +28,7 @@ namespace IndieJayVR
 				private Text ammoDisplay = null;
 				private Image ammoBar = null;
 				private Image healthBar = null;
-				private Rigidbody rigidbody = null;
+				new private Rigidbody rigidbody = null;
 				private SCR_Crosshair crosshair = null;
 				private SCR_VRController rightController = null;
 				private SCR_VRController leftController = null;
@@ -53,6 +53,8 @@ namespace IndieJayVR
 					start = false;
 					InvokeRepeating ("Timer", 1.0f, 1.0f);
 					StartCoroutine (StartingDelay ());
+
+					SCR_GameControl.SpeedFactor = speedFactor;
 				}
 
 				/// <summary>
@@ -140,7 +142,7 @@ namespace IndieJayVR
 				/// </summary>
 				void ResumeTime()
 				{
-					Time.timeScale = speedFactor;
+					Time.timeScale = 1.0f;
 					timeStop = false;
 				}
 
@@ -273,6 +275,23 @@ namespace IndieJayVR
 						else
 							StopTime();
 					}
+
+					float horizontal = 0.0f;
+					float vertical = 0.0f;
+
+					if(leftController.UpPressed())
+						vertical++;
+					else if(leftController.DownPressed())
+						vertical--;
+
+					if(leftController.RightPressed())
+						horizontal++;
+					else if(leftController.LeftPressed())
+						horizontal--;
+
+					Vector3 axis = new Vector3(horizontal * movementSpeed, 0.0f, vertical * movementSpeed);
+					axis = cam.TransformDirection(axis);
+					rigidbody.velocity = axis;
 				}
 
 				/// <summary>

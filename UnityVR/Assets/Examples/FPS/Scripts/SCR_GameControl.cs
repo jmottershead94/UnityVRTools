@@ -94,12 +94,13 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
-				/// Gets the speed factor.
+				/// Gets or sets the speed factor.
 				/// </summary>
 				/// <value>The speed factor.</value>
 				public static float SpeedFactor
 				{
 					get { return speedFactor; }
+					set { speedFactor = value; }
 				}
 			}
 		}

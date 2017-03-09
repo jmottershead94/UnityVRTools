@@ -37,12 +37,12 @@ namespace IndieJayVR
 						return;
 					else
 					{
-						GameObject camera = GameObject.Find("Camera (eye)");
+						GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
 						if(camera != null)
 							playerCamera = camera.GetComponent<Camera>();
 					}
 					
-					//SCR_GameControl.FollowMouse(transform);
+					SCR_GameControl.FollowMouse(transform);
 				}
 
 				/// <summary>
