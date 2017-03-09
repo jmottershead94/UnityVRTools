@@ -93,11 +93,8 @@ namespace IndieJayVR
 				/// <returns>The delay.</returns>
 				IEnumerator RestartDelay()
 				{
-					//Time.timeScale = 1.0f;
-
 					yield return new WaitForSeconds(deathTimer);
 
-					//Time.timeScale = speedFactor;
 					SCR_GameControl.IsGameOver = false;
 					SCR_GameControl.IsPaused = false;
 					timeStop = false;
