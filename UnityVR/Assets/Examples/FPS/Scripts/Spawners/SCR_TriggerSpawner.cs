@@ -29,7 +29,7 @@ namespace IndieJayVR
 				/// <param name="collider">Collider.</param>
 				void OnTriggerEnter(Collider collider)
 				{
-					if(collider.tag == "Player")
+					if(collider.tag == "MainCamera")
 					{
 						GameObject go = Instantiate(prefab, spawn.position, spawn.rotation) as GameObject;
 						go.name = prefab.name;

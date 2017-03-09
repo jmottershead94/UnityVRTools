@@ -165,16 +165,16 @@ namespace IndieJayVR
 				/// </summary>
 				void PCControls()
 				{
-					if(!timeStop)
-					{
+					//if(!timeStop)
+					//{
 						if(Input.GetKeyDown(KeyCode.Escape))
 						{
 							if(!SCR_GameControl.IsPaused)
 								SCR_GameControl.Pause();
 							else
-								SCR_GameControl.UnPause(speedFactor);
+								SCR_GameControl.UnPause(1.0f);
 						}
-					}
+					//}
 
 					if(Input.GetMouseButton(1))
 					{
@@ -194,13 +194,13 @@ namespace IndieJayVR
 					if(Input.GetKeyDown(KeyCode.R))
 						StartCoroutine(gun.ReloadDelay());
 
-					if(Input.GetKeyDown(KeyCode.P))
-					{
-						if(timeStop)
-							ResumeTime();
-						else
-							StopTime();
-					}
+					//if(Input.GetKeyDown(KeyCode.P))
+					//{
+					//	if(timeStop)
+					//		ResumeTime();
+					//	else
+					//		StopTime();
+					//}
 
 					if(Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.DownArrow))
 						transform.position = new Vector3(transform.position.x, crouchHeight, transform.position.z);
@@ -251,7 +251,7 @@ namespace IndieJayVR
 						if(!SCR_GameControl.IsPaused)
 							SCR_GameControl.Pause();
 						else
-							SCR_GameControl.UnPause(speedFactor);
+							SCR_GameControl.UnPause(1.0f);
 					}
 
 					if(SCR_GameControl.IsPaused)
@@ -265,13 +265,13 @@ namespace IndieJayVR
 					if(rightController.UpPressed())
 						StartCoroutine(gun.ReloadDelay());
 
-					if(rightController.RightPressed())
-					{
-						if(timeStop)
-							ResumeTime();
-						else
-							StopTime();
-					}
+					//if(rightController.RightPressed())
+					//{
+					//	if(timeStop)
+					//		ResumeTime();
+					//	else
+					//		StopTime();
+					//}
 
 					float horizontal = 0.0f;
 					float vertical = 0.0f;
