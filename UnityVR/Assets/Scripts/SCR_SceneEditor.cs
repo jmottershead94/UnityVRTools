@@ -85,7 +85,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	{
 		/* Creating a temporary instance of a cube game object. */
         GameObject tempGameObject = GameObject.CreatePrimitive(primitiveType);
-        tempGameObject.tag = "DontDestroy";
+        //tempGameObject.tag = "DontDestroy";
 
 		/* Creating a temporary instance of a persistent object and adding it onto the temporary game object. */
 		SCR_PersistentObject tempPersistentObject = tempGameObject.AddComponent<SCR_PersistentObject>();
@@ -395,7 +395,8 @@ public class SCR_SceneEditor : MonoBehaviour
 				currentTranslation.y += (translationSpeed.y);
 			}
 
-			SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation, true);
+			persistentObject.transform.position += currentTranslation;
+			//SCR_Camera.MoveInRelationToCam(persistentObject.transform, currentTranslation, true);
 		}
 	}
 #endregion
@@ -417,21 +418,21 @@ public class SCR_SceneEditor : MonoBehaviour
 	{
 		if(currentTransformState == TransformState.translation)
 		{
-			CheckTranslations(persistentObject);
+			//CheckTranslations(persistentObject);
 
 			if(!SCR_VRUtilities.Holding)
 				CheckTranslationsVR (persistentObject);
 		}
 		else if(currentTransformState == TransformState.rotation)
 		{
-			CheckRotation(persistentObject);	
+			//CheckRotation(persistentObject);	
 
 			if(!SCR_VRUtilities.Holding)
 				CheckRotationVR (persistentObject);
 		}
 		else if(currentTransformState == TransformState.scale)
 		{
-			CheckScale(persistentObject);
+			//CheckScale(persistentObject);
 
 			//if(!SCR_VRUtilities.Holding)
 				CheckScaleVR (persistentObject);
