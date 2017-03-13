@@ -178,6 +178,7 @@ public class SaveLoadMenu : MonoBehaviour {
 		foreach(SceneObject loadedObject in loadedGame.sceneObjects) {
 			GameObject go_reconstructed = UnpackGameObject(loadedObject);
 			if(go_reconstructed != null) {
+				go_reconstructed.transform.SetParent(GameObject.Find("GO").transform);
 				//Add the reconstructed GO to the list we created earlier.
 				goList.Add(go_reconstructed);
 			}

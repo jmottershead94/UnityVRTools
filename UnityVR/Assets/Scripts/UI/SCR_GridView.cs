@@ -15,6 +15,9 @@ public class SCR_GridView : SCR_BaseUIElement
 	/* Methods. */
 	new protected void Awake () 
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
+
 		base.Awake();
 		gridObjects = new List<GameObject>();
 		gridPositions = new List<Vector3>();
@@ -63,79 +66,6 @@ public class SCR_GridView : SCR_BaseUIElement
 				gridObjects[i].transform.position = gridPositions[i];
 			}
 		}
-	}
-
-//	public void ScrollOffset(Vector3 inputPosition)
-//	{
-//		SCR_UIConstants.Scrolling = true;
-//		offset = prefabView.position.y - inputPosition.y;
-//	}
-//
-//	public void Drag(Vector3 inputPosition)
-//	{
-//		if(gridObjects.Count <= 0)
-//			return;
-//
-//		float cursorPosition = inputPosition.y + offset;
-//		Vector3 movement = new Vector3(0.0f, cursorPosition, 0.0f);
-//		prefabView.position = new Vector3(prefabView.transform.position.x, cursorPosition, prefabView.position.z);
-//		//Vector3 axis = prefabView.position + (transform.up * cursorPosition);
-//		//prefabView.position = new Vector3(prefabView.transform.position.x, axis.y, prefabView.position.z);
-//	}
-
-//	public void StopScrolling()
-//	{
-//		SCR_UIConstants.Scrolling = false;
-//	}
-
-//	void OnMouseOver()
-//	{
-//		//if(allowScroll)
-//		//{
-//			Vector3 mouseInput = new Vector3(0.0f, Input.mousePosition.y * scrollSpeed, 0.0f);
-//			ScrollOffset(Camera.main.ScreenToWorldPoint(mouseInput));
-//		//}
-//	}
-//
-//	void OnMouseDrag()
-//	{
-//		//if(allowScroll)
-//		//{
-//			Vector3 mouseInput = new Vector3(0.0f, Input.mousePosition.y, 0.0f);
-//			Drag(Camera.main.ScreenToWorldPoint(mouseInput));
-//		//}
-//	}
-
-//	void OnMouseExit()
-//	{
-//		//if(allowScroll)
-//		//{
-//			StopScrolling();
-//		//}
-//	}
-
-	void Update()
-	{
-//		if(gridObjects.Count > 0)
-//		{
-//			foreach(GameObject prefab in gridObjects)
-//			{
-//				if(prefab != null)
-//				{
-//					if(prefab.GetComponent<SCR_PrefabButton>() != null)
-//					{
-//						SCR_PrefabButton button = prefab.GetComponent<SCR_PrefabButton>();
-//
-//						if(button.transform.position.y > upperScrollLimit.position.y)
-//							button.Disable();
-//						else if(button.transform.position.y < lowerScrollLimit.position.y)
-//							button.Disable();
-//						else
-//							button.Enable();
-//					}
-//				}
-//			}
-//		}
 	}
 
 	public List<GameObject> GridObjects

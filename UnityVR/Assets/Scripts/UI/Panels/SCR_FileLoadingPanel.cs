@@ -31,6 +31,8 @@ public class SCR_FileLoadingPanel : SCR_Panel
 	*/
 	new protected void Awake()
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
 
 		switch(fileExtension)
 		{

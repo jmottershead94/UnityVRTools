@@ -268,8 +268,9 @@ public class SCR_SceneData : MonoBehaviour
 		loadingPersistentObject.ObjectType 				= referencePersistentObject.ObjectType;
 		loadingPersistentObject.ID 						= referencePersistentObject.ID;
 
-		if(loadingPersistentObject.tag != "DontDestroy")
-			loadingPersistentObject.tag = "DontDestroy";
+		//if(loadingPersistentObject.tag != "DontDestroy")
+			//loadingPersistentObject.tag = "DontDestroy";
+		
 
 		Color loadedColour = new Color(referencePersistentObject.Red, referencePersistentObject.Green, referencePersistentObject.Blue);
 		LoadMaterials(ref loadingPersistentObject, loadedColour);

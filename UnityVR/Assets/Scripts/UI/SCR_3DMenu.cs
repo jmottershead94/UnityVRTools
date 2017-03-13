@@ -44,6 +44,11 @@ public class SCR_3DMenu : SCR_BaseUIElement
 	*/
 	new private void Awake()
 	{
+		if(!SCR_SceneEditor.InVREditor)
+		{
+			gameObject.SetActive(false);
+			return;
+		}
 
 		/* Initialising our attributes. */
 		panels = new List<SCR_Panel>();
@@ -144,6 +149,8 @@ public class SCR_3DMenu : SCR_BaseUIElement
 	*/
 	private void Update () 
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
 
 		/* Handles any updates with the panel that is currently in focus. */
 		CheckPanelFocus();

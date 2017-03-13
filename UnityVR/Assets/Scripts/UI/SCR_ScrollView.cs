@@ -14,6 +14,9 @@ public class SCR_ScrollView : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
+
 		upperScrollLimit = transform.FindChild("Upper Scroll Limit");
 		lowerScrollLimit = transform.FindChild("Lower Scroll Limit");
 		scrollView = transform.FindChild("Scroll View");
@@ -24,6 +27,9 @@ public class SCR_ScrollView : MonoBehaviour
 
 	public void Initialise(List<GameObject> items)
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
+
 		scrollItems = items;
 	}
 
@@ -63,24 +69,36 @@ public class SCR_ScrollView : MonoBehaviour
 
 	void OnMouseOver()
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
+
 		Vector3 mouseInput = new Vector3(0.0f, Input.mousePosition.y, 0.0f);
 		ScrollOffset(Camera.main.ScreenToWorldPoint(mouseInput));
 	}
 
 	void OnMouseDrag()
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
+
 		Vector3 mouseInput = new Vector3(0.0f, Input.mousePosition.y, 0.0f);
 		Drag(Camera.main.ScreenToWorldPoint(mouseInput));
 	}
 
 	void OnMouseExit()
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
+
 		StopScrolling();
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
+		if(!SCR_SceneEditor.InVREditor)
+			return;
+
 		if(scrollItems.Count > 0)
 		{
 			foreach(GameObject prefab in scrollItems)

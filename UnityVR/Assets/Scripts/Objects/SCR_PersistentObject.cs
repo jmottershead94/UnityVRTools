@@ -25,6 +25,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 {
 
 	/* Attributes. */
+	[SerializeField]	private bool execute = false;
 	private PrimitiveType primitiveType;					/* Accessing what primitive type we are using. */
 	private int id;											/* Accessing the ID number of the object. */
 	private Material currentMaterial = null;				/* The current material attached to the game object, will be used to update the current material of the mesh renderer. */
@@ -61,7 +62,13 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 		defaultMaterial = currentMaterial;
 		glowingMaterial = Resources.Load("Materials/MAT_ObjectSelected") as Material;
 		changingMaterial = Resources.Load("Materials/MAT_ChangingColour") as Material;
-		grabButton = GameObject.Find ("GrabModeButton").GetComponent<SCR_GrabButton> ();
+
+		if(!execute)
+			return;
+
+		GameObject grabCheck = GameObject.Find ("GrabModeButton");
+		if(grabCheck != null)
+			grabButton = GameObject.Find ("GrabModeButton").GetComponent<SCR_GrabButton> ();
 	}
 
 	/*
@@ -74,6 +81,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	private void ObjectInFocusStandardResponse()
 	{
+		if(!execute)
+			return;
 
 		/* If the current material has not been set to the glowing material. */
 		if(currentMaterial != glowingMaterial)
@@ -100,6 +109,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	private void ObjectOutOfFocusStandardResponse()
 	{
 
+		if(!execute)
+			return;
+
 		/* If the current material has not been set to the default material. */
 		if(currentMaterial != defaultMaterial)
 		{
@@ -116,6 +128,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void FocusSwitch()
 	{
+		if(!execute)
+			return;
 
 		/* If this object is currently in focus. */
 		if(isInFocus)
@@ -137,6 +151,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void HoldingObject()
 	{
+		if(!execute)
+			return;
+
 		InFocus = true;
 		holding = true;
 		SCR_VRUtilities.Holding = true;
@@ -144,6 +161,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void DropObject()
 	{
+		if(!execute)
+			return;
+
 		Transform previousTransform = GameObject.Find("Scene Editor").transform;
 
 		if(InFocus)
@@ -161,6 +181,8 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void PCHolding()
 	{
+		if(!execute)
+			return;
 		HoldingObject();
 		screenPoint = Camera.main.WorldToScreenPoint(transform.position);
 		offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
@@ -168,6 +190,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void VRHolding()
 	{
+		if(!execute)
+			return;
+
 		if (!SCR_VRUtilities.Holding) 
 		{
 			HoldingObject ();
@@ -187,17 +212,26 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	private void OnMouseDown()
 	{
+		if(!execute)
+			return;
+
 		FocusSwitch();
 	}
 
 	/* VR Equivalent: Right controller aiming at this and the trigger is held. */
 	private void OnMouseOver()
 	{
+		if(!execute)
+			return;
+
 		isMouseOver = true;
 	}
 
 	private void OnMouseDrag()
 	{
+		if(!execute)
+			return;
+
 		Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 		Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
 		transform.position = cursorPosition;
@@ -205,6 +239,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 
 	private void OnMouseExit()
 	{
+		if(!execute)
+			return;
+
 		isMouseOver = false;
 
 		if(InFocus && holding)
@@ -221,6 +258,9 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	override protected void CheckFocus()
 	{
+
+		if(!execute)
+			return;
 
 		/* If this object is currently in focus. */
 		if(isInFocus)
@@ -255,18 +295,21 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 	*/
 	protected void Update()
 	{
-//		if(grabButton.TransformType == SCR_GrabButton.VRTransformType.freeForm)
-//			VRTriggerResponse(FocusSwitch);
-//		else
-//			VRTriggerHeldResponse(VRHolding, DropObject, holding);
+		if(grabButton == null || !execute)
+			return;
 
-		if(isMouseOver && grabButton.TransformType == SCR_GrabButton.VRTransformType.grab)
-		{
-			if(Input.GetMouseButton(0))
-				PCHolding();
-			else if(Input.GetMouseButtonUp(0) && holding)
-				DropObject();
-		}
+		if(grabButton.TransformType == SCR_GrabButton.VRTransformType.freeForm)
+			VRTriggerResponse(FocusSwitch);
+		else
+			VRTriggerHeldResponse(VRHolding, DropObject, holding);
+
+//		if(isMouseOver && grabButton.TransformType == SCR_GrabButton.VRTransformType.grab)
+//		{
+//			if(Input.GetMouseButton(0))
+//				PCHolding();
+//			else if(Input.GetMouseButtonUp(0) && holding)
+//				DropObject();
+//		}
 
 		/* Handles any game object focus updates. */
 		CheckFocus();

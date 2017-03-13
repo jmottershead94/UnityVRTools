@@ -155,6 +155,8 @@ public class SCR_VREditorWindow : EditorWindow
 
 		if(!EditorApplication.isPlaying)
 		{
+			SCR_SceneEditor.InVREditor = false;
+
 			GameObject[] objectsInScene = GameObject.FindObjectsOfType<GameObject>();
 			string[] previousTags = new string[objectsInScene.Length];
 
@@ -193,9 +195,9 @@ public class SCR_VREditorWindow : EditorWindow
 
 		if(GUI.Button(new Rect(new Vector2(0.0f, 170.0f), new Vector2(200.0f, 100.0f)), "Load Latest Scene"))
 		{
-
+			SCR_SceneEditor.InVREditor = false;
+			Debug.Log("In VR Editor Changed = " + SCR_SceneEditor.InVREditor);
 			LoadLatestVRScene();
-
 		}
 
 	}

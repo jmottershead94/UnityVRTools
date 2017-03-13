@@ -32,6 +32,7 @@ public class SCR_SceneEditor : MonoBehaviour
 	[SerializeField]	private Vector3 rotationIncrement = Vector3.zero;			/* Used to determine how fast objects rotate in each axis. */
 	[SerializeField]	private float controllerDistanceForManipulation = 2.0f;
 
+	private static bool inVREditor = true;
 	public enum TransformState 													/* Defining transform states for the user. */
 	{
 		translation,	/* The user is translating an object. */
@@ -569,6 +570,12 @@ public class SCR_SceneEditor : MonoBehaviour
 	{
 		get { return currentTransformState; }
 		set { currentTransformState = value; }
+	}
+
+	public static bool InVREditor
+	{
+		get { return inVREditor; }
+		set { inVREditor = value; }
 	}
 #endregion
 
