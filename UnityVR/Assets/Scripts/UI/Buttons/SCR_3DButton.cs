@@ -52,11 +52,11 @@ public class SCR_3DButton : SCR_BaseUIElement
 
 	protected void Start()
 	{
-		if(!SCR_SceneEditor.InVREditor)
-		{
-			gameObject.SetActive(false);
-			return;
-		}
+//		if(!SCR_SceneEditor.InVREditor)
+//		{
+//			gameObject.SetActive(false);
+//			return;
+//		}
 
 		/* Initialising our attributes. */
 		if (GameObject.Find ("PRE_3DMenu") != null) 

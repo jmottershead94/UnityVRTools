@@ -86,7 +86,7 @@ public class SCR_3DMenu : SCR_BaseUIElement
 		if(leftController != null)
 		{
 
-			originalPosition = new Vector3 (leftController.transform.position.x - 0.3f, leftController.transform.position.y, leftController.transform.position.z + 0.35f);
+			originalPosition = GameObject.Find("Menu Holder").transform.position;
 			//transform.forward = leftController.transform.forward;
 			//transform.LookAt(leftController.transform);
 

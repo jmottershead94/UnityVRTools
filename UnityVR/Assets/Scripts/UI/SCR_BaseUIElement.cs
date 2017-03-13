@@ -84,7 +84,10 @@ public class SCR_BaseUIElement : MonoBehaviour
 		if(ControllerAimingAtSomething(rightController))
 		{
 			if (rightController.TriggerPressed ()) 
-				pressMethod();
+			{
+				pressMethod ();
+				Debug.Log ("Executing press method.");
+			}
 		}
 	}
 

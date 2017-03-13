@@ -25,7 +25,7 @@ public class SCR_PersistentObject : SCR_BaseUIElement
 {
 
 	/* Attributes. */
-	[SerializeField]	private bool execute = false;
+	[SerializeField]	private bool execute = true;
 	private PrimitiveType primitiveType;					/* Accessing what primitive type we are using. */
 	private int id;											/* Accessing the ID number of the object. */
 	private Material currentMaterial = null;				/* The current material attached to the game object, will be used to update the current material of the mesh renderer. */

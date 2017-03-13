@@ -26,7 +26,7 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 {
 
 	/* Attributes. */
-	[SerializeField]	private List<GameObject> prefabs = null;
+	[HideInInspector]	[SerializeField]	private List<GameObject> prefabs = null;
 	[HideInInspector]	[SerializeField]	private List<Texture2D> prefabPreviews = null;
 	[SerializeField]	private bool inVR = false;
 	private SCR_GridView gridView = null;
@@ -41,8 +41,8 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 	*/
 	protected void Start()
 	{
-		if(!SCR_SceneEditor.InVREditor)
-			return;
+		//if(!SCR_SceneEditor.InVREditor)
+		//	return;
 
 		prefabs = new List<GameObject>();
 		prefabPreviews = new List<Texture2D>();
