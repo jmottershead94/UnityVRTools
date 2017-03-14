@@ -42,7 +42,7 @@ namespace IndieJayVR
 							playerCamera = camera.GetComponent<Camera>();
 					}
 					
-					SCR_GameControl.FollowMouse(transform);
+					//SCR_GameControl.FollowMouse(transform);
 				}
 
 				/// <summary>

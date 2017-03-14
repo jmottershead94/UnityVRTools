@@ -276,19 +276,29 @@ namespace IndieJayVR
 					float horizontal = 0.0f;
 					float vertical = 0.0f;
 
-					if(leftController.UpPressed())
-						vertical++;
+					if (leftController.UpPressed ()) 
+					{
+						vertical = 1.0f;
+						Debug.Log ("Should move forward...");
+					}
 					else if(leftController.DownPressed())
-						vertical--;
+						vertical= -1.0f;
 
 					if(leftController.RightPressed())
-						horizontal++;
+						horizontal = 1.0f;
 					else if(leftController.LeftPressed())
-						horizontal--;
+						horizontal = -1.0f;
 
 					Vector3 axis = new Vector3(horizontal * movementSpeed, 0.0f, vertical * movementSpeed);
 					axis = cam.TransformDirection(axis);
-					rigidbody.velocity = axis;
+
+					if(rigidbody == null)
+						rigidbody = GetComponent<Rigidbody>();
+					
+					//rigidbody.velocity = axis;
+					Vector3 velocity = axis * Time.deltaTime;
+					GameObject.Find("PRE_VRPlayer").transform.position += velocity;
+					Debug.Log (rigidbody.velocity);
 				}
 
 				/// <summary>
@@ -303,7 +313,7 @@ namespace IndieJayVR
 						return;
 
 					base.Update();
-					PCControls();
+					//PCControls();
 					VRControls();
 				}
 
