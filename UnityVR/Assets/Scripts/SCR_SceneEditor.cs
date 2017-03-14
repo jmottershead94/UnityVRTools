@@ -418,23 +418,23 @@ public class SCR_SceneEditor : MonoBehaviour
 	{
 		if(currentTransformState == TransformState.translation)
 		{
-			//CheckTranslations(persistentObject);
+			CheckTranslations(persistentObject);
 
 			if(!SCR_VRUtilities.Holding)
 				CheckTranslationsVR (persistentObject);
 		}
 		else if(currentTransformState == TransformState.rotation)
 		{
-			//CheckRotation(persistentObject);	
+			CheckRotation(persistentObject);	
 
 			if(!SCR_VRUtilities.Holding)
 				CheckRotationVR (persistentObject);
 		}
 		else if(currentTransformState == TransformState.scale)
 		{
-			//CheckScale(persistentObject);
+			CheckScale(persistentObject);
 
-			//if(!SCR_VRUtilities.Holding)
+			if(!SCR_VRUtilities.Holding)
 				CheckScaleVR (persistentObject);
 		}
 	}
