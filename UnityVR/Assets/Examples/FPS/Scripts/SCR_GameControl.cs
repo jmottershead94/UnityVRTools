@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
+using System.IO;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace IndieJayVR
 {
@@ -16,6 +21,7 @@ namespace IndieJayVR
 				private static bool gameOver = false;
 				private static float startingDelay = 30.0f;
 				private static float speedFactor = 0.15f;
+				private static List<float> levelTime = null;
 
 				/// <summary>
 				/// Locks the cusor.
@@ -65,6 +71,25 @@ namespace IndieJayVR
 				}
 
 				/// <summary>
+				/// Writes the times to a file.
+				/// </summary>
+				public static void WriteTimesToFile()
+				{
+					//string format = "dd mm yyyy  hh:mm";
+					string filePath = Application.dataPath + "/" + SceneManager.GetActiveScene().name + ".dat";
+					StreamWriter tempFile = File.CreateText(filePath);
+
+					for(int i = 0; i < levelTime.Count; ++i)
+					{
+						float currentTime = levelTime[i];
+						currentTime -= startingDelay;
+						tempFile.WriteLine("\n" + currentTime.ToString());
+					}
+
+					tempFile.Close();
+				}
+
+				/// <summary>
 				/// Gets the start delay time.
 				/// </summary>
 				/// <value>The start delay time.</value>
@@ -101,6 +126,16 @@ namespace IndieJayVR
 				{
 					get { return speedFactor; }
 					set { speedFactor = value; }
+				}
+
+				/// <summary>
+				/// Gets or sets the player times.
+				/// </summary>
+				/// <value>The player times.</value>
+				public static List<float> PlayerTimes
+				{
+					get { return levelTime; }
+					set { levelTime = value; }
 				}
 			}
 		}

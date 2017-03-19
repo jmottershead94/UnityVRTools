@@ -33,7 +33,7 @@ namespace IndieJayVR
 				private SCR_VRController rightController = null;
 				private SCR_VRController leftController = null;
 				private static bool start = false;
-				private float time = 0.0f;
+				private static float time = 0.0f;
 
 				/// <summary>
 				/// Awake this instance.
@@ -50,6 +50,7 @@ namespace IndieJayVR
 					crouchHeight = transform.position.y - crouch;
 					rigidbody = GetComponent<Rigidbody>();
 
+					time = 0.0f;
 					start = false;
 					InvokeRepeating ("Timer", 1.0f, 1.0f);
 					StartCoroutine (StartingDelay ());
@@ -308,6 +309,7 @@ namespace IndieJayVR
 				{
 					AssignControllers ();
 					UIUpdates();
+				
 
 					if(SCR_GameControl.IsGameOver || !start)
 						return;
@@ -333,6 +335,15 @@ namespace IndieJayVR
 				public static bool IsReady
 				{
 					get { return start; }
+				}
+
+				/// <summary>
+				/// Gets the time.
+				/// </summary>
+				/// <value>The time.</value>
+				public static float PlayersTime
+				{
+					get { return time; }
 				}
 			}
 		}
