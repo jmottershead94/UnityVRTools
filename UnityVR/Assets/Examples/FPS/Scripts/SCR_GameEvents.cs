@@ -14,7 +14,7 @@ namespace IndieJayVR
 			public class SCR_GameEvents : MonoBehaviour 
 			{
 				/// <summary>
-				/// What happens when the player beats the level.
+				/// What happens when the player beats a level.
 				/// </summary>
 				void Victory()
 				{
@@ -40,11 +40,7 @@ namespace IndieJayVR
 
 					// If all of the enemies have been defeated, go to the next scene.
 					if(enemies.Length <= 0)
-					{
-						
-
-
-					}
+						Victory();
 				}
 			}
 		}
