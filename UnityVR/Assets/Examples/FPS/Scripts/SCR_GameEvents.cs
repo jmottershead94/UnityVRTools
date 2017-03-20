@@ -22,8 +22,11 @@ namespace IndieJayVR
 					SCR_GameControl.PlayerTimes.Add(SCR_Player.PlayersTime);
 
 					// If we have reached the last level, write the times to a file.
-					if(SceneManager.GetActiveScene().buildIndex == (SceneManager.sceneCount - 1))
+					if(SceneManager.GetActiveScene().name == "SCN_Level6")
+					{
+						Debug.Log("Writing Times to File.");
 						SCR_GameControl.WriteTimesToFile();
+					}
 
 					// Move onto the next level.
 					int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;

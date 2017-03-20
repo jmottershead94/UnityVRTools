@@ -42,6 +42,12 @@ namespace IndieJayVR
 				{
 					base.Awake();
 
+					if(SCR_GameControl.PlayerTimes == null)
+					{
+						SCR_GameControl.PlayerTimes = new List<float>();
+						Debug.Log("Initialising times list");
+					}
+					
 					ammoDisplay = GameObject.Find("Ammo Display").GetComponent<Text>();
 					ammoBar = GameObject.Find("Ammo Bar").GetComponent<Image>();
 					healthBar = GameObject.Find("Health Bar").GetComponent<Image>();
