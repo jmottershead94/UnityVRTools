@@ -71,8 +71,11 @@ namespace IndieJayVR
 				/// </summary>
 				void Timer()
 				{
-					time++;
+					time += 0.5f;
 					timer.text = "Time " + time;
+
+					if (timeText != null)
+						timeText.text = time.ToString();
 				}
 
 				/// <summary>
@@ -184,10 +187,6 @@ namespace IndieJayVR
 						GameObject tText = GameObject.Find ("Timer Text");
 						if (tText != null)
 							timeText = tText.GetComponent<TextMesh> ();
-					}
-					else 
-					{
-						timeText.text = time.ToString ();
 					}
 				}
 
