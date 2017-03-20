@@ -36,6 +36,7 @@ namespace IndieJayVR
 				private static bool start = false;
 				private static float time = 0.0f;
 				private TextMesh healthText = null, ammoText = null, timeText = null;
+				private float startingY = 0.0f;
 
 				/// <summary>
 				/// Awake this instance.
@@ -85,6 +86,8 @@ namespace IndieJayVR
 				IEnumerator StartingDelay()
 				{
 					yield return new WaitForSeconds (SCR_GameControl.StartDelayTime);
+
+					startingY = transform.position.y;
 
 					GameObject cursor = GameObject.Find("Cursor");
 					if(cursor != null)
@@ -327,6 +330,7 @@ namespace IndieJayVR
 					
 					//rigidbody.velocity = axis;
 					Vector3 velocity = axis * Time.deltaTime;
+					velocity.y = 0.0f;
 					GameObject.Find("PRE_VRPlayer").transform.position += velocity;
 					Debug.Log (rigidbody.velocity);
 				}
