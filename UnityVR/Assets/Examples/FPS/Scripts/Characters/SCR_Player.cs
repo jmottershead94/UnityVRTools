@@ -35,6 +35,7 @@ namespace IndieJayVR
 				private SCR_VRController leftController = null;
 				private static bool start = false;
 				private static float time = 0.0f;
+				private TextMesh healthText = null, ammoText = null, timeText = null;
 
 				/// <summary>
 				/// Awake this instance.
@@ -89,6 +90,18 @@ namespace IndieJayVR
 					GameObject camera = GameObject.Find("Camera (eye)");
 					if(camera != null)
 						gun = camera.transform.FindChild("PRE_Gun").GetComponent<SCR_Gun> ();
+
+					GameObject hpText = GameObject.Find ("Health Text");
+					if (hpText != null)
+						healthText = hpText.GetComponent<TextMesh> ();
+
+					GameObject aText = GameObject.Find ("Ammo Text");
+					if (aText != null)
+						ammoText = aText.GetComponent<TextMesh> ();
+
+					GameObject tText = GameObject.Find ("Timer Text");
+					if (tText != null)
+						timeText = tText.GetComponent<TextMesh> ();
 
 					cam = camera.transform;
 					start = true;
@@ -166,6 +179,16 @@ namespace IndieJayVR
 
 					healthSegment = (1.0f / maximumHealth) * health;
 					healthBar.transform.localScale = new Vector3(healthSegment, healthBar.transform.localScale.y, 1.0f);
+
+					if (timeText == null) {
+						GameObject tText = GameObject.Find ("Timer Text");
+						if (tText != null)
+							timeText = tText.GetComponent<TextMesh> ();
+					}
+					else 
+					{
+						timeText.text = time.ToString ();
+					}
 				}
 
 				/// <summary>
@@ -317,13 +340,17 @@ namespace IndieJayVR
 					AssignControllers ();
 					UIUpdates();
 				
-
 					if(SCR_GameControl.IsGameOver || !start)
 						return;
 
 					base.Update();
 					//PCControls();
 					VRControls();
+
+					// Update the player's health, ammo and time.
+					healthText.text = health.ToString ();
+					ammoText.text = gun.Ammo.ToString ();
+
 				}
 
 				/// <summary>
