@@ -19,7 +19,7 @@ namespace IndieJayVR
 			{
 				private static bool paused = false;
 				private static bool gameOver = false;
-				private static float startingDelay = 30.0f;
+				private static float startingDelay = 5.0f;
 				private static float speedFactor = 0.15f;
 				private static List<float> levelTime = null;
 

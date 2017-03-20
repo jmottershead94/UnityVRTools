@@ -16,7 +16,11 @@
 
 /* Unity includes here. */
 using UnityEngine;
-using UnityEditor;
+
+#if UNITY_EDITOR
+	using UnityEditor;
+#endif
+
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -65,15 +69,18 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 			{
 				if(path.EndsWith(fileExtensionToIgnore)) continue;
 
-				GameObject tempPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
-				prefabPreviews.Add(AssetPreview.GetAssetPreview(tempPrefab));
+				#if UNITY_EDITOR
+					GameObject tempPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
+					prefabPreviews.Add(AssetPreview.GetAssetPreview(tempPrefab));
 
-				if(tempPrefab != null)
-				{
-					prefabs.Add(tempPrefab);
-				}
+					if(tempPrefab != null)
+					{
+						prefabs.Add(tempPrefab);
+					}
+				#endif
 			}
 		}
+
 
 		/* Loading prefabs from resources folder. */
 		GameObject[] resourcePrefabs = Resources.LoadAll<GameObject>(folderToCheck);
@@ -82,8 +89,10 @@ public class SCR_PrefabsPanel : SCR_FileLoadingPanel
 		{
 			foreach(GameObject tempPrefab in resourcePrefabs)
 			{
-				prefabPreviews.Add(AssetPreview.GetAssetPreview(tempPrefab));
-				prefabs.Add(tempPrefab);
+				#if UNITY_EDITOR
+					prefabPreviews.Add(AssetPreview.GetAssetPreview(tempPrefab));
+					prefabs.Add(tempPrefab);
+				#endif
 			}
 		}
 
